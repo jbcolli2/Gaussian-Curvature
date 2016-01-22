@@ -9,7 +9,7 @@ set_log_level(16)
 #Values of N for the mesh
 params = np.array([4, 8,16,32,64]);
 # params = np.array([1e-2, 1e-4, 1e-6, 1e-8]);
-# params = np.array([8]);
+params = np.array([8]);
 
 L = len(params);
 e = np.zeros([L,1]);
@@ -18,7 +18,7 @@ ratio = np.zeros([L,1]);
 
 p = 2;
 
-ep = np.array([1, 1e-2, 1e-4, 1e-5, 1e-6]);
+ep = np.array([1,1e-1]);
 
 
 
@@ -31,6 +31,9 @@ for ii in range(L):
     
     # Create mesh and define function space
     mesh = UnitSquareMesh(N, N)
+    p0 = Point(.01,.01);
+    p1 = Point(1,1);
+    mesh = RectangleMesh(p0,p1,N,N)
     V = FunctionSpace(mesh, 'Lagrange', p)
     MixedV = MixedFunctionSpace([V,V,V,V]);
     MixedVComplex = MixedFunctionSpace([V,V,V,V,V,V,V,V]);
@@ -84,16 +87,21 @@ for ii in range(L):
     
    ################ Problem Definition ############################
 
-    exact = Expression('pow(x[0],4.0) + pow(x[1],2.0)',domain=mesh);
-    f = Expression('24.0*pow(x[0],2.0)');
-    gx = Expression('4.0*pow(x[0],3.0)');
-    gy = Expression('2.0*x[1]');
+    # exact = Expression('pow(x[0],4.0) + pow(x[1],2.0)',domain=mesh);
+    # f = Expression('24.0*pow(x[0],2.0)');
+    # gx = Expression('4.0*pow(x[0],3.0)');
+    # gy = Expression('2.0*x[1]');
 
 
     # exact = Expression('exp( 0.5*(pow(x[0],2.0) + pow(x[1],2.0)) )');
     # f = Expression('exp( (pow(x[0],2.0) + pow(x[1],2.0)) )* (pow(x[0],2.0) + pow(x[1],2.0)+1.0)');
     # gx = Expression('x[0]*exp( 0.5*(pow(x[0],2.0) + pow(x[1],2.0)) )');
     # gy = Expression('x[1]*exp( 0.5*(pow(x[0],2.0) + pow(x[1],2.0)) )');
+
+    exact = Expression('(1.0/3.0)*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0),(3.0/4.0))');
+    f = Expression('pow(pow(x[0],2.0) + pow(x[1],2.0), (-1.0/2.0))');
+    gx = Expression('2*x[0]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (-1.0/4.0))');
+    gy = Expression('2*x[1]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (-1.0/4.0))');
 
 
 
@@ -146,6 +154,7 @@ for ii in range(L):
 
 
     ################### Solve for other two complex solutions ######################
+
     epComplex = np.array([ep[-1],cmath.rect(ep[-1],2*cmath.pi/3.0), cmath.rect(ep[-1],4*cmath.pi/3.0)]);
     wRe = w
     wIm = interpolate(Expression(('0.0', '0.0', '0.0', '0.0')),MixedV)

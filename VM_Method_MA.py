@@ -5,26 +5,27 @@ set_log_level(16)
 
 
 #Values of N for the mesh
-params = np.array([4, 8,16,32]);
-params = np.array([16]);
+params = np.array([8,16,32]);
+params = np.array([32]);
 
 L = len(params);
 e = np.zeros([L,1]);
 ratio = np.zeros([L,1]);
 
-p = 3;
+p = 2;
 
-ep = np.array([1,1e-1, 7e-2, 5e-2, 3e-2]);
+ep = np.array([1,1e-1, 5e-2, 1e-2, 5e-3, 3e-3, 2e-3]);
+# ep = np.logspace(0,-3,5)
 
 for ii in range(L):
     N = params[ii];
     print(N);
     
     # Create mesh and define function space
-    # mesh = UnitSquareMesh(N, N)
-    p0 = Point(.01,.01);
-    p1 = Point(1,1);
-    mesh = RectangleMesh(p0,p1,N,N)
+    mesh = UnitSquareMesh(N, N)
+    # p0 = Point(.01,.01);
+    # p1 = Point(1,1);
+    # mesh = RectangleMesh(p0,p1,N,N)
     V = FunctionSpace(mesh, 'Lagrange', p)
     MixedV = MixedFunctionSpace([V,V,V,V]);
     
@@ -88,10 +89,37 @@ for ii in range(L):
     # gx = Expression('x[0]*exp( 0.5*(pow(x[0],2.0) + pow(x[1],2.0)) )');
     # gy = Expression('x[1]*exp( 0.5*(pow(x[0],2.0) + pow(x[1],2.0)) )');
 
-    exact = Expression('(1.0/3.0)*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0),(3.0/4.0))');
-    f = Expression('pow(pow(x[0],2.0) + pow(x[1],2.0), (-1.0/2.0))');
-    gx = Expression('2*x[0]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (-1.0/4.0))');
-    gy = Expression('2*x[1]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (-1.0/4.0))');
+    # exact = Expression('(1.0/3.0)*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0),(3.0/4.0))');
+    # f = Expression('pow(pow(x[0],2.0) + pow(x[1],2.0), (-1.0/2.0))');
+    # gx = Expression('2*x[0]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (-1.0/4.0))');
+    # gy = Expression('2*x[1]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (-1.0/4.0))');
+
+    exact = Expression('pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), 1.0/2.0)');
+    cutoff = 2.0/pow(N,2.0);
+    class Sing_f1(Expression):
+        def eval(self, value, x):
+            temp = 2.0*pow(pow(x[0],2.0) + pow(x[1],2.0) - 2.0, -2.0);
+            if(abs(temp) > cutoff):
+                value[0] = cutoff
+            else:
+                value[0] = temp
+    f = Sing_f1()
+    class Sing_gx1(Expression):
+        def eval(self, value, x):
+            temp = -x[0]*pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), -1.0/2.0);
+            if(abs(temp) > cutoff):
+                value[0] = cutoff
+            else:
+                value[0] = temp
+    gx = Sing_gx1()
+    class Sing_gy1(Expression):
+        def eval(self, value, x):
+            temp = -x[1]*pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), -1.0/2.0);
+            if(abs(temp) > cutoff):
+                value[0] = cutoff
+            else:
+                value[0] = temp
+    gy = Sing_gy1()
 
 
 
@@ -116,8 +144,9 @@ for ii in range(L):
         F += inner(Dx(u,0), Dx(muxx,0))*dx + inner(Dx(u,0), Dx(muxy,1))*dx;
         F += inner(Dx(u,1), Dx(muxy,0))*dx + inner(Dx(u,1), Dx(muyy,1))*dx;
 
-        F += epii*( inner(Dx(Sxx,0), Dx(v,0)) + inner(Dx(Sxy,0), Dx(v,1)))*dx;
-        F += epii*( inner(Dx(Sxy,1), Dx(v,0)) + inner(Dx(Syy,1), Dx(v,1)))*dx;
+        if(epii != 0):
+            F += epii*( inner(Dx(Sxx,0), Dx(v,0)) + inner(Dx(Sxy,0), Dx(v,1)))*dx;
+            F += epii*( inner(Dx(Sxy,1), Dx(v,0)) + inner(Dx(Syy,1), Dx(v,1)))*dx;
 
         F += inner(Sxx*Syy,v)*dx - inner(Sxy*Sxy,v)*dx;
 
