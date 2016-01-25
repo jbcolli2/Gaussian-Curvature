@@ -14,7 +14,7 @@ ratio = np.zeros([L,1]);
 
 p = 2;
 
-ep = np.array([1,1e-1, 5e-2, 1e-2, 5e-3, 3e-3, 2e-3]);
+ep = np.array([1, 5e-1, 1e-1, 5e-2, 4e-2, 3e-2, 2e-2, 1e-2, 9e-3, 7e-3, 5e-3,4e-3, 3e-3,2e-3, 1e-3]);
 # ep = np.logspace(0,-3,5)
 
 for ii in range(L):
@@ -22,10 +22,7 @@ for ii in range(L):
     print(N);
     
     # Create mesh and define function space
-    mesh = UnitSquareMesh(N, N)
-    # p0 = Point(.01,.01);
-    # p1 = Point(1,1);
-    # mesh = RectangleMesh(p0,p1,N,N)
+    mesh = RectangleMesh(Point(0,0),Point(1,1),N,N)
     V = FunctionSpace(mesh, 'Lagrange', p)
     MixedV = MixedFunctionSpace([V,V,V,V]);
     
@@ -94,28 +91,29 @@ for ii in range(L):
     # gx = Expression('2*x[0]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (-1.0/4.0))');
     # gy = Expression('2*x[1]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (-1.0/4.0))');
 
-    exact = Expression('pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), 1.0/2.0)');
-    cutoff = 2.0/pow(N,2.0);
+    exact = Expression('-pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), 1.0/2.0)');
+    cutoff = pow(N,2.0);
+    xtol = 1e-7;
     class Sing_f1(Expression):
         def eval(self, value, x):
-            temp = 2.0*pow(pow(x[0],2.0) + pow(x[1],2.0) - 2.0, -2.0);
-            if(abs(temp) > cutoff):
+            temp = 2.0*pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), -2.0);
+            if(abs(x[0] - 1) < xtol and abs(x[1] - 1) < xtol):
                 value[0] = cutoff
             else:
                 value[0] = temp
     f = Sing_f1()
     class Sing_gx1(Expression):
         def eval(self, value, x):
-            temp = -x[0]*pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), -1.0/2.0);
-            if(abs(temp) > cutoff):
+            temp = x[0]*pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), -1.0/2.0);
+            if(abs(x[0] - 1) < xtol and abs(x[1] - 1) < xtol):
                 value[0] = cutoff
             else:
                 value[0] = temp
     gx = Sing_gx1()
     class Sing_gy1(Expression):
         def eval(self, value, x):
-            temp = -x[1]*pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), -1.0/2.0);
-            if(abs(temp) > cutoff):
+            temp = x[1]*pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), -1.0/2.0);
+            if(abs(x[0] - 1) < xtol and abs(x[1] - 1) < xtol):
                 value[0] = cutoff
             else:
                 value[0] = temp
@@ -160,7 +158,24 @@ for ii in range(L):
         DR = derivative(R, w);
         problem = NonlinearVariationalProblem(R,w,bc,DR);
         solver = NonlinearVariationalSolver(problem);
+        prm = solver.parameters
+        prm["newton_solver"]["linear_solver"] = "gmres"
+        prm["newton_solver"]["krylov_solver"]["absolute_tolerance"] = 1E-9
+        prm["newton_solver"]["krylov_solver"]["relative_tolerance"] = 1E-7
+        prm["newton_solver"]["krylov_solver"]["maximum_iterations"] = 1000
+        prm["newton_solver"]["krylov_solver"]["monitor_convergence"] = False
+        prm["newton_solver"]["krylov_solver"]["nonzero_initial_guess"] = False
+        prm["newton_solver"]["krylov_solver"]["gmres"]["restart"] = 40
+        prm["newton_solver"]["preconditioner"] = "ilu" # default is "ilu"
+        prm["newton_solver"]["krylov_solver"]["preconditioner"]["structure"]\
+        = "same_nonzero_pattern"
+        prm["newton_solver"]["krylov_solver"]["preconditioner"]["ilu"]["fill_level"] =0
         solver.solve();
+
+        (Sxx,Sxy,Syy,u) = w.split(deepcopy=True);
+
+        error = abs(exact-u)**2*dx
+        print('At epsilon = ', epii, ' error = ', np.sqrt(assemble(error)))
   
   
   
