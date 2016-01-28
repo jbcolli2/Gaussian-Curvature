@@ -213,10 +213,10 @@ for ii in range(L):
 
     for kk, epkk in enumerate(epComplex[1:len(epComplex)]):
         print('Epsilon = ',epkk)
-        eplin = np.linspace(epComplex[kk],epComplex[kk+1],1)
+        # eplin = np.linspace(epComplex[kk],epComplex[kk+1],1)
+        eplin = [epComplex[kk+1]];
 
         for jj, epjj in enumerate(eplin):
-            pdb.set_trace()
             print('Epsilon = ',epjj)
 
             bcxxRe = DirichletBC(MixedVComplex.sub(0), epjj.real, Wxx_boundary)
