@@ -12,9 +12,9 @@ L = len(params);
 e = np.zeros([L,1]);
 ratio = np.zeros([L,1]);
 
-p = 1;
+p = 2;
 
-ep = np.array([1, 7e-1,5e-1, 1e-1,9e-2,8.5e-2,7e-2, 5e-2, 4e-2, 3e-2, 2e-2, 1e-2, 9e-3, 7e-3, 5e-3,4e-3, 3e-3,2e-3, 1e-3]);
+ep = np.array([1, 7e-1,5e-1, 1e-1,9e-2,8.5e-2,7e-2]);
 # ep = np.logspace(0,-3,5)
 
 for ii in range(L):

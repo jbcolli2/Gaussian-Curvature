@@ -14,7 +14,7 @@ ratio = np.zeros([L, 1]);
 
 p = 2;
 
-ep = np.array([1, 5e-1, 1e-1, 5e-2, 4e-2, 3e-2, 2e-2, 1e-2, 9e-3, 7e-3, 5e-3,4e-3, 3e-3]);
+ep = np.array([1, 7e-1,5e-1, 1e-1,9e-2,8.5e-2,7e-2]);
 
 for ii in range(L):
     N = params[ii];
@@ -23,7 +23,7 @@ for ii in range(L):
     # ep = np.logspace(np.log10(1),np.log10(params[ii]),5);
 
     # Create mesh and define function space
-    mesh = RectangleMesh(Point(0,0),Point(1,1),N,N)
+    mesh = RectangleMesh(Point(-1,-1),Point(1,1),N,N)
     # p0 = Point(.01,.01);
     # p1 = Point(1,1);
     # mesh = RectangleMesh(p0,p1,N,N)
@@ -98,33 +98,51 @@ for ii in range(L):
     # gx = Expression('2*x[0]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (-1.0/4.0))');
     # gy = Expression('2*x[1]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (-1.0/4.0))');
 
-    exact = Expression('-pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), 1.0/2.0)');
+    # exact = Expression('-pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), 1.0/2.0)');
     cutoff = pow(N,2.0);
     xtol = 1e-7;
-    class Sing_f1(Expression):
+    # class Sing_f1(Expression):
+    #     def eval(self, value, x):
+    #         temp = 2.0*pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), -2.0);
+    #         if(abs(x[0] - 1) < xtol and abs(x[1] - 1) < xtol):
+    #             value[0] = cutoff
+    #         else:
+    #             value[0] = temp
+    # f = Sing_f1()
+    # class Sing_gx1(Expression):
+    #     def eval(self, value, x):
+    #         temp = x[0]*pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), -1.0/2.0);
+    #         if(abs(x[0] - 1) < xtol and abs(x[1] - 1) < xtol):
+    #             value[0] = cutoff
+    #         else:
+    #             value[0] = temp
+    # gx = Sing_gx1()
+    # class Sing_gy1(Expression):
+    #     def eval(self, value, x):
+    #         temp = x[1]*pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), -1.0/2.0);
+    #         if(abs(x[0] - 1) < xtol and abs(x[1] - 1) < xtol):
+    #             value[0] = cutoff
+    #         else:
+    #             value[0] = temp
+    # gy = Sing_gy1()
+
+
+    class Sing_u2(Expression):
         def eval(self, value, x):
-            temp = 2.0*pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), -2.0);
-            if(abs(x[0] - 1) < xtol and abs(x[1] - 1) < xtol):
-                value[0] = cutoff
+            if(abs(x[0]) < xtol):
+                value[0] = -x[0]
             else:
-                value[0] = temp
-    f = Sing_f1()
-    class Sing_gx1(Expression):
+                value[0] = x[0]
+    exact = Sing_u2()
+    f = Expression('0.0')
+    class Sing_gx2(Expression):
         def eval(self, value, x):
-            temp = x[0]*pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), -1.0/2.0);
-            if(abs(x[0] - 1) < xtol and abs(x[1] - 1) < xtol):
-                value[0] = cutoff
+            if(abs(x[0]) < xtol):
+                value[0] = -1.0
             else:
-                value[0] = temp
-    gx = Sing_gx1()
-    class Sing_gy1(Expression):
-        def eval(self, value, x):
-            temp = x[1]*pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), -1.0/2.0);
-            if(abs(x[0] - 1) < xtol and abs(x[1] - 1) < xtol):
-                value[0] = cutoff
-            else:
-                value[0] = temp
-    gy = Sing_gy1()
+                value[0] = 1.0
+    gx = Sing_gx2()
+    gy = Expression('0.0')
 
 
 

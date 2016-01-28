@@ -1,6 +1,7 @@
 from dolfin import *
 import numpy as np
 import cmath
+import pdb
 from IPython.core.debugger import Tracer;
 
 set_log_level(16)
@@ -18,7 +19,7 @@ ratio = np.zeros([L,1]);
 
 p = 2;
 
-ep = np.array([1,1e-1]);
+ep = np.array([1, 7e-1,5e-1, 1e-1,9e-2]);
 
 
 
@@ -30,10 +31,7 @@ for ii in range(L):
     # ep = np.logspace(np.log10(1),np.log10(params[ii]),5);
     
     # Create mesh and define function space
-    mesh = UnitSquareMesh(N, N)
-    p0 = Point(.01,.01);
-    p1 = Point(1,1);
-    mesh = RectangleMesh(p0,p1,N,N)
+    mesh = RectangleMesh(Point(-1,-1),Point(1,1),N,N)
     V = FunctionSpace(mesh, 'Lagrange', p)
     MixedV = MixedFunctionSpace([V,V,V,V]);
     MixedVComplex = MixedFunctionSpace([V,V,V,V,V,V,V,V]);
@@ -104,6 +102,53 @@ for ii in range(L):
     gy = Expression('2*x[1]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (-1.0/4.0))');
 
 
+    # exact = Expression('-pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), 1.0/2.0)');
+    cutoff = pow(N,2.0);
+    xtol = 1e-7;
+    # class Sing_f1(Expression):
+    #     def eval(self, value, x):
+    #         temp = 2.0*pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), -2.0);
+    #         if(abs(x[0] - 1) < xtol and abs(x[1] - 1) < xtol):
+    #             value[0] = cutoff
+    #         else:
+    #             value[0] = temp
+    # f = Sing_f1()
+    # class Sing_gx1(Expression):
+    #     def eval(self, value, x):
+    #         temp = x[0]*pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), -1.0/2.0);
+    #         if(abs(x[0] - 1) < xtol and abs(x[1] - 1) < xtol):
+    #             value[0] = cutoff
+    #         else:
+    #             value[0] = temp
+    # gx = Sing_gx1()
+    # class Sing_gy1(Expression):
+    #     def eval(self, value, x):
+    #         temp = x[1]*pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), -1.0/2.0);
+    #         if(abs(x[0] - 1) < xtol and abs(x[1] - 1) < xtol):
+    #             value[0] = cutoff
+    #         else:
+    #             value[0] = temp
+    # gy = Sing_gy1()
+
+
+    class Sing_u2(Expression):
+        def eval(self, value, x):
+            if(abs(x[0]) < xtol):
+                value[0] = -x[0]
+            else:
+                value[0] = x[0]
+    exact = Sing_u2()
+    f = Expression('0.0')
+    class Sing_gx2(Expression):
+        def eval(self, value, x):
+            if(abs(x[0]) < xtol):
+                value[0] = -1.0
+            else:
+                value[0] = 1.0
+    gx = Sing_gx2()
+    gy = Expression('0.0')
+
+
 
     solRe = [Function(V),Function(V),Function(V)]
     solIm = [Function(V),Function(V),Function(V)]
@@ -171,6 +216,8 @@ for ii in range(L):
         eplin = np.linspace(epComplex[kk],epComplex[kk+1],1)
 
         for jj, epjj in enumerate(eplin):
+            pdb.set_trace()
+            print('Epsilon = ',epjj)
 
             bcxxRe = DirichletBC(MixedVComplex.sub(0), epjj.real, Wxx_boundary)
             bcyyRe = DirichletBC(MixedVComplex.sub(2), epjj.real, Wyy_boundary)
@@ -220,7 +267,7 @@ for ii in range(L):
             F += ( SxxRe*(SyyRe - SyyIm) - SxxIm*(SyyRe + SyyIm) )*vIm*dx
             # - inner(Sxy*Sxy,v)*dx
             F -= ( SxyRe*(SxyRe + SxyIm) + SxyIm*(SxyRe - SxyIm) )*vRe*dx
-            F += ( SxyRe*(SxyRe - SxyIm) - SxyIm*(SxyRe + SxyIm) )*vIm*dx
+            F -= ( SxyRe*(SxyRe - SxyIm) - SxyIm*(SxyRe + SxyIm) )*vIm*dx
 
             # (f*v*dx - gy*muxy*ds(1) + gx*muxy*ds(2) + gy*muxy*ds(3) - gx*muxy*ds(4))
             F -= (f*vRe*dx - gy*muxyRe*ds(1) + gx*muxyRe*ds(2) + gy*muxyRe*ds(3) - gx*muxyRe*ds(4));
