@@ -8,9 +8,9 @@ set_log_level(16)
 
 
 #Values of N for the mesh
-params = np.array([4, 8,16,32,64]);
+params = np.array([4, 8,16,32]);
 # params = np.array([1e-2, 1e-4, 1e-6, 1e-8]);
-params = np.array([8]);
+# params = np.array([8]);
 
 L = len(params);
 e = np.zeros([L,1]);
@@ -19,7 +19,7 @@ ratio = np.zeros([L,1]);
 
 p = 2;
 
-ep = np.array([1, 7e-1,5e-1, 1e-1,9e-2]);
+ep = np.array([1, 1e-1, 1e-2]);
 
 
 
@@ -31,7 +31,8 @@ for ii in range(L):
     # ep = np.logspace(np.log10(1),np.log10(params[ii]),5);
     
     # Create mesh and define function space
-    mesh = RectangleMesh(Point(-1,-1),Point(1,1),N,N)
+    x0 = -1.0; y0 = -1.0; x1 = 1.0; y1 = 1.0;
+    mesh = RectangleMesh(Point(x0,y0),Point(x1,y1),N,N)
     V = FunctionSpace(mesh, 'Lagrange', p)
     MixedV = MixedFunctionSpace([V,V,V,V]);
     MixedVComplex = MixedFunctionSpace([V,V,V,V,V,V,V,V]);
@@ -40,29 +41,29 @@ for ii in range(L):
     
     # Boundaries for the W_xx, W_yy and V spaces
     def Wxx_boundary(x, on_boundary):
-        return near(x[0],0.0) or near(x[0],1.0);
+        return near(x[0],x0) or near(x[0],x1);
     def Wyy_boundary(x, on_boundary):
-        return near(x[1],0.0) or near(x[1],1.0);
+        return near(x[1],y0) or near(x[1],y1);
     def V_boundary(x, on_boundary):
-        return near(x[1],0.0) or near(x[1],1.0) or near(x[0],0.0) or near(x[0],1.0);
+        return near(x[1],y0) or near(x[1],y1) or near(x[0],x0) or near(x[0],x1);
   
   
     # Boundaries data for integrating <g,\mu>
     class Left(SubDomain):
         def inside(self, x, on_boundary):
-            return near(x[0], 0.0)
+            return near(x[0], x0)
 
     class Right(SubDomain):
         def inside(self, x, on_boundary):
-            return near(x[0], 1.0)
+            return near(x[0], x1)
     
     class Bottom(SubDomain):
         def inside(self, x, on_boundary):
-            return near(x[1], 0.0)
+            return near(x[1], y0)
     
     class Top(SubDomain):
         def inside(self, x, on_boundary):
-            return near(x[1], 1.0)
+            return near(x[1], y1)
     left = Left();
     right = Right();
     top = Top();
@@ -96,10 +97,10 @@ for ii in range(L):
     # gx = Expression('x[0]*exp( 0.5*(pow(x[0],2.0) + pow(x[1],2.0)) )');
     # gy = Expression('x[1]*exp( 0.5*(pow(x[0],2.0) + pow(x[1],2.0)) )');
 
-    exact = Expression('(1.0/3.0)*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0),(3.0/4.0))');
-    f = Expression('pow(pow(x[0],2.0) + pow(x[1],2.0), (-1.0/2.0))');
-    gx = Expression('2*x[0]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (-1.0/4.0))');
-    gy = Expression('2*x[1]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (-1.0/4.0))');
+    # exact = Expression('(1.0/3.0)*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0),(3.0/4.0))');
+    # f = Expression('pow(pow(x[0],2.0) + pow(x[1],2.0), (-1.0/2.0))');
+    # gx = Expression('2*x[0]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (-1.0/4.0))');
+    # gy = Expression('2*x[1]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (-1.0/4.0))');
 
 
     # exact = Expression('-pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), 1.0/2.0)');
@@ -131,27 +132,69 @@ for ii in range(L):
     # gy = Sing_gy1()
 
 
+    # class Sing_u2(Expression):
+    #     def eval(self, value, x):
+    #         if(abs(x[0]) < xtol):
+    #             value[0] = -x[0]
+    #         else:
+    #             value[0] = x[0]
+    # exact = Sing_u2()
+    # f = Expression('0.0')
+    # class Sing_gx2(Expression):
+    #     def eval(self, value, x):
+    #         if(abs(x[0]) < xtol):
+    #             value[0] = -1.0
+    #         else:
+    #             value[0] = 1.0
+    # gx = Sing_gx2()
+    # gy = Expression('0.0')
+
+    # exact = Expression('sqrt(pow(x[0],2.0) + pow(x[1],2.0))')
+    # class Sing_f3(Expression):
+    #     def eval(self, value, x):
+    #         if(abs(x[0]) < cutoff and abs(x[1]) < cutoff):
+    #             value[0] = 0*4*cutoff;
+    #         else:
+    #             value[0] = 0.0;
+    # f = Sing_f3()
+    # class Sing_gx3(Expression):
+    #     def eval(self, value, x):
+    #         if(abs(x[0]) < xtol and abs(x[1]) < xtol):
+    #             value[0] = cutoff;
+    #         else:
+    #             value[0] = x[0]/(sqrt(x[0]**2 + x[1]**2))
+    #
+    # class Sing_gy3(Expression):
+    #     def eval(self, value, x):
+    #         if(abs(x[0]) < xtol and abs(x[1]) < xtol):
+    #             value[0] = cutoff;
+    #         else:
+    #             value[0] = x[1]/(sqrt(x[0]**2 + x[1]**2))
+    #
+    # gx = Sing_gx3()
+    # gy = Sing_gy3()
+
     class Sing_u2(Expression):
         def eval(self, value, x):
             if(abs(x[0]) < xtol):
-                value[0] = -x[0]
+                value[0] = sin(x[0])
             else:
-                value[0] = x[0]
+                value[0] = x[0]**2
     exact = Sing_u2()
     f = Expression('0.0')
     class Sing_gx2(Expression):
         def eval(self, value, x):
             if(abs(x[0]) < xtol):
-                value[0] = -1.0
+                value[0] = cos(x[0])
             else:
-                value[0] = 1.0
+                value[0] = 2*x[0]
     gx = Sing_gx2()
     gy = Expression('0.0')
 
 
 
-    solRe = [Function(V),Function(V),Function(V)]
-    solIm = [Function(V),Function(V),Function(V)]
+    solRe = [Function(V)]
+    solIm = [Function(V)]
 
 
     ##### Loop through epsilon values and solve for real solution ####################
@@ -191,6 +234,12 @@ for ii in range(L):
         solver = NonlinearVariationalSolver(problem);
         solver.solve();
 
+        (Sxx,Sxy,Syy,u) = w.split(deepcopy=True);
+
+        error = abs(exact-u)**2*dx
+        print('At epsilon = ', epii, ' error = ', np.sqrt(assemble(error)))
+
+
 
     solRe[0] = w.sub(3,deepcopy=True);
 
@@ -200,7 +249,11 @@ for ii in range(L):
 
     ################### Solve for other two complex solutions ######################
 
-    epComplex = np.array([ep[-1],cmath.rect(ep[-1],2*cmath.pi/3.0), cmath.rect(ep[-1],4*cmath.pi/3.0)]);
+    fracs = np.linspace(0,2,10);
+    epComplex = np.zeros(len(fracs)-1,dtype=complex)
+    for ll,fracll in enumerate(fracs[0:len(fracs)-1]):
+        epComplex[ll] = cmath.rect(ep[-1],fracll*cmath.pi);
+
     wRe = w
     wIm = interpolate(Expression(('0.0', '0.0', '0.0', '0.0')),MixedV)
     w = Function(MixedVComplex);
@@ -212,11 +265,12 @@ for ii in range(L):
     bcvIm = DirichletBC(MixedVComplex.sub(7), 0.0, V_boundary)
 
     for kk, epkk in enumerate(epComplex[1:len(epComplex)]):
+        solRe.append(Function(V))
+        solIm.append(Function(V))
         print('Epsilon = ',epkk)
-        eplin = np.linspace(epComplex[kk],epComplex[kk+1],1)
+        eplin = [epkk]
 
         for jj, epjj in enumerate(eplin):
-            pdb.set_trace()
             print('Epsilon = ',epjj)
 
             bcxxRe = DirichletBC(MixedVComplex.sub(0), epjj.real, Wxx_boundary)
@@ -303,12 +357,16 @@ for ii in range(L):
 #     Sxy = w.sub(1);
 #     Syy = w.sub(2);
 #     u = w.sub(3);
-    u = (solRe[0] + solRe[1] + solRe[2])
+    u = (solRe[0])
+    for ll in range(1,len(epComplex)):
+        u = u + solRe[ll]
+    u = u/len(epComplex);
+
     error = abs(exact-u)**2*dx
     errorIm[ii] = np.sqrt(assemble(abs(u)**2*dx))
     u0 = project(exact,V)
     grad_error = inner(nabla_grad(u0) - nabla_grad(u), nabla_grad(u0) - nabla_grad(u))*dx
-    e[ii] = np.sqrt(assemble(error)) - (4.0/3)
+    e[ii] = np.sqrt(assemble(error))
     
     if(ii > 0):
         ratio[ii] = np.log(e[ii-1]/e[ii])/np.log(2)

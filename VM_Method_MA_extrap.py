@@ -4,9 +4,9 @@ import numpy as np
 set_log_level(16)
 
 # Values of N for the mesh
-params = np.array([4, 8, 16, 32,64]);
+params = np.array([4, 8, 16, 32]);
 # params = np.array([1e-2, 1e-4, 1e-6, 1e-8]);
-params = np.array([32]);
+# params = np.array([8]);
 
 L = len(params);
 e = np.zeros([L, 1]);
@@ -14,7 +14,7 @@ ratio = np.zeros([L, 1]);
 
 p = 2;
 
-ep = np.array([1, 7e-1,5e-1, 1e-1,9e-2,8.5e-2,7e-2]);
+ep = np.array([1, 1e-1, 1e-2, 1e-3]);
 
 for ii in range(L):
     N = params[ii];
@@ -23,47 +23,38 @@ for ii in range(L):
     # ep = np.logspace(np.log10(1),np.log10(params[ii]),5);
 
     # Create mesh and define function space
-    mesh = RectangleMesh(Point(-1,-1),Point(1,1),N,N)
-    # p0 = Point(.01,.01);
-    # p1 = Point(1,1);
-    # mesh = RectangleMesh(p0,p1,N,N)
-
+    x0 = -1; y0 = -1; x1 = 1.0; y1 = 1.0;
+    mesh = RectangleMesh(Point(x0,y0),Point(x1,y1),N,N)
     V = FunctionSpace(mesh, 'Lagrange', p)
-    MixedV = MixedFunctionSpace([V, V, V, V]);
+    MixedV = MixedFunctionSpace([V,V,V,V]);
+
 
 
     # Boundaries for the W_xx, W_yy and V spaces
     def Wxx_boundary(x, on_boundary):
-        return near(x[0], 0.0) or near(x[0], 1.0);
-
-
+        return near(x[0],x0) or near(x[0],x1);
     def Wyy_boundary(x, on_boundary):
-        return near(x[1], 0.0) or near(x[1], 1.0);
-
-
+        return near(x[1],y0) or near(x[1],y1);
     def V_boundary(x, on_boundary):
-        return near(x[1], 0.0) or near(x[1], 1.0) or near(x[0], 0.0) or near(x[0], 1.0);
+        return near(x[1],y0) or near(x[1],y1) or near(x[0],x0) or near(x[0],x1);
 
 
     # Boundaries data for integrating <g,\mu>
     class Left(SubDomain):
         def inside(self, x, on_boundary):
-            return near(x[0], 0.0)
-
+            return near(x[0], x0)
 
     class Right(SubDomain):
         def inside(self, x, on_boundary):
-            return near(x[0], 1.0)
-
+            return near(x[0], x1)
 
     class Bottom(SubDomain):
         def inside(self, x, on_boundary):
-            return near(x[1], 0.0)
-
+            return near(x[1], y0)
 
     class Top(SubDomain):
         def inside(self, x, on_boundary):
-            return near(x[1], 1.0)
+            return near(x[1], y1)
 
 
     left = Left();
@@ -127,22 +118,65 @@ for ii in range(L):
     # gy = Sing_gy1()
 
 
+    # class Sing_u2(Expression):
+    #     def eval(self, value, x):
+    #         if(abs(x[0]) < xtol):
+    #             value[0] = -x[0]
+    #         else:
+    #             value[0] = x[0]
+    # exact = Sing_u2()
+    # f = Expression('0.0')
+    # class Sing_gx2(Expression):
+    #     def eval(self, value, x):
+    #         if(abs(x[0]) < xtol):
+    #             value[0] = -1.0
+    #         else:
+    #             value[0] = 1.0
+    # gx = Sing_gx2()
+    # gy = Expression('0.0')
+
+    # exact = Expression('sqrt(pow(x[0],2.0) + pow(x[1],2.0))')
+    # class Sing_f3(Expression):
+    #     def eval(self, value, x):
+    #         if(abs(x[0]) < cutoff and abs(x[1]) < cutoff):
+    #             value[0] = 4*cutoff;
+    #         else:
+    #             value[0] = 0.0;
+    # f = Sing_f3()
+    # class Sing_gx3(Expression):
+    #     def eval(self, value, x):
+    #         if(abs(x[0]) < xtol and abs(x[1]) < xtol):
+    #             value[0] = cutoff;
+    #         else:
+    #             value[0] = x[0]/(sqrt(x[0]**2 + x[1]**2))
+    #
+    # class Sing_gy3(Expression):
+    #     def eval(self, value, x):
+    #         if(abs(x[0]) < xtol and abs(x[1]) < xtol):
+    #             value[0] = cutoff;
+    #         else:
+    #             value[0] = x[1]/(sqrt(x[0]**2 + x[1]**2))
+    #
+    # gx = Sing_gx3()
+    # gy = Sing_gy3()
+
     class Sing_u2(Expression):
         def eval(self, value, x):
             if(abs(x[0]) < xtol):
-                value[0] = -x[0]
+                value[0] = sin(x[0])
             else:
-                value[0] = x[0]
+                value[0] = x[0]**2
     exact = Sing_u2()
     f = Expression('0.0')
     class Sing_gx2(Expression):
         def eval(self, value, x):
             if(abs(x[0]) < xtol):
-                value[0] = -1.0
+                value[0] = cos(x[0])
             else:
-                value[0] = 1.0
+                value[0] = 2*x[0]
     gx = Sing_gx2()
     gy = Expression('0.0')
+
 
 
 
@@ -166,8 +200,9 @@ for ii in range(L):
         F += inner(Dx(u, 0), Dx(muxx, 0)) * dx + inner(Dx(u, 0), Dx(muxy, 1)) * dx;
         F += inner(Dx(u, 1), Dx(muxy, 0)) * dx + inner(Dx(u, 1), Dx(muyy, 1)) * dx;
 
-        F += epii * (inner(Dx(Sxx, 0), Dx(v, 0)) + inner(Dx(Sxy, 0), Dx(v, 1))) * dx;
-        F += epii * (inner(Dx(Sxy, 1), Dx(v, 0)) + inner(Dx(Syy, 1), Dx(v, 1))) * dx;
+        if(epii != 0):
+            F += epii * (inner(Dx(Sxx, 0), Dx(v, 0)) + inner(Dx(Sxy, 0), Dx(v, 1))) * dx;
+            F += epii * (inner(Dx(Sxy, 1), Dx(v, 0)) + inner(Dx(Syy, 1), Dx(v, 1))) * dx;
 
         F += inner(Sxx * Syy, v) * dx - inner(Sxy * Sxy, v) * dx;
 
