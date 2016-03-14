@@ -1,4 +1,5 @@
 from dolfin import *
+from MA_Problems import *
 import numpy as np
 
 set_log_level(16)
@@ -6,7 +7,7 @@ set_log_level(16)
 
 #Values of N for the mesh
 params = np.array([4, 8,16,32]);
-# params = np.array([8]);
+params = np.array([8]);
 
 L = len(params);
 e = np.zeros([L,1]);
@@ -20,9 +21,27 @@ ep = np.array([1, 1e-1, 1e-2, 1e-3]);
 for ii in range(L):
     N = params[ii];
     print(N);
-    
+
+
+
+    # Define Problem
+    # 1. u(x,y) = x^4 + y^2
+    # 2. u(x,y) = exp(.5*(x^2+y^2))
+    # 3. u(x,y) = (1/3)(4x^2 + 4y^2)^(3/4)
+    # #       Full domain, no function cutoff
+    # 4. u(x,y) = (1/3)(4x^2 + 4y^2)^(3/4)
+    # #       cutoff domain, no function cutoff
+    # 5. u(x,y) = (1/3)(4x^2 + 4y^2)^(3/4)
+    # #       Full domain, function cutoff
+    # 6. u(x,y) = -sqrt(2 - x^2 - y^2)
+    # #       Full domain, function cutoff
+    # 7. u(x,y) = abs(x)
+    prob = 5;
+    (x0, y0, x1, y1, exact, f, gx, gy) = Problems(prob, N);
+
+
+
     # Create mesh and define function space
-    x0 = -1.0; y0 = -1.0; x1 = 1.0; y1 = 1.0;
     mesh = RectangleMesh(Point(x0,y0),Point(x1,y1),N,N)
     V = FunctionSpace(mesh, 'Lagrange', p)
     MixedV = MixedFunctionSpace([V,V,V,V]);
@@ -74,119 +93,23 @@ for ii in range(L):
     
     
     
-   ################ Problem Definition ############################
-    cutoff = pow(N,2.0);
-    xtol = 1e-7;
-
-    # exact = Expression('pow(x[0],4.0) + pow(x[1],2.0)');
-    # f = Expression('24.0*pow(x[0],2.0)');
-    # gx = Expression('4.0*pow(x[0],3.0)');
-    # gy = Expression('2.0*x[1]');
-
-
-    # exact = Expression('exp( 0.5*(pow(x[0],2.0) + pow(x[1],2.0)) )');
-    # f = Expression('exp( (pow(x[0],2.0) + pow(x[1],2.0)) )* (pow(x[0],2.0) + pow(x[1],2.0)+1.0)');
-    # gx = Expression('x[0]*exp( 0.5*(pow(x[0],2.0) + pow(x[1],2.0)) )');
-    # gy = Expression('x[1]*exp( 0.5*(pow(x[0],2.0) + pow(x[1],2.0)) )');
-
-    # exact = Expression('(1.0/3.0)*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0),(3.0/4.0))');
-    # f = Expression('pow(pow(x[0],2.0) + pow(x[1],2.0), (-1.0/2.0))');
-    # gx = Expression('2*x[0]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (-1.0/4.0))');
-    # gy = Expression('2*x[1]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (-1.0/4.0))');
-
-    # exact = Expression('(1.0/5.0)*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0),(5.0/4.0))');
-    # f = Expression('12.0*pow(pow(x[0],2.0) + pow(x[1],2.0), (1.0/2.0))');
-    # gx = Expression('2*x[0]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (1.0/4.0))');
-    # gy = Expression('2*x[1]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (1.0/4.0))');
-
-    # exact = Expression('(1.0/3.0)*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0),(3.0/4.0))');
-    # class Sing_f(Expression):
-    #     def eval(self, value, x):
-    #         temp = pow(pow(x[0],2.0) + pow(x[1],2.0), (-1.0/2.0));
-    #         if(abs(x[0]) < xtol and abs(x[1]) < xtol):
-    #             value[0] = cutoff
-    #         else:
-    #             value[0] = temp
-    #
-    # class Sing_gx(Expression):
-    #     def eval(self, value, x):
-    #         temp = 2*x[0]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (-1.0/4.0));
-    #         if(abs(x[0]) < xtol and abs(x[1]) < xtol):
-    #             value[0] = cutoff
-    #         else:
-    #             value[0] = temp
-    #
-    # class Sing_gy(Expression):
-    #     def eval(self, value, x):
-    #         temp = 2*x[1]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (-1.0/4.0));
-    #         if(abs(x[0]) < xtol and abs(x[1]) < xtol):
-    #             value[0] = cutoff
-    #         else:
-    #             value[0] = temp
-    #
-    # f = Sing_f();
-    # gx = Sing_gx();
-    # gy = Sing_gy();
-
-    # exact = Expression('-pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), 1.0/2.0)');
-    # class Sing_f1(Expression):
-    #     def eval(self, value, x):
-    #         temp = 2.0*pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), -2.0);
-    #         if(abs(x[0] - 1) < xtol and abs(x[1] - 1) < xtol):
-    #             value[0] = cutoff
-    #         else:
-    #             value[0] = temp
-    # f = Sing_f1()
-    # class Sing_gx1(Expression):
-    #     def eval(self, value, x):
-    #         temp = x[0]*pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), -1.0/2.0);
-    #         if(abs(x[0] - 1) < xtol and abs(x[1] - 1) < xtol):
-    #             value[0] = cutoff
-    #         else:
-    #             value[0] = temp
-    # gx = Sing_gx1()
-    # class Sing_gy1(Expression):
-    #     def eval(self, value, x):
-    #         temp = x[1]*pow(2.0 - pow(x[0],2.0) - pow(x[1],2.0), -1.0/2.0);
-    #         if(abs(x[0] - 1) < xtol and abs(x[1] - 1) < xtol):
-    #             value[0] = cutoff
-    #         else:
-    #             value[0] = temp
-    # gy = Sing_gy1()
 
     # class Sing_u2(Expression):
     #     def eval(self, value, x):
     #         if(abs(x[0]) < xtol):
-    #             value[0] = -x[0]
+    #             value[0] = sin(x[0])
     #         else:
-    #             value[0] = x[0]
+    #             value[0] = x[0]**2
     # exact = Sing_u2()
     # f = Expression('0.0')
     # class Sing_gx2(Expression):
     #     def eval(self, value, x):
     #         if(abs(x[0]) < xtol):
-    #             value[0] = -1.0
+    #             value[0] = cos(x[0])
     #         else:
-    #             value[0] = 1.0
+    #             value[0] = 2*x[0]
     # gx = Sing_gx2()
     # gy = Expression('0.0')
-
-    class Sing_u2(Expression):
-        def eval(self, value, x):
-            if(abs(x[0]) < xtol):
-                value[0] = sin(x[0])
-            else:
-                value[0] = x[0]**2
-    exact = Sing_u2()
-    f = Expression('0.0')
-    class Sing_gx2(Expression):
-        def eval(self, value, x):
-            if(abs(x[0]) < xtol):
-                value[0] = cos(x[0])
-            else:
-                value[0] = 2*x[0]
-    gx = Sing_gx2()
-    gy = Expression('0.0')
 
     # exact = Expression('sqrt(pow(x[0],2.0) + pow(x[1],2.0))')
     # class Sing_f3(Expression):

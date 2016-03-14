@@ -28,10 +28,25 @@ for ii in range(L):
     print(N);
 
 
-    # ep = np.logspace(np.log10(1),np.log10(params[ii]),5);
-    
+
+    # Define Problem
+    # 1. u(x,y) = x^4 + y^2
+    # 2. u(x,y) = exp(.5*(x^2+y^2))
+    # 3. u(x,y) = (1/3)(4x^2 + 4y^2)^(3/4)
+    # #       Full domain, no function cutoff
+    # 4. u(x,y) = (1/3)(4x^2 + 4y^2)^(3/4)
+    # #       cutoff domain, no function cutoff
+    # 5. u(x,y) = (1/3)(4x^2 + 4y^2)^(3/4)
+    # #       Full domain, function cutoff
+    # 6. u(x,y) = -sqrt(2 - x^2 - y^2)
+    # #       Full domain, function cutoff
+    # 7. u(x,y) = abs(x)
+    prob = 5;
+    (x0, y0, x1, y1, exact, f, gx, gy) = Problems(prob, N);
+
+
+
     # Create mesh and define function space
-    x0 = -1.0; y0 = -1.0; x1 = 1.0; y1 = 1.0;
     mesh = RectangleMesh(Point(x0,y0),Point(x1,y1),N,N)
     V = FunctionSpace(mesh, 'Lagrange', p)
     MixedV = MixedFunctionSpace([V,V,V,V]);
