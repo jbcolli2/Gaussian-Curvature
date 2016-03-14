@@ -126,7 +126,7 @@ def Problems(prob, N):
         x0 = -1; y0 = -1; x1 = 1; y1 = 1;
         class Sing_u2(Expression):
             def eval(self, value, x):
-                if(abs(x[0]) < xtol):
+                if(x[0] < 0.0):
                     value[0] = -x[0]
                 else:
                     value[0] = x[0]
@@ -134,7 +134,7 @@ def Problems(prob, N):
         f = Expression('0.0')
         class Sing_gx2(Expression):
             def eval(self, value, x):
-                if(abs(x[0]) < xtol):
+                if(x[0] < 0.0):
                     value[0] = -1.0
                 else:
                     value[0] = 1.0
@@ -142,3 +142,61 @@ def Problems(prob, N):
         gy = Expression('0.0')
 
         return (x0, y0, x1, y1, exact, f, gx, gy);
+
+
+
+    #u(x,y) = sin(x)/x^2 piecewise function
+    elif(prob == 8):
+        x0 = -1; y0 = -1; x1 = 1; y1 = 1;
+        class Sing_u2(Expression):
+            def eval(self, value, x):
+                if(x[0] < 0.0):
+                    value[0] = -x[0]
+                else:
+                    value[0] = x[0]**2
+        exact = Sing_u2()
+        f = Expression('0.0')
+        class Sing_gx2(Expression):
+            def eval(self, value, x):
+                if(x[0] < 0.0):
+                    value[0] = -1.0
+                else:
+                    value[0] = 2.0*x[0]
+        gx = Sing_gx2()
+        gy = Expression('0.0')
+
+        return (x0, y0, x1, y1, exact, f, gx, gy);
+
+
+
+    #u(x,y) = sqrt(x^2 + y^2)
+    # numerical Dirac delta function
+    elif(prob == 9):
+        x0 = -1; y0 = -1; x1 = 1; y1 = 1;
+        exact = Expression('sqrt(pow(x[0],2.0) + pow(x[1],2.0))')
+        class Sing_f3(Expression):
+            def eval(self, value, x):
+                if(abs(x[0]) < cutoff and abs(x[1]) < cutoff):
+                    value[0] = 4*cutoff;
+                else:
+                    value[0] = 0.0;
+        f = Sing_f3()
+        class Sing_gx3(Expression):
+            def eval(self, value, x):
+                if(abs(x[0]) < xtol and abs(x[1]) < xtol):
+                    value[0] = cutoff;
+                else:
+                    value[0] = x[0]/(sqrt(x[0]**2 + x[1]**2))
+
+        class Sing_gy3(Expression):
+            def eval(self, value, x):
+                if(abs(x[0]) < xtol and abs(x[1]) < xtol):
+                    value[0] = cutoff;
+                else:
+                    value[0] = x[1]/(sqrt(x[0]**2 + x[1]**2))
+
+        gx = Sing_gx3()
+        gy = Sing_gy3()
+
+        return (x0, y0, x1, y1, exact, f, gx, gy);
+
