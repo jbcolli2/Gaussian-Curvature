@@ -7,7 +7,7 @@ set_log_level(16)
 
 #Values of N for the mesh
 params = np.array([4, 8,16,32]);
-# params = np.array([8]);
+# params = np.array([16]);
 
 L = len(params);
 e = np.zeros([L,1]);
@@ -15,7 +15,7 @@ ratio = np.zeros([L,1]);
 
 p = 2;
 
-ep = np.array([1, 1e-1, 1e-2, 5e-3, 2e-3, 1e-3, 8e-4, 7e-4]);
+ep = np.array([1, 1e-2, 1e-3, 0]);
 # ep = np.logspace(0,-3,5)
 
 for ii in range(L):
@@ -39,7 +39,7 @@ for ii in range(L):
     # 8. u(x,y) = x/x^2 piecewise function
     # 9. u(x,y) = sqrt(x^2 + y^2)
     # #       numerical Dirac delta function
-    prob = 7;
+    prob = 5;
     (x0, y0, x1, y1, exact, f, gx, gy) = Problems(prob, N);
 
 
@@ -103,6 +103,7 @@ for ii in range(L):
 
     ##### Loop through epsilon values and solve ####################
     w = Function(MixedV);
+
     bcv = DirichletBC(MixedV.sub(3), exact, V_boundary)
     for epii in ep:
         print('Epsilon = ',epii)
@@ -161,7 +162,8 @@ for ii in range(L):
         print('At epsilon = ', epii, ' error = ', np.sqrt(assemble(error)))
   
   
-  
+
+
   
 
 

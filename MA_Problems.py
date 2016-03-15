@@ -2,8 +2,9 @@ from dolfin import *
 
 
 def Problems(prob, N):
-    cutoff = pow(N,2.0);
-    xtol = 1e-7;
+    # cutoff = pow(N,2.0);
+    cutoff = 0.0;
+    xtol = 1e-16;
 
     #u(x,y) = x^4 + y^2
     if(prob == 1):
@@ -58,7 +59,7 @@ def Problems(prob, N):
         class Sing_f(Expression):
             def eval(self, value, x):
                 temp = pow(pow(x[0],2.0) + pow(x[1],2.0), (-1.0/2.0));
-                if(abs(x[0]) < xtol and abs(x[1]) < xtol):
+                if(abs(x[0]) +abs(x[1]) < xtol):
                     value[0] = cutoff
                 else:
                     value[0] = temp
@@ -66,7 +67,7 @@ def Problems(prob, N):
         class Sing_gx(Expression):
             def eval(self, value, x):
                 temp = 2*x[0]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (-1.0/4.0));
-                if(abs(x[0]) < xtol and abs(x[1]) < xtol):
+                if(abs(x[0]) +abs(x[1]) < xtol):
                     value[0] = cutoff
                 else:
                     value[0] = temp
@@ -74,7 +75,7 @@ def Problems(prob, N):
         class Sing_gy(Expression):
             def eval(self, value, x):
                 temp = 2*x[1]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (-1.0/4.0));
-                if(abs(x[0]) < xtol and abs(x[1]) < xtol):
+                if(abs(x[0]) +abs(x[1]) < xtol):
                     value[0] = cutoff
                 else:
                     value[0] = temp
@@ -145,7 +146,7 @@ def Problems(prob, N):
 
 
 
-    #u(x,y) = sin(x)/x^2 piecewise function
+    #u(x,y) = x/x^2 piecewise function
     elif(prob == 8):
         x0 = -1; y0 = -1; x1 = 1; y1 = 1;
         class Sing_u2(Expression):

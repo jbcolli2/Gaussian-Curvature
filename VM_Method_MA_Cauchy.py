@@ -18,10 +18,10 @@ e = np.zeros([L,1]);
 errorIm = np.zeros([L,1]);
 ratio = np.zeros([L,1]);
 
-p = 2;
+p = 1;
 
-ep = np.array([1, 1e-1, 1e-2, 5e-3, 2e-3, 1e-3, 8e-4, 7e-4]);
-
+ep = np.array([1, 1e-1, 1e-2, 1e-3,5e-4]);
+loopsteps = 10
 
 
 for ii in range(L):
@@ -45,7 +45,7 @@ for ii in range(L):
     # 8. u(x,y) = x/x^2 piecewise function
     # 9. u(x,y) = sqrt(x^2 + y^2)
     # #       numerical Dirac delta function
-    prob = 7;
+    prob = 8;
     (x0, y0, x1, y1, exact, f, gx, gy) = Problems(prob, N);
 
 
@@ -163,7 +163,7 @@ for ii in range(L):
 
     ################### Solve for other two complex solutions ######################
 
-    fracs = np.linspace(0,2,10);
+    fracs = np.linspace(0,2,loopsteps+1);
     epComplex = np.zeros(len(fracs)-1,dtype=complex)
     for ll,fracll in enumerate(fracs[0:len(fracs)-1]):
         epComplex[ll] = cmath.rect(ep[-1],fracll*cmath.pi);
@@ -181,11 +181,19 @@ for ii in range(L):
     for kk, epkk in enumerate(epComplex[1:len(epComplex)]):
         solRe.append(Function(V))
         solIm.append(Function(V))
-        print('Epsilon = ',epkk)
-        eplin = [epkk]
+        print('Loop Epsilon = ',epkk)
 
-        for jj, epjj in enumerate(eplin):
-            print('Epsilon = ',epjj)
+        substeps = 2;
+        eplinRe = np.linspace(epComplex[kk].real, epComplex[kk+1].real,substeps);
+        eplinIm = np.linspace(epComplex[kk].imag, epComplex[kk+1].imag,substeps);
+        eplin = np.zeros(substeps, dtype=complex);
+        for ll in range(0,substeps):
+            eplin[ll] = complex(eplinRe[ll], eplinIm[ll]);
+
+
+
+        for jj, epjj in enumerate(eplin[1:len(eplin)]):
+            print('Loop Line Epsilon = ',epjj)
 
             bcxxRe = DirichletBC(MixedVComplex.sub(0), epjj.real, Wxx_boundary)
             bcyyRe = DirichletBC(MixedVComplex.sub(2), epjj.real, Wyy_boundary)

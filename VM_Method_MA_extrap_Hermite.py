@@ -14,7 +14,7 @@ ratio = np.zeros([L, 1]);
 
 p = 2;
 
-ep = np.array([1, 1.0001,1.00001]);
+ep = np.array([1, 5e-1, 1e-1]);
 
 for ii in range(L):
     N = params[ii];
@@ -98,7 +98,7 @@ for ii in range(L):
 
     ##### Loop through epsilon values and solve ####################
     w = Function(MixedV);
-    sols = [];
+    sols = []; solsSxx = []; solsSxy = []; solsSyy = []; solsw = [];
     bcv = DirichletBC(MixedV.sub(3), exact, V_boundary)
     for epii in ep:
         print('Epsilon = ', epii)
@@ -138,20 +138,55 @@ for ii in range(L):
         print('At epsilon = ', epii, ' error = ', np.sqrt(assemble(error)))
 
         Sxxtemp, Sxytemp, Syytemp, utemp = w.split(deepcopy=True);
-        sols.append(utemp);
+        sols.append(utemp); solsSxx.append(Sxxtemp); solsSxy.append(Sxytemp); solsSyy.append(Syytemp);
+        solsw.append(w);
 
-    # Quadratic Extrapolation in epsilon
 
-    u = (-ep[-1 - 1]) * (-ep[-1]) / ((ep[-1 - 2] - ep[-1 - 1]) * (ep[-1 - 2] - ep[-1])) * sols[-1 - 2] + (-ep[
-        -1 - 2]) * (-ep[-1]) / ((ep[-1 - 1] - ep[-1 - 2]) * (ep[-1 - 1] - ep[-1])) * sols[-1 - 1] + \
-        (-ep[-1 - 1]) * (-ep[-1 - 2]) / ((ep[-1] - ep[-1 - 1]) * (ep[-1] - ep[-1 - 2])) * sols[-1]
 
-    # Cubic Extrapolation in epsilon
+    un = sols[-1]; unm1 = sols[-1 -1]; unm2 = sols[-1 -2];
+    Sxxn = solsSxx[-1]; Sxxnm1 = solsSxx[-1 -1]; Sxxnm2 = solsSxx[-1 -2];
+    Sxyn = solsSxy[-1]; Sxynm1 = solsSxy[-1 -1]; Sxynm2 = solsSxy[-1 -2];
+    Syyn = solsSyy[-1]; Syynm1 = solsSyy[-1 -1]; Syynm2 = solsSyy[-1 -2];
+    epn = ep[-1]; epnm1 = ep[-1 -1]; epnm2 = ep[-1 -2];
+    wn = solsw[-1]; wnm1 = solsw[-1 - 1];
 
-    # u = (-ep[-1-2])*(-ep[-1-1])*(-ep[-1])/((ep[-1-3]-ep[-1-1])*(ep[-1-3]-ep[-1])*(ep[-1-3]-ep[-1-2]))*sols[-1-3] + \
-    #     (-ep[-1-3])*(-ep[-1-1])*(-ep[-1])/((ep[-1-2]-ep[-1-1])*(ep[-1-2]-ep[-1])*(ep[-1-2]-ep[-1-3]))*sols[-1-2] + \
-    #     (-ep[-1-2])*(-ep[-1-3])*(-ep[-1])/((ep[-1-1]-ep[-1-3])*(ep[-1-1]-ep[-1])*(ep[-1-1]-ep[-1-2]))*sols[-1-1] + \
-    #     (-ep[-1-2])*(-ep[-1-1])*(-ep[-1-3])/((ep[-1-0]-ep[-1-1])*(ep[-1-0]-ep[-1-3])*(ep[-1-0]-ep[-1-2]))*sols[-1-0]
+    dFdep_n = muxx*dx + muyy*dx + (inner(Dx(Sxxn, 0), Dx(v, 0)) + inner(Dx(Sxyn, 0), Dx(v, 1))) * dx + 0*muxy;
+    dFdep_n += (inner(Dx(Sxyn, 1), Dx(v, 0)) + inner(Dx(Syyn, 1), Dx(v, 1))) * dx;
+    dFdep_n += inner(Sxxn+Syyn+epn,v)*dx;
+
+    dFdep_nm1 = muxx*dx + muyy*dx + (inner(Dx(Sxxnm1, 0), Dx(v, 0)) + inner(Dx(Sxynm1, 0), Dx(v, 1))) * dx + 0*muxy;
+    dFdep_nm1 += (inner(Dx(Sxynm1, 1), Dx(v, 0)) + inner(Dx(Syynm1, 1), Dx(v, 1))) * dx;
+    dFdep_nm1 += inner(Sxxnm1+Syynm1+epnm1,v)*dx;
+
+    dwdep_n = Function(MixedV);
+    dwdep_nm1 = Function(MixedV);
+    R = action(F,wn)
+    dFdu = derivative(R,dwdep_n)
+    solve(dFdu == -dFdep_n, dwdep_n);
+    R = action(F,wnm1)
+    dFdu = derivative(R,dwdep_nm1)
+    solve(dFdu == -dFdep_nm1, dwdep_nm1);
+
+    dudep_n = dwdep_n.sub(0,deepcopy=True);
+    dudep_nm1 = dwdep_nm1.sub(0,deepcopy=True);
+
+
+
+
+
+
+    #Hermite cubic
+    A11 = unm1;
+    A12 = dudep_nm1;
+    A22 = (un - unm1)/(epn - epnm1);
+    A32 = dudep_n;
+    A13 = (A22 - A12)/(epn - epnm1);
+    A23 = (A32 - A22)/(epn - epnm1);
+    A14 = (A23 - A13)/(epn - epnm1);
+
+    u = A11 + (-epnm1)*A12 + (epnm1**2)*A13 + (epnm1**2)*epn*A14;
+
+
 
 
 
