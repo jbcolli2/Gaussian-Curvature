@@ -4,11 +4,11 @@ import numpy as np
 from VM_Utilities import *
 from VM_Solver import *
 
-set_log_level(16)
+set_log_level(50)
 
 # Values of N for the mesh
 params = np.array([4, 8, 16, 32]);
-params = np.array([16]);
+# params = np.array([16]);
 
 L = len(params);
 e = np.zeros([L, 1]);
@@ -16,7 +16,7 @@ ratio = np.zeros([L, 1]);
 
 p = 2;
 
-ep = np.array([1, 1e-1, 1e-2,1e-3]);
+ep = np.array([1,1e-3, 1e-5]);
 
 for ii in range(L):
     N = params[ii];
@@ -74,6 +74,7 @@ for ii in range(L):
         ep_err.append( np.sqrt( assemble(abs(exact-u)**2*dx) ) );
         print('Run finished at epsilon = ', epjj)
         print('L2 error = ', ep_err[-1])
+        print ''
 
         # Store solution at this value of epsilon
         sols.append(u);

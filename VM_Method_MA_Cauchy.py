@@ -8,7 +8,7 @@ from VM_Utilities import *
 from VM_Solver import *
 
 
-set_log_level(16)
+set_log_level(50)
 
 
 #Values of N for the mesh
