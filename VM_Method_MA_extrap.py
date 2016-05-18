@@ -7,7 +7,7 @@ from VM_Solver import *
 set_log_level(50)
 
 # Values of N for the mesh
-params = np.array([4, 8, 16, 32]);
+params = np.array([4, 8, 16, 32, 64]);
 # params = np.array([16]);
 
 L = len(params);
@@ -16,7 +16,7 @@ ratio = np.zeros([L, 1]);
 
 p = 2;
 
-ep = np.array([1,1e-3, 1e-5]);
+ep = np.array([1, 1e-3, 1e-5]);
 
 for ii in range(L):
     N = params[ii];
@@ -27,10 +27,6 @@ for ii in range(L):
     # Define Problem
     # 1. u(x,y) = x^4 + y^2
     # 2. u(x,y) = exp(.5*(x^2+y^2))
-    # 3. u(x,y) = (1/3)(4x^2 + 4y^2)^(3/4)
-    # #       Full domain, no function cutoff
-    # 4. u(x,y) = (1/3)(4x^2 + 4y^2)^(3/4)
-    # #       cutoff domain, no function cutoff
     # 5. u(x,y) = (1/3)(4x^2 + 4y^2)^(3/4)
     # #       Full domain, function cutoff
     # 6. u(x,y) = -sqrt(2 - x^2 - y^2)
@@ -39,7 +35,7 @@ for ii in range(L):
     # 8. u(x,y) = x/x^2 piecewise function
     # 9. u(x,y) = sqrt(x^2 + y^2)
     # #       numerical Dirac delta function
-    prob = 1;
+    prob = 5;
     (x0, y0, x1, y1, exact, f, gx, gy) = Problems(prob, N);
 
 
