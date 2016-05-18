@@ -3,8 +3,8 @@ from dolfin import *
 
 def Problems(prob, N):
     # cutoff = pow(N,2.0);
-    cutoff = 0.0;
-    xtol = 1e-16;
+    cutoff = 0;
+    xtol = 1e-18;
 
     #u(x,y) = x^4 + y^2
     if(prob == 1):
@@ -23,29 +23,6 @@ def Problems(prob, N):
         f = Expression('exp( (pow(x[0],2.0) + pow(x[1],2.0)) )* (pow(x[0],2.0) + pow(x[1],2.0)+1.0)');
         gx = Expression('x[0]*exp( 0.5*(pow(x[0],2.0) + pow(x[1],2.0)) )');
         gy = Expression('x[1]*exp( 0.5*(pow(x[0],2.0) + pow(x[1],2.0)) )');
-
-        return (x0, y0, x1, y1, exact, f, gx, gy);
-
-    #u(x,y) = (1/3)(4x^2 + 4y^2)^(3/4)
-    # Full domain, no function cutoff
-    elif(prob == 3):
-        x0 = 0; y0 = 0; x1 = 1; y1 = 1;
-        exact = Expression('(1.0/3.0)*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0),(3.0/4.0))');
-        f = Expression('pow(pow(x[0],2.0) + pow(x[1],2.0), (-1.0/2.0))');
-        gx = Expression('2*x[0]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (-1.0/4.0))');
-        gy = Expression('2*x[1]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (-1.0/4.0))');
-
-        return (x0, y0, x1, y1, exact, f, gx, gy);
-
-    #u(x,y) = (1/3)(4x^2 + 4y^2)^(3/4)
-    # cutoff domain, no function cutoff
-    elif(prob == 4):
-        domain_cut = 1e-4;
-        x0 = domain_cut; y0 = domain_cut; x1 = 1; y1 = 1;
-        exact = Expression('(1.0/3.0)*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0),(3.0/4.0))');
-        f = Expression('pow(pow(x[0],2.0) + pow(x[1],2.0), (-1.0/2.0))');
-        gx = Expression('2*x[0]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (-1.0/4.0))');
-        gy = Expression('2*x[1]*pow(4*pow(x[0],2.0) + 4*pow(x[1],2.0), (-1.0/4.0))');
 
         return (x0, y0, x1, y1, exact, f, gx, gy);
 

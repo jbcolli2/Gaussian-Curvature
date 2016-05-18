@@ -1,6 +1,8 @@
 from dolfin import *
 from MA_Problems import *
 import numpy as np
+from VM_Utilities import *
+from VM_Solver import *
 
 set_log_level(16)
 
@@ -14,7 +16,7 @@ ratio = np.zeros([L, 1]);
 
 p = 2;
 
-ep = np.array([1, 1.0001,1.00001]);
+ep = np.array([1, 1e-1, 1e-2,1e-3]);
 
 for ii in range(L):
     N = params[ii];
@@ -37,7 +39,7 @@ for ii in range(L):
     # 8. u(x,y) = x/x^2 piecewise function
     # 9. u(x,y) = sqrt(x^2 + y^2)
     # #       numerical Dirac delta function
-    prob = 6;
+    prob = 1;
     (x0, y0, x1, y1, exact, f, gx, gy) = Problems(prob, N);
 
 
@@ -48,48 +50,11 @@ for ii in range(L):
     MixedV = MixedFunctionSpace([V,V,V,V]);
 
 
-
-    # Boundaries for the W_xx, W_yy and V spaces
-    def Wxx_boundary(x, on_boundary):
-        return near(x[0],x0) or near(x[0],x1);
-    def Wyy_boundary(x, on_boundary):
-        return near(x[1],y0) or near(x[1],y1);
-    def V_boundary(x, on_boundary):
-        return near(x[1],y0) or near(x[1],y1) or near(x[0],x0) or near(x[0],x1);
+    SetupUtilities(mesh, x0, x1, y0, y1);
 
 
-    # Boundaries data for integrating <g,\mu>
-    class Left(SubDomain):
-        def inside(self, x, on_boundary):
-            return near(x[0], x0)
 
-    class Right(SubDomain):
-        def inside(self, x, on_boundary):
-            return near(x[0], x1)
-
-    class Bottom(SubDomain):
-        def inside(self, x, on_boundary):
-            return near(x[1], y0)
-
-    class Top(SubDomain):
-        def inside(self, x, on_boundary):
-            return near(x[1], y1)
-
-
-    left = Left();
-    right = Right();
-    top = Top();
-    bottom = Bottom();
-
-    # Set facet functions and define boundary measures
-    boundaries = FacetFunction("size_t", mesh)
-    boundaries.set_all(0)
-    left.mark(boundaries, 1)
-    top.mark(boundaries, 2)
-    right.mark(boundaries, 3)
-    bottom.mark(boundaries, 4)
-
-    ds = Measure("ds")[boundaries]
+    ds = Create_dsMeasure()
 
 
 
@@ -98,56 +63,30 @@ for ii in range(L):
 
     ##### Loop through epsilon values and solve ####################
     w = Function(MixedV);
-    sols = [];
-    bcv = DirichletBC(MixedV.sub(3), exact, V_boundary)
-    for epii in ep:
-        print('Epsilon = ', epii)
+    sols = []; ep_err = [];
+    for epjj in ep:
+        print('Epsilon = ', epjj)
 
-        bcxx = DirichletBC(MixedV.sub(0), epii, Wxx_boundary)
-        bcyy = DirichletBC(MixedV.sub(2), epii, Wyy_boundary)
+        w = ForwardProblem(MixedV,ds, epjj, w, exact, f, gx, gy)
 
-        bc = [bcxx, bcyy, bcv]
-
-        # Define variational problem
-        (Sxx, Sxy, Syy, u) = TrialFunction(MixedV)
-        (muxx, muxy, muyy, v) = TestFunction(MixedV)
-
-        F = inner(Sxx, muxx) * dx + 2 * inner(Sxy, muxy) * dx + inner(Syy, muyy) * dx;
-        F += inner(Dx(u, 0), Dx(muxx, 0)) * dx + inner(Dx(u, 0), Dx(muxy, 1)) * dx;
-        F += inner(Dx(u, 1), Dx(muxy, 0)) * dx + inner(Dx(u, 1), Dx(muyy, 1)) * dx;
-
-        if(epii != 0):
-            F += epii * (inner(Dx(Sxx, 0), Dx(v, 0)) + inner(Dx(Sxy, 0), Dx(v, 1))) * dx;
-            F += epii * (inner(Dx(Sxy, 1), Dx(v, 0)) + inner(Dx(Syy, 1), Dx(v, 1))) * dx;
-
-        F += inner(Sxx * Syy, v) * dx - inner(Sxy * Sxy, v) * dx;
-
-        F -= (f * v * dx - gy * muxy * ds(1) + gx * muxy * ds(2) + gy * muxy * ds(3) - gx * muxy * ds(4));
-
-        # Solve problem
-
-        R = action(F, w);
-        DR = derivative(R, w);
-        problem = NonlinearVariationalProblem(R, w, bc, DR);
-        solver = NonlinearVariationalSolver(problem);
-        solver.solve();
-
+        # Print out the error at this value of epsilon
         (Sxx,Sxy,Syy,u) = w.split(deepcopy=True);
+        ep_err.append( np.sqrt( assemble(abs(exact-u)**2*dx) ) );
+        print('Run finished at epsilon = ', epjj)
+        print('L2 error = ', ep_err[-1])
 
-        error = abs(exact-u)**2*dx
-        print('At epsilon = ', epii, ' error = ', np.sqrt(assemble(error)))
+        # Store solution at this value of epsilon
+        sols.append(u);
 
-        Sxxtemp, Sxytemp, Syytemp, utemp = w.split(deepcopy=True);
-        sols.append(utemp);
+
+
 
     # Quadratic Extrapolation in epsilon
-
     u = (-ep[-1 - 1]) * (-ep[-1]) / ((ep[-1 - 2] - ep[-1 - 1]) * (ep[-1 - 2] - ep[-1])) * sols[-1 - 2] + (-ep[
         -1 - 2]) * (-ep[-1]) / ((ep[-1 - 1] - ep[-1 - 2]) * (ep[-1 - 1] - ep[-1])) * sols[-1 - 1] + \
         (-ep[-1 - 1]) * (-ep[-1 - 2]) / ((ep[-1] - ep[-1 - 1]) * (ep[-1] - ep[-1 - 2])) * sols[-1]
 
     # Cubic Extrapolation in epsilon
-
     # u = (-ep[-1-2])*(-ep[-1-1])*(-ep[-1])/((ep[-1-3]-ep[-1-1])*(ep[-1-3]-ep[-1])*(ep[-1-3]-ep[-1-2]))*sols[-1-3] + \
     #     (-ep[-1-3])*(-ep[-1-1])*(-ep[-1])/((ep[-1-2]-ep[-1-1])*(ep[-1-2]-ep[-1])*(ep[-1-2]-ep[-1-3]))*sols[-1-2] + \
     #     (-ep[-1-2])*(-ep[-1-3])*(-ep[-1])/((ep[-1-1]-ep[-1-3])*(ep[-1-1]-ep[-1])*(ep[-1-1]-ep[-1-2]))*sols[-1-1] + \
@@ -156,14 +95,7 @@ for ii in range(L):
 
 
 
-    # (Sxx,Sxy,Syy,u) = w.split(deepcopy=True);
-    #     Sxx = w.sub(0,deepcopy=true);
-    #     Sxy = w.sub(1);
-    #     Syy = w.sub(2);
-    #     u = w.sub(3);
     error = abs(exact - u) ** 2 * dx
-    u0 = project(exact, V)
-    grad_error = inner(nabla_grad(u0) - nabla_grad(u), nabla_grad(u0) - nabla_grad(u)) * dx
     e[ii] = np.sqrt(assemble(error))
 
     if (ii > 0):

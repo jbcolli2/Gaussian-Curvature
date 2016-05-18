@@ -1,6 +1,7 @@
 from dolfin import *
 from MA_Problems import *
 import numpy as np
+import sys;
 
 set_log_level(16)
 
@@ -14,7 +15,7 @@ ratio = np.zeros([L, 1]);
 
 p = 2;
 
-ep = np.array([1, 5e-1, 1e-1]);
+ep = np.array([1, 1e-1, 1e-2, 1e-3]);
 
 for ii in range(L):
     N = params[ii];
@@ -37,7 +38,7 @@ for ii in range(L):
     # 8. u(x,y) = x/x^2 piecewise function
     # 9. u(x,y) = sqrt(x^2 + y^2)
     # #       numerical Dirac delta function
-    prob = 6;
+    prob = 1;
     (x0, y0, x1, y1, exact, f, gx, gy) = Problems(prob, N);
 
 
@@ -103,26 +104,32 @@ for ii in range(L):
     for epii in ep:
         print('Epsilon = ', epii)
 
-        bcxx = DirichletBC(MixedV.sub(0), epii, Wxx_boundary)
-        bcyy = DirichletBC(MixedV.sub(2), epii, Wyy_boundary)
+        bcxx = DirichletBC(MixedV.sub(0), 0.0, Wxx_boundary)
+        bcyy = DirichletBC(MixedV.sub(2), 0.0, Wyy_boundary)
 
-        bc = [bcxx, bcyy, bcv]
+        bc = [bcxx,bcyy,bcv]
 
         # Define variational problem
         (Sxx, Sxy, Syy, u) = TrialFunction(MixedV)
         (muxx, muxy, muyy, v) = TestFunction(MixedV)
 
-        F = inner(Sxx, muxx) * dx + 2 * inner(Sxy, muxy) * dx + inner(Syy, muyy) * dx;
-        F += inner(Dx(u, 0), Dx(muxx, 0)) * dx + inner(Dx(u, 0), Dx(muxy, 1)) * dx;
-        F += inner(Dx(u, 1), Dx(muxy, 0)) * dx + inner(Dx(u, 1), Dx(muyy, 1)) * dx;
+        F = inner(Sxx,muxx)*dx + 2*inner(Sxy,muxy)*dx + inner(Syy,muyy)*dx;
+
+        F += inner(Dx(u,0), Dx(muxx,0))*dx + inner(Dx(u,0), Dx(muxy,1))*dx;
+        F += inner(Dx(u,1), Dx(muxy,0))*dx + inner(Dx(u,1), Dx(muyy,1))*dx;
 
         if(epii != 0):
-            F += epii * (inner(Dx(Sxx, 0), Dx(v, 0)) + inner(Dx(Sxy, 0), Dx(v, 1))) * dx;
-            F += epii * (inner(Dx(Sxy, 1), Dx(v, 0)) + inner(Dx(Syy, 1), Dx(v, 1))) * dx;
+            F += epii*muxx*dx + epii*muyy*dx;
 
-        F += inner(Sxx * Syy, v) * dx - inner(Sxy * Sxy, v) * dx;
+            F += epii*( inner(Dx(Sxx,0), Dx(v,0)) + inner(Dx(Sxy,0), Dx(v,1)))*dx;
+            F += epii*( inner(Dx(Sxy,1), Dx(v,0)) + inner(Dx(Syy,1), Dx(v,1)))*dx;
 
-        F -= (f * v * dx - gy * muxy * ds(1) + gx * muxy * ds(2) + gy * muxy * ds(3) - gx * muxy * ds(4));
+            F += inner(epii*Sxx + epii*Syy,v)*dx + epii*epii*v*dx;
+
+        # Determinant term/Nonlinear term
+        F += inner(Sxx*Syy,v)*dx - inner(Sxy*Sxy,v)*dx;
+
+        F -= (f*v*dx - gy*muxy*ds(1) + gx*muxy*ds(2) + gy*muxy*ds(3) - gx*muxy*ds(4));
 
         # Solve problem
 
@@ -138,6 +145,7 @@ for ii in range(L):
         print('At epsilon = ', epii, ' error = ', np.sqrt(assemble(error)))
 
         Sxxtemp, Sxytemp, Syytemp, utemp = w.split(deepcopy=True);
+        Sxxtemp += epii; Syytemp += epii;
         sols.append(utemp); solsSxx.append(Sxxtemp); solsSxy.append(Sxytemp); solsSyy.append(Syytemp);
         solsw.append(w);
 
@@ -160,15 +168,17 @@ for ii in range(L):
 
     dwdep_n = Function(MixedV);
     dwdep_nm1 = Function(MixedV);
-    R = action(F,wn)
+    R = action(F,dwdep_n)
     dFdu = derivative(R,dwdep_n)
-    solve(dFdu == -dFdep_n, dwdep_n);
-    R = action(F,wnm1)
+    dFdu = replace(dFdu,{dwdep_n: wn})
+    solve(dFdu == -dFdep_n, dwdep_n, bcs=bc);
+    R = action(F,dwdep_nm1)
     dFdu = derivative(R,dwdep_nm1)
-    solve(dFdu == -dFdep_nm1, dwdep_nm1);
+    dFdu = replace(dFdu,{dwdep_nm1: wnm1})
+    solve(dFdu == -dFdep_nm1, dwdep_nm1, bcs=bc);
 
-    dudep_n = dwdep_n.sub(0,deepcopy=True);
-    dudep_nm1 = dwdep_nm1.sub(0,deepcopy=True);
+    dudep_n = dwdep_n.sub(3,deepcopy=True);
+    dudep_nm1 = dwdep_nm1.sub(3,deepcopy=True);
 
 
 
@@ -184,7 +194,8 @@ for ii in range(L):
     A23 = (A32 - A22)/(epn - epnm1);
     A14 = (A23 - A13)/(epn - epnm1);
 
-    u = A11 + (-epnm1)*A12 + (epnm1**2)*A13 + (epnm1**2)*epn*A14;
+    epeval = 0;
+    u = A11 + (epeval-epnm1)*A12 + ((epeval-epnm1)**2)*A13 + ((epeval-epnm1)**2)*(epeval-epn)*A14;
 
 
 
