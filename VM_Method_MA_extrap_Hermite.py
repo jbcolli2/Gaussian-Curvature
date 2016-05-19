@@ -2,9 +2,6 @@ from dolfin import *
 from MA_Problems import *
 import numpy as np
 import sys;
-from VM_Utilities import *
-from VM_Solver import *
-
 
 set_log_level(16)
 
@@ -102,22 +99,54 @@ for ii in range(L):
 
     ##### Loop through epsilon values and solve ####################
     w = Function(MixedV);
-    ep_err = [];
     sols = []; solsSxx = []; solsSxy = []; solsSyy = []; solsw = [];
     bcv = DirichletBC(MixedV.sub(3), exact, V_boundary)
-    for epjj in ep:
-        print('Epsilon = ', epjj)
+    for epii in ep:
+        print('Epsilon = ', epii)
 
-        w = ForwardProblem(MixedV,ds, epjj, w, exact, f, gx, gy)
+        bcxx = DirichletBC(MixedV.sub(0), 0.0, Wxx_boundary)
+        bcyy = DirichletBC(MixedV.sub(2), 0.0, Wyy_boundary)
 
-        # Print out the error at this value of epsilon
+        bc = [bcxx,bcyy,bcv]
+
+        # Define variational problem
+        (Sxx, Sxy, Syy, u) = TrialFunction(MixedV)
+        (muxx, muxy, muyy, v) = TestFunction(MixedV)
+
+        F = inner(Sxx,muxx)*dx + 2*inner(Sxy,muxy)*dx + inner(Syy,muyy)*dx;
+
+        F += inner(Dx(u,0), Dx(muxx,0))*dx + inner(Dx(u,0), Dx(muxy,1))*dx;
+        F += inner(Dx(u,1), Dx(muxy,0))*dx + inner(Dx(u,1), Dx(muyy,1))*dx;
+
+        if(epii != 0):
+            F += epii*muxx*dx + epii*muyy*dx;
+
+            F += epii*( inner(Dx(Sxx,0), Dx(v,0)) + inner(Dx(Sxy,0), Dx(v,1)))*dx;
+            F += epii*( inner(Dx(Sxy,1), Dx(v,0)) + inner(Dx(Syy,1), Dx(v,1)))*dx;
+
+            F += inner(epii*Sxx + epii*Syy,v)*dx + epii*epii*v*dx;
+
+        # Determinant term/Nonlinear term
+        F += inner(Sxx*Syy,v)*dx - inner(Sxy*Sxy,v)*dx;
+
+        F -= (f*v*dx - gy*muxy*ds(1) + gx*muxy*ds(2) + gy*muxy*ds(3) - gx*muxy*ds(4));
+
+        # Solve problem
+
+        R = action(F, w);
+        DR = derivative(R, w);
+        problem = NonlinearVariationalProblem(R, w, bc, DR);
+        solver = NonlinearVariationalSolver(problem);
+        solver.solve();
+
         (Sxx,Sxy,Syy,u) = w.split(deepcopy=True);
-        ep_err.append( np.sqrt( assemble(abs(exact-u)**2*dx) ) );
-        print('Run finished at epsilon = ', epjj)
-        print('L2 error = ', ep_err[-1])
-        print ''
 
-        sols.append(u); solsSxx.append(Sxx); solsSxy.append(Sxy); solsSyy.append(Syy);
+        error = abs(exact-u)**2*dx
+        print('At epsilon = ', epii, ' error = ', np.sqrt(assemble(error)))
+
+        Sxxtemp, Sxytemp, Syytemp, utemp = w.split(deepcopy=True);
+        Sxxtemp += epii; Syytemp += epii;
+        sols.append(utemp); solsSxx.append(Sxxtemp); solsSxy.append(Sxytemp); solsSyy.append(Syytemp);
         solsw.append(w);
 
 
