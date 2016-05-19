@@ -92,7 +92,14 @@ def F_Form(MixedV, ds, ep, f, gx, gy):
     (Sxx, Sxy, Syy, u) = TrialFunction(MixedV)
     (muxx, muxy, muyy, v) = TestFunction(MixedV)
 
-    sigma = as_matrix((Sxx, Sxy), (Sxy, Syy));
+    # sigma = as_matrix([[Sxx, Sxy], [Sxy, Syy]], [i,j]);
+    # mu = as_matrix(((muxx, muxy), (muxy, muyy));
+    #
+    # F = inner(sigma,mu)*dx + inner(div(mu), grad(u))*dx;
+    # if(ep != 0):
+    #     F += ep*inner(div(sigma), grad(v))*dx
+    # F += det(sigma)*v*dx;
+    # F -= (f*v*dx - gy*muxy*ds(1) + gx*muxy*ds(2) + gy*muxy*ds(3) - gx*muxy*ds(4));
 
     F = inner(Sxx,muxx)*dx + 2*inner(Sxy,muxy)*dx + inner(Syy,muyy)*dx;
     F += inner(Dx(u,0), Dx(muxx,0))*dx + inner(Dx(u,0), Dx(muxy,1))*dx;
