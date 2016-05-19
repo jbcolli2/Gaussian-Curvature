@@ -8,8 +8,8 @@ set_log_level(50)
 
 
 #Values of N for the mesh
-params = np.array([4, 8,16,32, 64]);
-# params = np.array([16]);
+params = np.array([4, 8,16,32]);
+# params = np.array([32]);
 
 L = len(params);
 e = np.zeros([L,1]);
@@ -17,7 +17,7 @@ ratio = np.zeros([L,1]);
 
 p = 2;
 
-ep = np.array([1, 1e-3, 1e-5]);
+ep = np.array([1, 1e-2, 1e-3, 5e-4]);
 
 for ii in range(L):
     N = params[ii];
@@ -40,7 +40,7 @@ for ii in range(L):
     # 8. u(x,y) = x/x^2 piecewise function
     # 9. u(x,y) = sqrt(x^2 + y^2)
     # #       numerical Dirac delta function
-    prob = 5;
+    prob = 8;
     (x0, y0, x1, y1, exact, f, gx, gy) = Problems(prob, N);
 
 

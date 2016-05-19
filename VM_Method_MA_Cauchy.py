@@ -22,7 +22,7 @@ ratio = np.zeros([L,1]);
 
 p = 2;
 
-ep = np.array([1,1e-1,1e-2,1e-4]);
+ep = np.array([1, 1e-2, 5e-3]);
 loopsteps = 5
 
 
@@ -47,7 +47,7 @@ for ii in range(L):
     # 8. u(x,y) = x/x^2 piecewise function
     # 9. u(x,y) = sqrt(x^2 + y^2)
     # #       numerical Dirac delta function
-    prob = 5;
+    prob = 7;
     (x0, y0, x1, y1, exact, f, gx, gy) = Problems(prob, N);
 
 
