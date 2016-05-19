@@ -92,15 +92,6 @@ def F_Form(MixedV, ds, ep, f, gx, gy):
     (Sxx, Sxy, Syy, u) = TrialFunction(MixedV)
     (muxx, muxy, muyy, v) = TestFunction(MixedV)
 
-    # sigma = as_matrix([[Sxx, Sxy], [Sxy, Syy]], [i,j]);
-    # mu = as_matrix(((muxx, muxy), (muxy, muyy));
-    #
-    # F = inner(sigma,mu)*dx + inner(div(mu), grad(u))*dx;
-    # if(ep != 0):
-    #     F += ep*inner(div(sigma), grad(v))*dx
-    # F += det(sigma)*v*dx;
-    # F -= (f*v*dx - gy*muxy*ds(1) + gx*muxy*ds(2) + gy*muxy*ds(3) - gx*muxy*ds(4));
-
     F = inner(Sxx,muxx)*dx + 2*inner(Sxy,muxy)*dx + inner(Syy,muyy)*dx;
     F += inner(Dx(u,0), Dx(muxx,0))*dx + inner(Dx(u,0), Dx(muxy,1))*dx;
     F += inner(Dx(u,1), Dx(muxy,0))*dx + inner(Dx(u,1), Dx(muyy,1))*dx;
@@ -205,5 +196,16 @@ def F_ComplexForm(MixedVComplex, ds, ep, f, gx, gy):
 
 
 
+def dFdEps_Form(MixedV, ds, ep, f, gx, gy):
+    (Sxx, Sxy, Syy, u) = TrialFunction(MixedV)
+    (muxx, muxy, muyy, v) = TestFunction(MixedV)
+
+    F = inner(Dx(Sxx,0), Dx(v,0)) + inner(Dx(Sxy,0), Dx(v,1))*dx;
+    F += inner(Dx(Sxy,1), Dx(v,0)) + inner(Dx(Syy,1), Dx(v,1))*dx;
+
+    F += (muxx + muyy)*dx + (Sxx+Syy + 2*ep)*v*dx;
+
+
+    return F;
 
 
