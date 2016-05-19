@@ -29,6 +29,25 @@ def ForwardProblem(MixedV,ds, ep, initial, exact, f, gx, gy):
 
 
 
+def ForwardProblemWithBoundary(MixedV,ds, ep, initial, exact, f, gx, gy):
+    bcv = DirichletBC(MixedV.sub(3), exact, Dir_boundary)
+    bcxx = DirichletBC(MixedV.sub(0), 0.0, EW_boundary)
+    bcyy = DirichletBC(MixedV.sub(2), 0.0, NS_boundary)
+    bc = [bcxx,bcyy,bcv]
+
+    # Define variational problem
+    F = F_FormWithBoundary(MixedV, ds, ep, f, gx, gy);
+
+    # Solve problem
+    R = action(F,initial);
+    DR = derivative(R, initial);
+    problem = NonlinearVariationalProblem(R,initial,bc,DR);
+    solver = NonlinearVariationalSolver(problem);
+    solver.solve();
+
+    return initial;
+
+
 
 
 def ForwardComplexProblem(MixedVComplex,ds, ep, initial, exact, f, gx, gy):

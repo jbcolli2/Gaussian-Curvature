@@ -53,47 +53,11 @@ for ii in range(L):
 
 
 
-    # Boundaries for the W_xx, W_yy and V spaces
-    def Wxx_boundary(x, on_boundary):
-        return near(x[0],x0) or near(x[0],x1);
-    def Wyy_boundary(x, on_boundary):
-        return near(x[1],y0) or near(x[1],y1);
-    def V_boundary(x, on_boundary):
-        return near(x[1],y0) or near(x[1],y1) or near(x[0],x0) or near(x[0],x1);
+    SetupUtilities(mesh, x0, x1, y0, y1);
 
 
-    # Boundaries data for integrating <g,\mu>
-    class Left(SubDomain):
-        def inside(self, x, on_boundary):
-            return near(x[0], x0)
 
-    class Right(SubDomain):
-        def inside(self, x, on_boundary):
-            return near(x[0], x1)
-
-    class Bottom(SubDomain):
-        def inside(self, x, on_boundary):
-            return near(x[1], y0)
-
-    class Top(SubDomain):
-        def inside(self, x, on_boundary):
-            return near(x[1], y1)
-
-
-    left = Left();
-    right = Right();
-    top = Top();
-    bottom = Bottom();
-
-    # Set facet functions and define boundary measures
-    boundaries = FacetFunction("size_t", mesh)
-    boundaries.set_all(0)
-    left.mark(boundaries, 1)
-    top.mark(boundaries, 2)
-    right.mark(boundaries, 3)
-    bottom.mark(boundaries, 4)
-
-    ds = Measure("ds")[boundaries]
+    ds = Create_dsMeasure()
 
 
 
@@ -103,50 +67,62 @@ for ii in range(L):
     ##### Loop through epsilon values and solve ####################
     w = Function(MixedV);
     ep_err = [];
-    sols = []; solsSxx = []; solsSxy = []; solsSyy = []; solsw = [];
+    sols = []; solsSxx0 = []; solsSxy0 = []; solsSyy0 = []; solsw = [];
     bcv = DirichletBC(MixedV.sub(3), exact, V_boundary)
     for epjj in ep:
         print('Epsilon = ', epjj)
 
-        w = ForwardProblem(MixedV,ds, epjj, w, exact, f, gx, gy)
+        w = ForwardProblemWithBoundary(MixedV,ds, epjj, w, exact, f, gx, gy)
 
         # Print out the error at this value of epsilon
-        (Sxx,Sxy,Syy,u) = w.split(deepcopy=True);
+        (Sxx0,Sxy0,Syy0,u) = w.split(deepcopy=True);
         ep_err.append( np.sqrt( assemble(abs(exact-u)**2*dx) ) );
         print('Run finished at epsilon = ', epjj)
         print('L2 error = ', ep_err[-1])
         print ''
 
-        sols.append(u); solsSxx.append(Sxx); solsSxy.append(Sxy); solsSyy.append(Syy);
+        sols.append(u); solsSxx0.append(Sxx0); solsSxy0.append(Sxy0); solsSyy0.append(Syy0);
         solsw.append(w);
 
 
 
     un = sols[-1]; unm1 = sols[-1 -1]; unm2 = sols[-1 -2];
-    Sxxn = solsSxx[-1]; Sxxnm1 = solsSxx[-1 -1]; Sxxnm2 = solsSxx[-1 -2];
-    Sxyn = solsSxy[-1]; Sxynm1 = solsSxy[-1 -1]; Sxynm2 = solsSxy[-1 -2];
-    Syyn = solsSyy[-1]; Syynm1 = solsSyy[-1 -1]; Syynm2 = solsSyy[-1 -2];
+    Sxxn = solsSxx0[-1]; Sxxnm1 = solsSxx0[-1 -1]; Sxxnm2 = solsSxx0[-1 -2];
+    Sxyn = solsSxy0[-1]; Sxynm1 = solsSxy0[-1 -1]; Sxynm2 = solsSxy0[-1 -2];
+    Syyn = solsSyy0[-1]; Syynm1 = solsSyy0[-1 -1]; Syynm2 = solsSyy0[-1 -2];
     epn = ep[-1]; epnm1 = ep[-1 -1]; epnm2 = ep[-1 -2];
     wn = solsw[-1]; wnm1 = solsw[-1 - 1];
 
-    dFdep_n = muxx*dx + muyy*dx + (inner(Dx(Sxxn, 0), Dx(v, 0)) + inner(Dx(Sxyn, 0), Dx(v, 1))) * dx + 0*muxy;
-    dFdep_n += (inner(Dx(Sxyn, 1), Dx(v, 0)) + inner(Dx(Syyn, 1), Dx(v, 1))) * dx;
-    dFdep_n += inner(Sxxn+Syyn+epn,v)*dx;
+    dFdEps_n = action(dFdEps_Form(MixedV, ds, epn, f, gx, gy), wn)
+    dFdEps_nm1 = action(dFdEps_Form(MixedV, ds, epnm1, f, gx, gy), wnm1)
+    # dFdep_n = muxx*dx + muyy*dx + (inner(Dx(Sxxn, 0), Dx(v, 0)) + inner(Dx(Sxyn, 0), Dx(v, 1))) * dx + 0*muxy;
+    # dFdep_n += (inner(Dx(Sxyn, 1), Dx(v, 0)) + inner(Dx(Syyn, 1), Dx(v, 1))) * dx;
+    # dFdep_n += inner(Sxxn+Syyn+epn,v)*dx;
 
-    dFdep_nm1 = muxx*dx + muyy*dx + (inner(Dx(Sxxnm1, 0), Dx(v, 0)) + inner(Dx(Sxynm1, 0), Dx(v, 1))) * dx + 0*muxy;
-    dFdep_nm1 += (inner(Dx(Sxynm1, 1), Dx(v, 0)) + inner(Dx(Syynm1, 1), Dx(v, 1))) * dx;
-    dFdep_nm1 += inner(Sxxnm1+Syynm1+epnm1,v)*dx;
+    # dFdep_nm1 = muxx*dx + muyy*dx + (inner(Dx(Sxxnm1, 0), Dx(v, 0)) + inner(Dx(Sxynm1, 0), Dx(v, 1))) * dx + 0*muxy;
+    # dFdep_nm1 += (inner(Dx(Sxynm1, 1), Dx(v, 0)) + inner(Dx(Syynm1, 1), Dx(v, 1))) * dx;
+    # dFdep_nm1 += inner(Sxxnm1+Syynm1+epnm1,v)*dx;
+
+    F_epn = F_FormWithBoundary(MixedV, ds, epn, f, gx, gy);
+    F_epnm1 = F_FormWithBoundary(MixedV, ds, epnm1, f, gx, gy);
+
+    bcv = DirichletBC(MixedV.sub(3), exact, Dir_boundary)
+    bcxx = DirichletBC(MixedV.sub(0), 0.0, EW_boundary)
+    bcyy = DirichletBC(MixedV.sub(2), 0.0, NS_boundary)
+    bc = [bcxx,bcyy,bcv]
 
     dwdep_n = Function(MixedV);
     dwdep_nm1 = Function(MixedV);
-    R = action(F,dwdep_n)
+    
+    R = action(F_epn,dwdep_n)
     dFdu = derivative(R,dwdep_n)
     dFdu = replace(dFdu,{dwdep_n: wn})
-    solve(dFdu == -dFdep_n, dwdep_n, bcs=bc);
-    R = action(F,dwdep_nm1)
+    solve(dFdu == -dFdEps_n, dwdep_n, bcs=bc);
+
+    R = action(F_epnm1,dwdep_nm1)
     dFdu = derivative(R,dwdep_nm1)
     dFdu = replace(dFdu,{dwdep_nm1: wnm1})
-    solve(dFdu == -dFdep_nm1, dwdep_nm1, bcs=bc);
+    solve(dFdu == -dFdEps_nm1, dwdep_nm1, bcs=bc);
 
     dudep_n = dwdep_n.sub(3,deepcopy=True);
     dudep_nm1 = dwdep_nm1.sub(3,deepcopy=True);
