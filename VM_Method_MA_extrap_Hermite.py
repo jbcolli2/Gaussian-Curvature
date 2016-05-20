@@ -18,7 +18,7 @@ ratio = np.zeros([L, 1]);
 
 p = 2;
 
-ep = np.array([1, 1e-1, 1e-2, 1e-3]);
+ep = np.array([1, 5e-3, 1e-5]);
 
 for ii in range(L):
     N = params[ii];
@@ -68,7 +68,6 @@ for ii in range(L):
     w = Function(MixedV);
     ep_err = [];
     sols = []; solsSxx0 = []; solsSxy0 = []; solsSyy0 = []; solsw = [];
-    bcv = DirichletBC(MixedV.sub(3), exact, V_boundary)
     for epjj in ep:
         print('Epsilon = ', epjj)
 
@@ -93,39 +92,9 @@ for ii in range(L):
     epn = ep[-1]; epnm1 = ep[-1 -1]; epnm2 = ep[-1 -2];
     wn = solsw[-1]; wnm1 = solsw[-1 - 1];
 
-    dFdEps_n = action(dFdEps_Form(MixedV, ds, epn, f, gx, gy), wn)
-    dFdEps_nm1 = action(dFdEps_Form(MixedV, ds, epnm1, f, gx, gy), wnm1)
-    # dFdep_n = muxx*dx + muyy*dx + (inner(Dx(Sxxn, 0), Dx(v, 0)) + inner(Dx(Sxyn, 0), Dx(v, 1))) * dx + 0*muxy;
-    # dFdep_n += (inner(Dx(Sxyn, 1), Dx(v, 0)) + inner(Dx(Syyn, 1), Dx(v, 1))) * dx;
-    # dFdep_n += inner(Sxxn+Syyn+epn,v)*dx;
 
-    # dFdep_nm1 = muxx*dx + muyy*dx + (inner(Dx(Sxxnm1, 0), Dx(v, 0)) + inner(Dx(Sxynm1, 0), Dx(v, 1))) * dx + 0*muxy;
-    # dFdep_nm1 += (inner(Dx(Sxynm1, 1), Dx(v, 0)) + inner(Dx(Syynm1, 1), Dx(v, 1))) * dx;
-    # dFdep_nm1 += inner(Sxxnm1+Syynm1+epnm1,v)*dx;
-
-    F_epn = F_FormWithBoundary(MixedV, ds, epn, f, gx, gy);
-    F_epnm1 = F_FormWithBoundary(MixedV, ds, epnm1, f, gx, gy);
-
-    bcv = DirichletBC(MixedV.sub(3), exact, Dir_boundary)
-    bcxx = DirichletBC(MixedV.sub(0), 0.0, EW_boundary)
-    bcyy = DirichletBC(MixedV.sub(2), 0.0, NS_boundary)
-    bc = [bcxx,bcyy,bcv]
-
-    dwdep_n = Function(MixedV);
-    dwdep_nm1 = Function(MixedV);
-    
-    R = action(F_epn,dwdep_n)
-    dFdu = derivative(R,dwdep_n)
-    dFdu = replace(dFdu,{dwdep_n: wn})
-    solve(dFdu == -dFdEps_n, dwdep_n, bcs=bc);
-
-    R = action(F_epnm1,dwdep_nm1)
-    dFdu = derivative(R,dwdep_nm1)
-    dFdu = replace(dFdu,{dwdep_nm1: wnm1})
-    solve(dFdu == -dFdEps_nm1, dwdep_nm1, bcs=bc);
-
-    dudep_n = dwdep_n.sub(3,deepcopy=True);
-    dudep_nm1 = dwdep_nm1.sub(3,deepcopy=True);
+    dudep_n = SolveDavidenko(MixedV, ds, wn, epn, exact, f, gx, gy);
+    dudep_nm1 = SolveDavidenko(MixedV, ds, wnm1, epnm1, exact, f, gx, gy);
 
 
 
@@ -149,14 +118,7 @@ for ii in range(L):
 
 
 
-    # (Sxx,Sxy,Syy,u) = w.split(deepcopy=True);
-    #     Sxx = w.sub(0,deepcopy=true);
-    #     Sxy = w.sub(1);
-    #     Syy = w.sub(2);
-    #     u = w.sub(3);
     error = abs(exact - u) ** 2 * dx
-    u0 = project(exact, V)
-    grad_error = inner(nabla_grad(u0) - nabla_grad(u), nabla_grad(u0) - nabla_grad(u)) * dx
     e[ii] = np.sqrt(assemble(error))
 
     if (ii > 0):

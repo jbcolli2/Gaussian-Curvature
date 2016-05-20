@@ -73,3 +73,26 @@ def ForwardComplexProblem(MixedVComplex,ds, ep, initial, exact, f, gx, gy):
     solver.solve();
 
     return initial;
+
+
+
+
+
+def SolveDavidenko(MixedV, ds, w, ep, exact, f, gx, gy):
+    bcv = DirichletBC(MixedV.sub(3), exact, Dir_boundary)
+    bcxx = DirichletBC(MixedV.sub(0), 0.0, EW_boundary)
+    bcyy = DirichletBC(MixedV.sub(2), 0.0, NS_boundary)
+    bc = [bcxx,bcyy,bcv]
+
+    dFdEps = action(dFdEps_Form(MixedV, ds, ep, f, gx, gy), w);
+    F_Eps = F_FormWithBoundary(MixedV, ds, ep, f, gx, gy);
+
+    dWdEps = Function(MixedV);
+    R = action(F_Eps,dWdEps)
+    dFdu = derivative(R,dWdEps)
+    dFdu = replace(dFdu,{dWdEps: w})
+    solve(dFdu == -dFdEps, dWdEps, bcs=bc);
+
+    dudEps = dWdEps.sub(3,deepcopy=True);
+
+    return dudEps;
