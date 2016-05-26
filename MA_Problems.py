@@ -1,7 +1,7 @@
 from dolfin import *
 
 
-def Problems(prob, N):
+def MA_Problems(prob, N):
     # cutoff = pow(N,2.0);
     cutoff = 0;
     xtol = 1e-18;

@@ -9,14 +9,14 @@ from VM_Utilities import *
 #
 ############################
 
-def ForwardProblem(MixedV,ds, ep, initial, exact, f, gx, gy):
+def ForwardProblem_MA(MixedV,ds, ep, initial, exact, f, gx, gy):
     bcv = DirichletBC(MixedV.sub(3), exact, Dir_boundary)
     bcxx = DirichletBC(MixedV.sub(0), ep, EW_boundary)
     bcyy = DirichletBC(MixedV.sub(2), ep, NS_boundary)
     bc = [bcxx,bcyy,bcv]
 
     # Define variational problem
-    F = F_Form(MixedV, ds, ep, f, gx, gy);
+    F = F_Form_MA(MixedV, ds, ep, f, gx, gy);
 
     # Solve problem
     R = action(F,initial);
@@ -26,6 +26,29 @@ def ForwardProblem(MixedV,ds, ep, initial, exact, f, gx, gy):
     solver.solve();
 
     return initial;
+
+
+
+
+def ForwardProblem_GC(MixedV,K,ds, ep, initial, exact, gx, gy):
+    bcv = DirichletBC(MixedV.sub(3), exact, Dir_boundary)
+    bcxx = DirichletBC(MixedV.sub(0), ep, EW_boundary)
+    bcyy = DirichletBC(MixedV.sub(2), ep, NS_boundary)
+    bc = [bcxx,bcyy,bcv]
+
+    # Define variational problem
+    F = F_Form_GC(MixedV, K, ds, ep, gx, gy);
+
+    # Solve problem
+    R = action(F,initial);
+    DR = derivative(R, initial);
+    problem = NonlinearVariationalProblem(R,initial,bc,DR);
+    solver = NonlinearVariationalSolver(problem);
+    solver.solve();
+
+    return initial;
+
+
 
 
 
