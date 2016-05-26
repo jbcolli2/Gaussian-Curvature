@@ -15,7 +15,7 @@ L = len(params);
 e = np.zeros([L,1]);
 ratio = np.zeros([L,1]);
 
-p = 2;
+p = 3;
 
 ep = np.array([1]);
 
