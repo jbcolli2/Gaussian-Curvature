@@ -17,7 +17,7 @@ ratio = np.zeros([L,1]);
 
 p = 2;
 
-ep = np.array([1, 1e-2, 9e-3, 8e-3, 7e-3, 6e-3, 5e-3]);
+ep = np.array([1]);
 
 for ii in range(L):
     N = params[ii];
@@ -40,8 +40,8 @@ for ii in range(L):
     # 8. u(x,y) = x/x^2 piecewise function
     # 9. u(x,y) = sqrt(x^2 + y^2)
     # #       numerical Dirac delta function
-    prob = 1;
-    (x0, y0, x1, y1, exact, gx, gy, K) = GC_Problems(prob, N);
+    prob = 2;
+    (x0, y0, x1, y1, exact, f, gx, gy, K) = GC_Problems(prob, N);
 
 
 
@@ -71,7 +71,7 @@ for ii in range(L):
     for epjj in ep:
         print('Epsilon = ',epjj)
 
-        w = ForwardProblem_GC(MixedV,K,ds, epjj, w, exact, gx, gy)
+        w = ForwardProblem_GC(MixedV,K,ds, epjj, w, exact,f, gx, gy)
 
         (Sxx,Sxy,Syy,u) = w.split(deepcopy=True);
 

@@ -109,7 +109,7 @@ def F_Form_MA(MixedV, ds, ep, f, gx, gy):
 
 
 
-def F_Form_GC(MixedV, K, ds, ep, gx, gy):
+def F_Form_GC(MixedV, K, ds, ep,f, gx, gy):
     (Sxx, Sxy, Syy, u) = TrialFunction(MixedV)
     (muxx, muxy, muyy, v) = TestFunction(MixedV)
 
@@ -125,7 +125,7 @@ def F_Form_GC(MixedV, K, ds, ep, gx, gy):
     F += (((Sxx*Syy - Sxy*Sxy)*(1 + (Dx(u,0)**2 + Dx(u,1)**2))**(-2)) - K)*v*dx;
 
 
-    F -= (-gy*muxy*ds(1) + gx*muxy*ds(2) + gy*muxy*ds(3) - gx*muxy*ds(4));
+    F -= (f*v*dx-gy*muxy*ds(1) + gx*muxy*ds(2) + gy*muxy*ds(3) - gx*muxy*ds(4));
 
     return F;
 

@@ -30,14 +30,14 @@ def ForwardProblem_MA(MixedV,ds, ep, initial, exact, f, gx, gy):
 
 
 
-def ForwardProblem_GC(MixedV,K,ds, ep, initial, exact, gx, gy):
+def ForwardProblem_GC(MixedV,K,ds, ep, initial, exact,f, gx, gy):
     bcv = DirichletBC(MixedV.sub(3), exact, Dir_boundary)
     bcxx = DirichletBC(MixedV.sub(0), ep, EW_boundary)
     bcyy = DirichletBC(MixedV.sub(2), ep, NS_boundary)
     bc = [bcxx,bcyy,bcv]
 
     # Define variational problem
-    F = F_Form_GC(MixedV, K, ds, ep, gx, gy);
+    F = F_Form_GC(MixedV, K, ds, ep, f,gx, gy);
 
     # Solve problem
     R = action(F,initial);
