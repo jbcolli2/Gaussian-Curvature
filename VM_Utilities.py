@@ -122,7 +122,7 @@ def F_Form_GC(MixedV, K, ds, ep,f, gx, gy):
         F += ep*( inner(Dx(Sxy,1), Dx(v,0)) + inner(Dx(Syy,1), Dx(v,1)))*dx;
 
     # Determinant term/Nonlinear term
-    F += (((Sxx*Syy - Sxy*Sxy)-K*(1 + (Dx(u,0)**2 + Dx(u,1)**2))**(2)))*v*dx;
+    F += (((Sxx*Syy - Sxy*Sxy)*(1 + (Dx(u,0)**2 + Dx(u,1)**2))**(-2.0)) - K)*v*dx;
 
 
     F -= (f*v*dx-gy*muxy*ds(1) + gx*muxy*ds(2) + gy*muxy*ds(3) - gx*muxy*ds(4));

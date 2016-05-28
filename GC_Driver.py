@@ -17,7 +17,7 @@ ratio = np.zeros([L,1]);
 
 p = 3;
 
-ep = np.array([1]);
+ep = np.array([.5]);
 
 for ii in range(L):
     N = params[ii];
