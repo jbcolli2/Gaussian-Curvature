@@ -15,9 +15,9 @@ L = len(params);
 e = np.zeros([L,1]);
 ratio = np.zeros([L,1]);
 
-p = 3;
+p = 2;
 
-ep = np.array([.5]);
+ep = np.array([1]);
 
 for ii in range(L):
     N = params[ii];
@@ -40,7 +40,7 @@ for ii in range(L):
     # 8. u(x,y) = x/x^2 piecewise function
     # 9. u(x,y) = sqrt(x^2 + y^2)
     # #       numerical Dirac delta function
-    prob = 2;
+    prob = 3;
     (x0, y0, x1, y1, exact, f, gx, gy, K) = GC_Problems(prob, N);
 
 
