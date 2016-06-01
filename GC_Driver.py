@@ -8,7 +8,7 @@ set_log_level(50)
 
 
 #Values of N for the mesh
-params = np.array([4, 8,16,32]);
+params = np.array([8,16,32]);
 # params = np.array([100]);
 
 L = len(params);
@@ -17,7 +17,7 @@ ratio = np.zeros([L,1]);
 
 p = 2;
 
-ep = np.array([1]);
+ep = np.array([1e-1, 2.2891e-3, 4.6826e-5,0]);
 
 for ii in range(L):
     N = params[ii];
@@ -41,7 +41,7 @@ for ii in range(L):
     # 9. u(x,y) = sqrt(x^2 + y^2)
     # #       numerical Dirac delta function
     prob = 3;
-    (x0, y0, x1, y1, exact, f, gx, gy, K) = GC_Problems(prob, N);
+    (x0, y0, x1, y1, exact, f, gx, gy, K) = GC_Problems(prob, N, ep[-1]);
 
 
 
