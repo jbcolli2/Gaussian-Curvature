@@ -196,7 +196,7 @@ def MA_Problems(prob, N, ep):
 
 
 
-
+    #u(x,y) = ep*(x^6 + y^6 + ...) w/ biharmonic term
     elif(prob == 11):
         x0 = 0; y0 = 0; x1 = 1; y1 = 1;
         exact = Expression('eps*( (1/30.0)*pow(x[0], 6.0) - (1/20.0)*pow(x[0], 5.0) + 0.5*pow(x[0], 2.0) \
@@ -211,20 +211,13 @@ def MA_Problems(prob, N, ep):
 
 
 
+    #u(x,y) = ep*(x^2 + y^2) + sin(pi*x) + sin(pi*y) w/ biharmonic term
     elif(prob == 12):
         x0 = 0; y0 = 0; x1 = 1; y1 = 1;
-        exact = Expression('eps*( (1/12.0)*pow(x[0], 4.0) - (1/6.0)*pow(x[0],3.0) + 0.5*pow(x[0], 2.0) + \
-            (1/12.0)*pow(x[1], 4.0) - (1/6.0)*pow(x[1],3.0) + 0.5*pow(x[1], 2.0) ) + sin(pi*x[0])*sin(pi*x[1])', eps = ep);
-        f = Expression('-0.4e1 * sin(pi * x[0]) * sin(pi * x[1]) * pow(pi, 0.4e1) * eps \
-            - sin(pi * x[0]) * sin(pi * x[1]) * pi * pi * eps * x[0] * x[0] \
-            - sin(pi * x[0]) * sin(pi * x[1]) * pi * pi * eps * x[1] * x[1] + sin(pi * x[0]) * sin(pi * x[1]) * pi * pi * eps * x[0] \
-            + sin(pi * x[0]) * sin(pi * x[1]) * pi * pi * eps * x[1] - pow(pi, 0.4e1) * pow(cos(pi * x[0]), 0.2e1) - \
-          pow(pi, 0.4e1) * pow(cos(pi * x[1]), 0.2e1) + eps * eps * x[0] * x[0] * x[1] * x[1] - \
-          0.2e1 * sin(pi * x[0]) * sin(pi * x[1]) * pi * pi * eps \
-          - eps * eps * x[0] * x[0] * x[1] - eps * eps * x[0] * x[1] * x[1] + pow(pi, 0.4e1) + eps * eps * x[0] * x[0] \
-          + eps * eps * x[0] * x[1] + eps * eps * x[1] * x[1] - eps * eps * x[0] - eps * eps * x[1] - 0.3e1 * eps * eps', eps = ep);
-        gx = Expression('eps*( (1/3.0)*x[0]*x[0]*x[0] - 0.5*x[0]*x[0] + x[0] ) + pi*cos(pi*x[0])*sin(pi*x[1])', eps = ep);
-        gy = Expression('eps*( (1/3.0)*x[1]*x[1]*x[1] - 0.5*x[1]*x[1] + x[1] ) + pi*sin(pi*x[0])*cos(pi*x[1])', eps = ep);
+        exact = Expression('eps*0.5*( pow(x[0],2) + pow(x[1],2) ) - sin(pi*x[0]) - sin(pi*x[1])', eps = ep);
+        f = Expression('pow(pi,4)*( eps*(sin(pi*x[0]) + sin(pi*x[1])) + sin(pi*x[0])*sin(pi*x[1]) ) + eps*pow(pi,2)*(sin(pi*x[0]) + sin(pi*x[1])) + pow(eps,2) ', eps = ep);
+        gx = Expression('eps*x[0] - pi*cos(pi*x[0])', eps = ep);
+        gy = Expression('eps*x[1] - pi*cos(pi*x[1])', eps = ep);
 
         return (x0, y0, x1, y1, exact, f, gx, gy);
 

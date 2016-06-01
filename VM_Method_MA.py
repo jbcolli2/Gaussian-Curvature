@@ -15,9 +15,9 @@ L = len(params);
 e = np.zeros([L,1]);
 ratio = np.zeros([L,1]);
 
-p = 2;
+p = 3;
 
-ep = np.array([2.3917e-1]);
+ep = np.array([1e-1, 2e-5,2.784e-7]);
 
 for ii in range(L):
     N = params[ii];
@@ -41,7 +41,7 @@ for ii in range(L):
     # 9. u(x,y) = sqrt(x^2 + y^2)
     # #       numerical Dirac delta function
     prob = 12;
-    (x0, y0, x1, y1, exact, f, gx, gy) = MA_Problems(prob, N, ep[0]);
+    (x0, y0, x1, y1, exact, f, gx, gy) = MA_Problems(prob, N, ep[-1]);
 
 
 
@@ -89,10 +89,11 @@ for ii in range(L):
 
     (Sxx,Sxy,Syy,u) = w.split(deepcopy=True);
 
+    one = Expression('1.0', domain=mesh)
     error = abs(exact-u)**2*dx
     e[ii] = np.sqrt(assemble(error))
-    error = np.sqrt(assemble(u**2*dx))
-    e[ii] = e[ii]/error;
+    # error = np.sqrt(assemble(one*exact**2*dx))
+    # e[ii] = e[ii]/error;
     
     if(ii > 0):
         ratio[ii] = np.log(e[ii-1]/e[ii])/np.log(2)
