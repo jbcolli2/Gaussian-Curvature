@@ -38,7 +38,7 @@ def GC_Problems(prob, N, ep):
         exact = Expression('eps*0.5*( pow(x[0],2) + pow(x[1],2) ) - sin(pi*x[0]) - sin(pi*x[1])', eps = ep);
         gx = Expression('eps*x[0] - pi*cos(pi*x[0])', eps = ep);
         gy = Expression('eps*x[1] - pi*cos(pi*x[1])', eps = ep);
-        K = 1;
+        K = 10.657;
         f = Expression('eps*pow(pi,4)*(sin(pi*x[0])+sin(pi*x[1])) \
             + (pow(pi,4)*(sin(pi*x[0])*sin(pi*x[1])) + eps*pow(pi,2)*(sin(pi*x[0])+sin(pi*x[1])) + pow(eps,2))/pow(1 + pow(g_x,2) + pow(g_y,2), 2) - Kparam ',eps = ep, g_x = gx, g_y = gy, Kparam = K);
 

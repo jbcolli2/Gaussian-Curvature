@@ -8,7 +8,7 @@ set_log_level(50)
 
 
 #Values of N for the mesh
-params = np.array([8,16,32]);
+params = np.array([4,8,16,32]);
 # params = np.array([100]);
 
 L = len(params);
@@ -17,7 +17,7 @@ ratio = np.zeros([L,1]);
 
 p = 2;
 
-ep = np.array([1e-1, 2.2891e-3, 4.6826e-5,0]);
+ep = np.array([1e-1, 2.2891e-3]);
 
 for ii in range(L):
     N = params[ii];
