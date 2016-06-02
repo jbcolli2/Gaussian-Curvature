@@ -15,10 +15,11 @@ L = len(params);
 e = np.zeros([L,1]);
 ratio = np.zeros([L,1]);
 
-p = 2;
+p = 3;
 
-ep = np.array([0,1, 1e-1, 5e-2, 2e-2, 1e-2, 7e-3, 5e-3, 2e-3, 1e-3, 7e-4, 6e-4, 5.5e-4, 2e-4]);
-ep = np.array([0]);
+ep = np.array([1, 1e-1, 1e-2,  1e-3, 1e-4, 0]);
+ep = -ep;
+# ep = np.array([1, 1e-1]);
 
 for ii in range(L):
     N = params[ii];
@@ -61,10 +62,10 @@ for ii in range(L):
     
     class MixedExact(Expression):
         def eval(self, values, x):
-            values[0] = ( x[1]**2 - 1)/( pow( 1 - x[0]**2, 3.0/2.0) )
-            values[1] = ( x[0]*x[1])/( pow( 1 - x[0]**2, 3.0/2.0) )
-            values[2] = ( x[0]**2 - 1)/( pow( 1 - x[0]**2, 3.0/2.0) )
-            values[3] = sqrt(1-pow(x[0],2) - x[1]**2)
+            values[0] = ( x[1]**2 - 1.1)/( pow( 1 - x[0]**2, 3.0/2.0) )
+            values[1] = ( x[0]*x[1])/( pow( 1.2 - x[0]**2, 3.0/2.0) )
+            values[2] = ( x[0]**2 - 1)/( pow( 1 - x[0]**2, 3.1/2.0) )
+            values[3] = sqrt(.8-pow(x[0],2) - x[1]**2) + .2
         def value_shape(self):
             return (4,)
 
@@ -77,7 +78,7 @@ for ii in range(L):
 
     ##### Loop through epsilon values and solve ####################
     w = Function(MixedV);
-    w = u;
+    # w = u;
     ep_err = [];
 
     for epjj in ep:
@@ -106,6 +107,9 @@ for ii in range(L):
     
     if(ii > 0):
         ratio[ii] = np.log(e[ii-1]/e[ii])/np.log(2)
+
+    # plot(u)
+    # interactive()
  
 # plot(abs(exact-u))
 # interactive()
