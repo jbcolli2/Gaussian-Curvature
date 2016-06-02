@@ -4,12 +4,12 @@ import numpy as np
 from VM_Utilities import *
 from VM_Solver import *
 
-set_log_level(30)
+set_log_level(20)
 
 
 #Values of N for the mesh
-params = np.array([8, 16,32]);
-# params = np.array([76]);
+params = np.array([4, 8, 16,32]);
+# params = np.array([32]);
 
 L = len(params);
 e = np.zeros([L,1]);
@@ -17,7 +17,8 @@ ratio = np.zeros([L,1]);
 
 p = 2;
 
-ep = np.array([1, 1e-1, 5e-2, 2e-2]);
+ep = np.array([0,1, 1e-1, 5e-2, 2e-2, 1e-2, 7e-3, 5e-3, 2e-3, 1e-3, 7e-4, 6e-4, 5.5e-4, 2e-4]);
+ep = np.array([0]);
 
 for ii in range(L):
     N = params[ii];
@@ -40,7 +41,7 @@ for ii in range(L):
     # 8. u(x,y) = x/x^2 piecewise function
     # 9. u(x,y) = sqrt(x^2 + y^2)
     # #       numerical Dirac delta function
-    prob = 2;
+    prob = 1;
     (x0, y0, x1, y1, exact, gx, gy, K) = GC_Problems(prob, N);
 
 
@@ -58,14 +59,25 @@ for ii in range(L):
     ds = Create_dsMeasure()
     
     
-    
-    # temp = Expression((exact,exact,exact,exact))
-    # u = interpolate(temp,MixedV)
+    class MixedExact(Expression):
+        def eval(self, values, x):
+            values[0] = ( x[1]**2 - 1)/( pow( 1 - x[0]**2, 3.0/2.0) )
+            values[1] = ( x[0]*x[1])/( pow( 1 - x[0]**2, 3.0/2.0) )
+            values[2] = ( x[0]**2 - 1)/( pow( 1 - x[0]**2, 3.0/2.0) )
+            values[3] = sqrt(1-pow(x[0],2) - x[1]**2)
+        def value_shape(self):
+            return (4,)
+
+
+    u = Function(MixedV)
+    ex = MixedExact();
+    u.interpolate(ex)
 
 
 
     ##### Loop through epsilon values and solve ####################
     w = Function(MixedV);
+    w = u;
     ep_err = [];
 
     for epjj in ep:

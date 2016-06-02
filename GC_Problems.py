@@ -12,7 +12,7 @@ def GC_Problems(prob, N):
         exact = Expression('sqrt(1-pow(x[0],2) - pow(x[1],2))');
         gx = Expression('-x[0]/exac', exac = exact);
         gy = Expression('-x[1]/exac', exac = exact);
-        K = 0.1;
+        K = 1.0;
 
         return (x0, y0, x1, y1, exact, gx, gy, K);
 
