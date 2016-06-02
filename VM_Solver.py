@@ -44,6 +44,7 @@ def ForwardProblem_GC(MixedV,K,ds, ep, initial, exact, gx, gy):
     DR = derivative(R, initial);
     problem = NonlinearVariationalProblem(R,initial,bc,DR);
     solver = NonlinearVariationalSolver(problem);
+    prm = solver.parameters
     solver.solve();
 
     return initial;
