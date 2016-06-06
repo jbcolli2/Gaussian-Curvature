@@ -9,16 +9,16 @@ set_log_level(20)
 
 #Values of N for the mesh
 params = np.array([4, 8, 16,32]);
-# params = np.array([32]);
+params = np.array([16]);
 
 L = len(params);
 e = np.zeros([L,1]);
 ratio = np.zeros([L,1]);
 
-p = 3;
+p = 2;
 
-ep = np.array([1, 1e-1, 1e-2,  1e-3, 1e-4, 0]);
-ep = -ep;
+ep = np.array([1, 1e-1, 1e-2,1e-3, 1e-4,1e-5, 1e-6, 0]);
+# ep = -ep;
 # ep = np.array([1, 1e-1]);
 
 for ii in range(L):
@@ -27,22 +27,7 @@ for ii in range(L):
 
 
 
-    # Define Problem
-    # 1. u(x,y) = x^4 + y^2
-    # 2. u(x,y) = exp(.5*(x^2+y^2))
-    # 3. u(x,y) = (1/3)(4x^2 + 4y^2)^(3/4)
-    # #       Full domain, no function cutoff
-    # 4. u(x,y) = (1/3)(4x^2 + 4y^2)^(3/4)
-    # #       cutoff domain, no function cutoff
-    # 5. u(x,y) = (1/3)(4x^2 + 4y^2)^(3/4)
-    # #       Full domain, function cutoff
-    # 6. u(x,y) = -sqrt(2 - x^2 - y^2)
-    # #       Full domain, function cutoff
-    # 7. u(x,y) = abs(x)
-    # 8. u(x,y) = x/x^2 piecewise function
-    # 9. u(x,y) = sqrt(x^2 + y^2)
-    # #       numerical Dirac delta function
-    prob = 1;
+    prob = 2;
     (x0, y0, x1, y1, exact, gx, gy, K) = GC_Problems(prob, N);
 
 
@@ -60,19 +45,19 @@ for ii in range(L):
     ds = Create_dsMeasure()
     
     
-    class MixedExact(Expression):
-        def eval(self, values, x):
-            values[0] = ( x[1]**2 - 1.1)/( pow( 1 - x[0]**2, 3.0/2.0) )
-            values[1] = ( x[0]*x[1])/( pow( 1.2 - x[0]**2, 3.0/2.0) )
-            values[2] = ( x[0]**2 - 1)/( pow( 1 - x[0]**2, 3.1/2.0) )
-            values[3] = sqrt(.8-pow(x[0],2) - x[1]**2) + .2
-        def value_shape(self):
-            return (4,)
+    # class MixedExact(Expression):
+    #     def eval(self, values, x):
+    #         values[0] = ( x[1]**2 - 1.1)/( pow( 1 - x[0]**2, 3.0/2.0) )
+    #         values[1] = ( x[0]*x[1])/( pow( 1.2 - x[0]**2, 3.0/2.0) )
+    #         values[2] = ( x[0]**2 - 1)/( pow( 1 - x[0]**2, 3.1/2.0) )
+    #         values[3] = sqrt(.8-pow(x[0],2) - x[1]**2) + .2
+    #     def value_shape(self):
+    #         return (4,)
 
 
-    u = Function(MixedV)
-    ex = MixedExact();
-    u.interpolate(ex)
+    # u = Function(MixedV)
+    # ex = MixedExact();
+    # u.interpolate(ex)
 
 
 
@@ -92,6 +77,8 @@ for ii in range(L):
         print('Run finished at epsilon = ', epjj)
         print('L2 error = ', ep_err[-1])
         print ''
+
+        # PlotToFile(u, 'Epsilon = ' + epjj.__str__(), 'file')
   
   
 
@@ -108,7 +95,7 @@ for ii in range(L):
     if(ii > 0):
         ratio[ii] = np.log(e[ii-1]/e[ii])/np.log(2)
 
-    # plot(u)
+    # plot(exact-u)
     # interactive()
  
 # plot(abs(exact-u))

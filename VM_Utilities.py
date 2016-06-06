@@ -58,6 +58,23 @@ def Create_dsMeasure():
     return ds;
 
 
+
+
+
+
+
+
+
+def PlotToFile(sol, title, filename):
+    viz = plot(sol, title, axes = True)
+    viz.write_png(filename)
+
+
+
+
+
+
+
 #################################
   #
   # Solver
