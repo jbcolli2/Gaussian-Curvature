@@ -9,7 +9,7 @@ set_log_level(20)
 
 #Values of N for the mesh
 params = np.array([4, 8, 16,32]);
-params = np.array([4]);
+# params = np.array([4]);
 
 L = len(params);
 e = np.zeros([L,1]);
@@ -35,7 +35,7 @@ for ii in range(L):
     mesh = RectangleMesh(Point(x0,y0),Point(x1,y1),N,N)
     V = FunctionSpace(mesh, 'Lagrange', p)
     exact = Expression('sin(pi*x[0])*sin(pi*x[1])', domain=mesh)
-    f = Expression('2*pi*pi*sin(pi*x[0])*sin(pi*x[1])', domain=mesh)
+    f = Expression('2*pi*pi*sin(pi*x[0])*sin(pi*x[1]) - pow( sin(pi*x[0])*sin(pi*x[1]), 2.0 )', domain=mesh)
 
 
     
@@ -48,17 +48,15 @@ for ii in range(L):
     u = TrialFunction(V);
     v = TestFunction(V);
 
-    F = inner(grad(u), grad(v))*dx - f*v*dx;
-    a = inner(grad(u), grad(v))*dx;
-    L = f*v*dx;
+    F = inner(grad(u), grad(v))*dx - u*u*v*dx - f*v*dx;
 
-    u0 = Function(V);
+    u0 = interpolate(Expression(' 1.5*sin(pi*2*x[0])*sin(pi*x[1])'), V);
 
-    # u = NewtonIteration(V, u0, F, bc)
+    u0 = NewtonIteration(V, u0, F, bc)
 
     
-    R = action(F,u0);
-    DR = derivative(R, u0);
+    # R = action(F,u0);
+    # DR = derivative(R, u0);
     # problem = NonlinearVariationalProblem(R,u0,bc,DR);
     # solver = NonlinearVariationalSolver(problem);
     # # solver.parameters['newton_solver']['absolute_tolerance'] = 1e-9
@@ -66,9 +64,9 @@ for ii in range(L):
     # solver.solve();
 
 
-    s = SystemAssembler(DR,R,bc)
-    b = Vector();
-    s.assemble(b);
+    # s = SystemAssembler(DR,R,bc)
+    # b = Vector();
+    # s.assemble(b);
 
 
 

@@ -62,6 +62,14 @@ def Create_dsMeasure():
 
 
 
+def EvalResidual(F,bc,u0):
+    F0 = action(F,u0);
+    J = derivative(F0,u0);
+    s = SystemAssembler(J,F0,bc)
+    b = Vector();
+    s.assemble(b);
+
+    return b;
 
 
 
@@ -123,8 +131,8 @@ def NewtonIteration(V, w0, form, bc):
         it_count += 1;
         dw = TrialFunction(V);
 
+        Feval_k = np.linalg.norm( EvalResidual(form,bc,wk).array(), ord=2 )
         Fwk = action(form, wk);
-        Feval_k = np.linalg.norm( assemble(Fwk).array(), ord=np.Inf )
         DF = derivative(Fwk, wk, dw);   # derivative of F evaluated at wk.  dw is trial function to be solved for
 
         A,b = assemble_system(DF, (-1.0)*Fwk, bc);
@@ -135,11 +143,10 @@ def NewtonIteration(V, w0, form, bc):
         lam = 1.0;
         print 'Old Function value = ', Feval_k
 
-        for ii in range(1):
+        for ii in range(5):
             wkp1.assign(wk);
             wkp1.vector().axpy(lam, dw.vector());
-            Fwkp1 = action(form, wkp1);
-            Feval_kp1 = np.linalg.norm( assemble(Fwkp1).array(), ord=np.Inf )
+            Feval_kp1 = np.linalg.norm( EvalResidual(form,bc,wkp1).array(), ord=2 )
             print 'Function value = ', Feval_kp1
 
             lam = lam/2;

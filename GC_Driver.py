@@ -17,7 +17,7 @@ ratio = np.zeros([L,1]);
 
 p = 2;
 
-ep = np.array([1, 1e-2, 1e-4, 0]);
+ep = np.array([ 0]);
 ep = -ep;
 # ep = np.array([1, 1e-1]);
 
@@ -47,9 +47,9 @@ for ii in range(L):
     
     class MixedExact(Expression):
         def eval(self, values, x):
-            values[0] = ( x[1]**2 - 1.0)/( pow( 1 - x[0]**2, 3.0/2.0) )
-            values[1] = ( x[0]*x[1])/( pow( 1.2 - x[0]**2, 3.0/2.0) )
-            values[2] = ( x[0]**2 - 1)/( pow( 1 - x[0]**2, 3.1/2.0) )
+            values[0] = ( x[1]**2 - 1.0)/( pow( 1 - x[0]**2 - x[1]**2, 3.0/2.0) )
+            values[1] = ( -x[0]*x[1])/( pow( 1 - x[0]**2- x[1]**2, 3.0/2.0) )
+            values[2] = ( x[0]**2 - 1.0)/( pow( 1 - x[0]**2- x[1]**2, 3.1/2.0) )
             values[3] = sqrt(1.0-pow(x[0],2) - x[1]**2)
         def value_shape(self):
             return (4,)
