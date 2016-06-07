@@ -124,22 +124,22 @@ def NewtonIteration(V, w0, form, bc):
         dw = TrialFunction(V);
 
         Fwk = action(form, wk);
-        Feval_k = np.linalg.norm( assemble(Fwk).array(), 2 )
+        Feval_k = np.linalg.norm( assemble(Fwk).array(), ord=np.Inf )
         DF = derivative(Fwk, wk, dw);   # derivative of F evaluated at wk.  dw is trial function to be solved for
 
-        A,b = assemble_system(DF, -(1.0)*Fwk, bc);
+        A,b = assemble_system(DF, (-1.0)*Fwk, bc);
 
         dw = Function(V);
         solve(A, dw.vector(), b);
 
-        lam = 10.0;
+        lam = 1.0;
         print 'Old Function value = ', Feval_k
 
-        for ii in range(10):
+        for ii in range(1):
             wkp1.assign(wk);
             wkp1.vector().axpy(lam, dw.vector());
             Fwkp1 = action(form, wkp1);
-            Feval_kp1 = np.linalg.norm( assemble(Fwkp1).array(), 2 )
+            Feval_kp1 = np.linalg.norm( assemble(Fwkp1).array(), ord=np.Inf )
             print 'Function value = ', Feval_kp1
 
             lam = lam/2;

@@ -9,7 +9,7 @@ set_log_level(20)
 
 #Values of N for the mesh
 params = np.array([4, 8, 16,32]);
-params = np.array([16]);
+params = np.array([4]);
 
 L = len(params);
 e = np.zeros([L,1]);
@@ -27,69 +27,54 @@ for ii in range(L):
 
 
 
-    prob = 1;
-    (x0, y0, x1, y1, exact, gx, gy, K) = GC_Problems(prob, N);
 
 
 
     # Create mesh and define function space
+    x0 = 0; x1 = 1; y0 = 0; y1 = 1;
     mesh = RectangleMesh(Point(x0,y0),Point(x1,y1),N,N)
     V = FunctionSpace(mesh, 'Lagrange', p)
-    MixedV = MixedFunctionSpace([V,V,V,V]);
+    exact = Expression('sin(pi*x[0])*sin(pi*x[1])', domain=mesh)
+    f = Expression('2*pi*pi*sin(pi*x[0])*sin(pi*x[1])', domain=mesh)
 
 
-    SetupUtilities(mesh, x0, x1, y0, y1);
-
-
-
-    ds = Create_dsMeasure()
     
     
-    class MixedExact(Expression):
-        def eval(self, values, x):
-            values[0] = ( x[1]**2 - 1.0)/( pow( 1 - x[0]**2, 3.0/2.0) )
-            values[1] = ( x[0]*x[1])/( pow( 1.2 - x[0]**2, 3.0/2.0) )
-            values[2] = ( x[0]**2 - 1)/( pow( 1 - x[0]**2, 3.1/2.0) )
-            values[3] = sqrt(1.0-pow(x[0],2) - x[1]**2)
-        def value_shape(self):
-            return (4,)
-
-
-    u = Function(MixedV)
-    ex = MixedExact();
-    u.interpolate(ex)
 
 
 
     ##### Loop through epsilon values and solve ####################
-    w = Function(MixedV);
-    w = u;
-    ep_err = [];
+    bc = DirichletBC(V, 0.0, Dir_boundary)
+    u = TrialFunction(V);
+    v = TestFunction(V);
 
-    for epjj in ep:
-        print('Epsilon = ',epjj)
+    F = inner(grad(u), grad(v))*dx - f*v*dx;
+    a = inner(grad(u), grad(v))*dx;
+    L = f*v*dx;
 
-        w = ForwardProblem_GC(MixedV,K,ds, epjj, w, exact, gx, gy)
+    u0 = Function(V);
 
-        (Sxx,Sxy,Syy,u) = w.split(deepcopy=True);
+    # u = NewtonIteration(V, u0, F, bc)
 
-        ep_err.append(np.sqrt(assemble(abs(exact-u)**2*dx)));
-        print('Run finished at epsilon = ', epjj)
-        print('L2 error = ', ep_err[-1])
-        print ''
-
-        # PlotToFile(u, 'Epsilon = ' + epjj.__str__(), 'file')
-  
-  
-
-
-  
+    
+    R = action(F,u0);
+    DR = derivative(R, u0);
+    # problem = NonlinearVariationalProblem(R,u0,bc,DR);
+    # solver = NonlinearVariationalSolver(problem);
+    # # solver.parameters['newton_solver']['absolute_tolerance'] = 1e-9
+    # prm = solver.parameters
+    # solver.solve();
 
 
+    s = SystemAssembler(DR,R,bc)
+    b = Vector();
+    s.assemble(b);
 
-    (Sxx,Sxy,Syy,u) = w.split(deepcopy=True);
 
-    error = abs(exact-u)**2*dx
+
+
+
+    error = abs(exact-u0)**2*dx
     e[ii] = np.sqrt(assemble(error))
     
     if(ii > 0):
