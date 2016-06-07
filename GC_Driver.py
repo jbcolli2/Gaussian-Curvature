@@ -8,8 +8,8 @@ set_log_level(20)
 
 
 #Values of N for the mesh
-params = np.array([4, 8, 16,32]);
-params = np.array([16]);
+params = np.array([4, 8,16,32]);
+params = np.array([32]);
 
 L = len(params);
 e = np.zeros([L,1]);
@@ -17,7 +17,8 @@ ratio = np.zeros([L,1]);
 
 p = 2;
 
-ep = np.array([1, 1e-1, 1e-2,1e-3, 1e-4,1e-5, 1e-6, 0]);
+ep = np.array([1, 1e-1, 1e-2,5e-3,3e-3,1e-3,5e-4,2e-4, 1e-4,1e-5,1e-6,0]);
+ep = np.array([1]);
 # ep = -ep;
 # ep = np.array([1, 1e-1]);
 
@@ -27,9 +28,9 @@ for ii in range(L):
 
 
 
-    prob = 2;
+    prob = 5;
     (x0, y0, x1, y1, exact, gx, gy, K) = GC_Problems(prob, N);
-
+    K = 0.01
 
 
     # Create mesh and define function space
@@ -81,8 +82,13 @@ for ii in range(L):
         # PlotToFile(u, 'Epsilon = ' + epjj.__str__(), 'file')
   
   
+        bcv = DirichletBC(MixedV.sub(3), exact, Dir_boundary)
+        bcxx = DirichletBC(MixedV.sub(0), epjj, EW_boundary)
+        bcyy = DirichletBC(MixedV.sub(2), epjj, NS_boundary)
+        bc = [bcxx,bcyy,bcv]
 
-
+        F = F_Form_GC(MixedV,K,ds,epjj,gx,gy);
+        R = EvalResidual(F, bc, w)
   
 
 
