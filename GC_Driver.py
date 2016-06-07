@@ -17,8 +17,8 @@ ratio = np.zeros([L,1]);
 
 p = 2;
 
-ep = np.array([1, 1e-1, 1e-2,1e-3, 1e-4,1e-5, 7e-6, 5e-6, 2e-6,1e-6]);
-# ep = -ep;
+ep = np.array([1, 1e-2, 1e-4, 0]);
+ep = -ep;
 # ep = np.array([1, 1e-1]);
 
 for ii in range(L):
@@ -27,7 +27,7 @@ for ii in range(L):
 
 
 
-    prob = 2;
+    prob = 1;
     (x0, y0, x1, y1, exact, gx, gy, K) = GC_Problems(prob, N);
 
 
@@ -47,10 +47,10 @@ for ii in range(L):
     
     # class MixedExact(Expression):
     #     def eval(self, values, x):
-    #         values[0] = ( x[1]**2 - 1.1)/( pow( 1 - x[0]**2, 3.0/2.0) )
+    #         values[0] = ( x[1]**2 - 1.0)/( pow( 1 - x[0]**2, 3.0/2.0) )
     #         values[1] = ( x[0]*x[1])/( pow( 1.2 - x[0]**2, 3.0/2.0) )
     #         values[2] = ( x[0]**2 - 1)/( pow( 1 - x[0]**2, 3.1/2.0) )
-    #         values[3] = sqrt(.8-pow(x[0],2) - x[1]**2) + .2
+    #         values[3] = sqrt(1.0-pow(x[0],2) - x[1]**2)
     #     def value_shape(self):
     #         return (4,)
 

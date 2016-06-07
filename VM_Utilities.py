@@ -1,4 +1,6 @@
 from dolfin import *
+import numpy as np
+
 
 
 
@@ -96,6 +98,68 @@ def SetParameters(prm):
     prm["newton_solver"]["krylov_solver"]["preconditioner"]["structure"]\
     = "same_nonzero_pattern"
     prm["newton_solver"]["krylov_solver"]["preconditioner"]["ilu"]["fill_level"] =0
+
+
+
+
+
+
+
+
+def NewtonIteration(V, w0, form, bc):
+    max_iters = 30;
+    abstol = 1e-9;
+    reltol = 1e-6;
+
+    it_count = 0;
+
+    wk = Function(V);
+    wk.assign(w0);
+    wkp1 = Function(V);
+    wkp1.vector()[:] += 100.0;
+    abserr = np.linalg.norm( (wk.vector().array() - wkp1.vector().array()), np.Inf );
+    relerr = abserr/np.linalg.norm(wkp1.vector().array());
+    while((abserr > abstol or relerr > reltol) and it_count < max_iters):
+        it_count += 1;
+        dw = TrialFunction(V);
+
+        Fwk = action(form, wk);
+        Feval_k = np.linalg.norm( assemble(Fwk).array(), 2 )
+        DF = derivative(Fwk, wk, dw);   # derivative of F evaluated at wk.  dw is trial function to be solved for
+
+        A,b = assemble_system(DF, -(1.0)*Fwk, bc);
+
+        dw = Function(V);
+        solve(A, dw.vector(), b);
+
+        lam = 10.0;
+        print 'Old Function value = ', Feval_k
+
+        for ii in range(10):
+            wkp1.assign(wk);
+            wkp1.vector().axpy(lam, dw.vector());
+            Fwkp1 = action(form, wkp1);
+            Feval_kp1 = np.linalg.norm( assemble(Fwkp1).array(), 2 )
+            print 'Function value = ', Feval_kp1
+
+            lam = lam/2;
+
+
+        abserr = np.linalg.norm( (wk.vector().array() - wkp1.vector().array()), np.Inf );
+        relerr = abserr/np.linalg.norm(wkp1.vector().array(), np.Inf);
+
+        
+
+        print 'Iteration Number: ', it_count
+        print 'Absolute Error = ', abserr
+        print 'Relative Error = ', relerr
+        print ''
+
+        wk.assign(wkp1);
+
+
+    return wk;
+
 
 
 
