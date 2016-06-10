@@ -17,7 +17,7 @@ ratio = np.zeros([L,1]);
 
 p = 2;
 
-ep = np.array([ 0]);
+ep = np.array([ 1]);
 ep = -ep;
 # ep = np.array([1, 1e-1]);
 
@@ -69,7 +69,7 @@ for ii in range(L):
     for epjj in ep:
         print('Epsilon = ',epjj)
 
-        w = ForwardProblem_GC(MixedV,K,ds, epjj, w, exact, gx, gy)
+        w, prob = ForwardProblem_GC(MixedV,K,ds, epjj, w, exact, gx, gy)
 
         (Sxx,Sxy,Syy,u) = w.split(deepcopy=True);
 

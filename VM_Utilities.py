@@ -141,9 +141,9 @@ def NewtonIteration(V, w0, form, bc):
         solve(A, dw.vector(), b);
 
         lam = 1.0;
-        print 'Old Function value = ', Feval_k
+        print 'Old Function value = ', Feval_k, ',   ', np.linalg.norm(b,2)
 
-        for ii in range(5):
+        for ii in range(1):
             wkp1.assign(wk);
             wkp1.vector().axpy(lam, dw.vector());
             Feval_kp1 = np.linalg.norm( EvalResidual(form,bc,wkp1).array(), ord=2 )

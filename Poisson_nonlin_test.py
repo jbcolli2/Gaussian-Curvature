@@ -9,7 +9,7 @@ set_log_level(20)
 
 #Values of N for the mesh
 params = np.array([4, 8, 16,32]);
-# params = np.array([4]);
+params = np.array([16]);
 
 L = len(params);
 e = np.zeros([L,1]);
@@ -34,13 +34,13 @@ for ii in range(L):
     x0 = 0; x1 = 1; y0 = 0; y1 = 1;
     mesh = RectangleMesh(Point(x0,y0),Point(x1,y1),N,N)
     V = FunctionSpace(mesh, 'Lagrange', p)
-    exact = Expression('sin(pi*x[0])*sin(pi*x[1])', domain=mesh)
-    f = Expression('2*pi*pi*sin(pi*x[0])*sin(pi*x[1]) - pow( sin(pi*x[0])*sin(pi*x[1]), 2.0 )', domain=mesh)
+    exact = Expression('x[0]*(x[0]-1)*x[1]*(x[1]-1)', domain=mesh)
+    f = Expression('-2*x[0]*x[0] - 2*x[1]*x[1] + 2*(x[0]+x[1])', domain=mesh)
 
 
     
     
-
+    SetupUtilities(mesh, x0, x1, y0, y1);
 
 
     ##### Loop through epsilon values and solve ####################
@@ -48,11 +48,26 @@ for ii in range(L):
     u = TrialFunction(V);
     v = TestFunction(V);
 
-    F = inner(grad(u), grad(v))*dx - u*u*v*dx - f*v*dx;
+    F = inner(grad(u), grad(v))*dx  - u*u*v*dx -  f*v*dx;
 
-    u0 = interpolate(Expression(' 1.5*sin(pi*2*x[0])*sin(pi*x[1])'), V);
+    initial = Function(V);
+    R = action(F,initial);
+    DR = derivative(R, initial);
+    problem = NonlinearVariationalProblem(R,initial,bc,DR);
+    solver = NonlinearVariationalSolver(problem);
+    # solver.parameters['newton_solver']['absolute_tolerance'] = 1e-9
+    prm = solver.parameters
+    solver.solve();
 
-    u0 = NewtonIteration(V, u0, F, bc)
+    Fw = action(F,initial);
+    DR = derivative(Fw,initial);
+    A,b = assemble_system(DR,Fw,bc);
+    print "My computed residual = ", np.linalg.norm(b, 2)
+
+
+    u0 = interpolate(Expression(' x[0]*(x[0]-1)*x[1]*(x[1]-1)'), V);
+
+    # u0 = NewtonIteration(V, u0, F, bc)
 
     
     # R = action(F,u0);

@@ -39,17 +39,23 @@ def ForwardProblem_GC(MixedV,K,ds, ep, initial, exact, gx, gy):
     # Define variational problem
     F = F_Form_GC(MixedV, K, ds, ep, gx, gy);
 
-    initial = NewtonIteration(MixedV, initial, F, bc);
-    # Solve problem
-    # R = action(F,initial);
-    # DR = derivative(R, initial);
-    # problem = NonlinearVariationalProblem(R,initial,bc,DR);
-    # solver = NonlinearVariationalSolver(problem);
-    # # solver.parameters['newton_solver']['absolute_tolerance'] = 1e-9
-    # prm = solver.parameters
-    # solver.solve();
+    # initial = NewtonIteration(MixedV, initial, F, bc);
+    #Solve problem
+    R = action(F,initial);
+    DR = derivative(R, initial);
+    problem = NonlinearVariationalProblem(R,initial,bc,DR);
+    solver = NonlinearVariationalSolver(problem);
+    # solver.parameters['newton_solver']['absolute_tolerance'] = 1e-9
+    prm = solver.parameters
+    solver.solve();
 
-    return initial;
+
+    Fw = action(F,initial);
+    DR = derivative(Fw,initial);
+    A,b = assemble_system(DR,Fw,bc);
+    print "My computed residual = ", np.linalg.norm(b, 2)
+
+    return initial, problem;
 
 
 
