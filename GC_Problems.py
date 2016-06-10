@@ -55,7 +55,7 @@ def GC_Problems(prob, N):
         exact = Expression('0.0');
         gx = exact
         gy = exact
-        K = 0.5;
+        K = 0.01;
 
         return (x0, y0, x1, y1, exact, gx, gy, K);
 

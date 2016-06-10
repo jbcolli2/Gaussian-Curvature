@@ -17,8 +17,8 @@ ratio = np.zeros([L,1]);
 
 p = 2;
 
-ep = np.array([1, 1e-1, 1e-2,5e-3,3e-3,1e-3,5e-4,2e-4, 1e-4,1e-5,1e-6,0]);
-ep = np.array([1]);
+ep = np.array([1, 1e-1, 1e-2,1e-3, 1e-4]);
+# ep = np.array([1]);
 # ep = -ep;
 # ep = np.array([1, 1e-1]);
 
@@ -90,7 +90,16 @@ for ii in range(L):
         F = F_Form_GC(MixedV,K,ds,epjj,gx,gy);
         R = EvalResidual(F, bc, w)
   
-
+    w = ForwardProblem_GC(MixedV,K+.04,ds, epjj, w, exact, gx, gy)
+    w = ForwardProblem_GC(MixedV,K+.06,ds, epjj, w, exact, gx, gy)
+    w = ForwardProblem_GC(MixedV,K+.15,ds, epjj, w, exact, gx, gy)
+    w = ForwardProblem_GC(MixedV,K+.2,ds, epjj, w, exact, gx, gy)
+    w = ForwardProblem_GC(MixedV,K+.3,ds, epjj, w, exact, gx, gy)
+    w = ForwardProblem_GC(MixedV,K+.4,ds, epjj, w, exact, gx, gy)
+    w = ForwardProblem_GC(MixedV,K+.5,ds, epjj, w, exact, gx, gy)
+    w = ForwardProblem_GC(MixedV,K+.55,ds, epjj, w, exact, gx, gy)
+    w = ForwardProblem_GC(MixedV,K+.57,ds, epjj, w, exact, gx, gy)
+    w = ForwardProblem_GC(MixedV,K+.6,ds, epjj, w, exact, gx, gy)
 
 
     (Sxx,Sxy,Syy,u) = w.split(deepcopy=True);
