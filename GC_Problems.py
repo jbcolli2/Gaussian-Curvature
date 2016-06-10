@@ -43,9 +43,9 @@ def GC_Problems(prob, N):
 
     elif(prob == 4):
         x0 = 0; y0 = 0; x1 = 1; y1 = 1;
-        exact = Expression('sin(pi*x[0])*sin(pi*x[1])');
-        gx = Expression('pi*cos(pi*x[0])*sin(pi*x[1])', exac = exact);
-        gy = Expression('pi*sin(pi*x[0])*cos(pi*x[1])', exac = exact);
+        exact = Expression('sin(pi*x[0])*sin(1.2*pi*x[1])');
+        gx = Expression('pi*cos(pi*x[0])*sin(1.2*pi*x[1])', exac = exact);
+        gy = Expression('1.2*pi*sin(pi*x[0])*cos(1.2*pi*x[1])', exac = exact);
         K = 0.5;
 
         return (x0, y0, x1, y1, exact, gx, gy, K);
@@ -55,6 +55,15 @@ def GC_Problems(prob, N):
         exact = Expression('0.0');
         gx = exact
         gy = exact
+        K = 0.01;
+
+        return (x0, y0, x1, y1, exact, gx, gy, K);
+
+    elif(prob == 6):
+        x0 = 0; y0 = 0; x1 = 1; y1 = 1;
+        exact = Expression('sin(pi*x[0])');
+        gx = Expression('pi*cos(pi*x[0])', ex = exact)
+        gy = Expression('0.0', ex = exact)
         K = 0.01;
 
         return (x0, y0, x1, y1, exact, gx, gy, K);

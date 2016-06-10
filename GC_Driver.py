@@ -17,7 +17,7 @@ ratio = np.zeros([L,1]);
 
 p = 2;
 
-ep = np.array([1, 1e-1, 1e-2,1e-3, 1e-4]);
+ep = np.array([1, 5e-1, 1e-1, 5e-2, 1e-2,5e-3, 1e-3,5e-4,3e-4,2e-4]);
 # ep = np.array([1]);
 # ep = -ep;
 # ep = np.array([1, 1e-1]);
@@ -28,9 +28,9 @@ for ii in range(L):
 
 
 
-    prob = 5;
+    prob = 4;
     (x0, y0, x1, y1, exact, gx, gy, K) = GC_Problems(prob, N);
-    K = 0.01
+    K = 0.0
 
 
     # Create mesh and define function space
@@ -70,7 +70,7 @@ for ii in range(L):
     for epjj in ep:
         print('Epsilon = ',epjj)
 
-        w = ForwardProblem_GC(MixedV,K,ds, epjj, w, exact, gx, gy)
+        w, prob, solv = ForwardProblem_GC(MixedV,K,ds, epjj, w, exact, gx, gy)
 
         (Sxx,Sxy,Syy,u) = w.split(deepcopy=True);
 
@@ -90,16 +90,15 @@ for ii in range(L):
         F = F_Form_GC(MixedV,K,ds,epjj,gx,gy);
         R = EvalResidual(F, bc, w)
   
-    w = ForwardProblem_GC(MixedV,K+.04,ds, epjj, w, exact, gx, gy)
-    w = ForwardProblem_GC(MixedV,K+.06,ds, epjj, w, exact, gx, gy)
-    w = ForwardProblem_GC(MixedV,K+.15,ds, epjj, w, exact, gx, gy)
-    w = ForwardProblem_GC(MixedV,K+.2,ds, epjj, w, exact, gx, gy)
-    w = ForwardProblem_GC(MixedV,K+.3,ds, epjj, w, exact, gx, gy)
-    w = ForwardProblem_GC(MixedV,K+.4,ds, epjj, w, exact, gx, gy)
-    w = ForwardProblem_GC(MixedV,K+.5,ds, epjj, w, exact, gx, gy)
-    w = ForwardProblem_GC(MixedV,K+.55,ds, epjj, w, exact, gx, gy)
-    w = ForwardProblem_GC(MixedV,K+.57,ds, epjj, w, exact, gx, gy)
-    w = ForwardProblem_GC(MixedV,K+.6,ds, epjj, w, exact, gx, gy)
+    w, prob, solv = ForwardProblem_GC(MixedV,K+.01,ds, epjj, w, exact, gx, gy)
+    w, prob, solv = ForwardProblem_GC(MixedV,K+.02,ds, epjj, w, exact, gx, gy)
+    w, prob, solv = ForwardProblem_GC(MixedV,K+.05,ds, epjj, w, exact, gx, gy)
+    w, prob, solv = ForwardProblem_GC(MixedV,K+.2,ds, epjj, w, exact, gx, gy)
+    w, prob, solv = ForwardProblem_GC(MixedV,K+.3,ds, epjj, w, exact, gx, gy)
+    w, prob, solv = ForwardProblem_GC(MixedV,K+.4,ds, epjj, w, exact, gx, gy)
+    w, prob, solv = ForwardProblem_GC(MixedV,K+.5,ds, epjj, w, exact, gx, gy)
+    w, prob, solv = ForwardProblem_GC(MixedV,K+.55,ds, epjj, w, exact, gx, gy)
+    # w, prob, solv = ForwardProblem_GC(MixedV,K+.57,ds, epjj, w, exact, gx, gy)
 
 
     (Sxx,Sxy,Syy,u) = w.split(deepcopy=True);

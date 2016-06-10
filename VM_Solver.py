@@ -44,11 +44,11 @@ def ForwardProblem_GC(MixedV,K,ds, ep, initial, exact, gx, gy):
     DR = derivative(R, initial);
     problem = NonlinearVariationalProblem(R,initial,bc,DR);
     solver = NonlinearVariationalSolver(problem);
-    # solver.parameters['newton_solver']['relaxation_parameter'] = 0.8
+    solver.parameters['newton_solver']['maximum_iterations'] = 20
     prm = solver.parameters
     solver.solve();
 
-    return initial;
+    return initial, problem, solver;
 
 
 
