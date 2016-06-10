@@ -50,5 +50,13 @@ def GC_Problems(prob, N):
 
         return (x0, y0, x1, y1, exact, gx, gy, K);
 
+    elif(prob == 5):
+        x0 = 0; y0 = 0; x1 = 1; y1 = 1;
+        exact = Expression('0.0');
+        gx = Expression('0.0', exac = exact);
+        gy = Expression('0.0', exac = exact);
+        K = 0.2;
+
+        return (x0, y0, x1, y1, exact, gx, gy, K);
 
 

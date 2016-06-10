@@ -27,7 +27,7 @@ for ii in range(L):
 
 
 
-    prob = 1;
+    prob = 5;
     (x0, y0, x1, y1, exact, gx, gy, K) = GC_Problems(prob, N);
 
 
@@ -45,25 +45,25 @@ for ii in range(L):
     ds = Create_dsMeasure()
     
     
-    class MixedExact(Expression):
-        def eval(self, values, x):
-            values[0] = ( x[1]**2 - 1.0)/( pow( 1 - x[0]**2 - x[1]**2, 3.0/2.0) )
-            values[1] = ( -x[0]*x[1])/( pow( 1 - x[0]**2- x[1]**2, 3.0/2.0) )
-            values[2] = ( x[0]**2 - 1.0)/( pow( 1 - x[0]**2- x[1]**2, 3.1/2.0) )
-            values[3] = sqrt(1.0-pow(x[0],2) - x[1]**2)
-        def value_shape(self):
-            return (4,)
+    # class MixedExact(Expression):
+    #     def eval(self, values, x):
+    #         values[0] = ( x[1]**2 - 1.0)/( pow( 1 - x[0]**2 - x[1]**2, 3.0/2.0) )
+    #         values[1] = ( -x[0]*x[1])/( pow( 1 - x[0]**2- x[1]**2, 3.0/2.0) )
+    #         values[2] = ( x[0]**2 - 1.0)/( pow( 1 - x[0]**2- x[1]**2, 3.1/2.0) )
+    #         values[3] = sqrt(1.0-pow(x[0],2) - x[1]**2)
+    #     def value_shape(self):
+    #         return (4,)
 
 
-    u = Function(MixedV)
-    ex = MixedExact();
-    u.interpolate(ex)
+    # u = Function(MixedV)
+    # ex = MixedExact();
+    # u.interpolate(ex)
 
 
 
     ##### Loop through epsilon values and solve ####################
     w = Function(MixedV);
-    w = u;
+    # w = u;
     ep_err = [];
 
     for epjj in ep:
@@ -82,7 +82,7 @@ for ii in range(L):
   
   
 
-
+    s = SystemAssembler(prob.jacobian_form(), prob.residual_form(), prob.bcs());
   
 
 
