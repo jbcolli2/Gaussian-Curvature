@@ -70,7 +70,7 @@ for ii in range(L):
     for epjj in ep:
         print('Epsilon = ',epjj)
 
-        w, prob, solv = ForwardProblem_GC(MixedV,K,ds, epjj, w, exact, gx, gy)
+        w = ForwardProblem_GC(MixedV,K,ds, epjj, w, exact, gx, gy)
 
         (Sxx,Sxy,Syy,u) = w.split(deepcopy=True);
 
@@ -90,14 +90,14 @@ for ii in range(L):
         F = F_Form_GC(MixedV,K,ds,epjj,gx,gy);
         R = EvalResidual(F, bc, w)
   
-    w, prob, solv = ForwardProblem_GC(MixedV,K+.01,ds, epjj, w, exact, gx, gy)
-    w, prob, solv = ForwardProblem_GC(MixedV,K+.02,ds, epjj, w, exact, gx, gy)
-    w, prob, solv = ForwardProblem_GC(MixedV,K+.05,ds, epjj, w, exact, gx, gy)
-    w, prob, solv = ForwardProblem_GC(MixedV,K+.2,ds, epjj, w, exact, gx, gy)
-    w, prob, solv = ForwardProblem_GC(MixedV,K+.3,ds, epjj, w, exact, gx, gy)
-    w, prob, solv = ForwardProblem_GC(MixedV,K+.4,ds, epjj, w, exact, gx, gy)
-    w, prob, solv = ForwardProblem_GC(MixedV,K+.5,ds, epjj, w, exact, gx, gy)
-    w, prob, solv = ForwardProblem_GC(MixedV,K+.55,ds, epjj, w, exact, gx, gy)
+    w = ForwardProblem_GC(MixedV,K+.01,ds, epjj, w, exact, gx, gy)
+    w = ForwardProblem_GC(MixedV,K+.02,ds, epjj, w, exact, gx, gy)
+    w = ForwardProblem_GC(MixedV,K+.05,ds, epjj, w, exact, gx, gy)
+    w = ForwardProblem_GC(MixedV,K+.2,ds, epjj, w, exact, gx, gy)
+    w = ForwardProblem_GC(MixedV,K+.3,ds, epjj, w, exact, gx, gy)
+    w = ForwardProblem_GC(MixedV,K+.4,ds, epjj, w, exact, gx, gy)
+    w = ForwardProblem_GC(MixedV,K+.5,ds, epjj, w, exact, gx, gy)
+    w = ForwardProblem_GC(MixedV,K+.55,ds, epjj, w, exact, gx, gy)
     # w, prob, solv = ForwardProblem_GC(MixedV,K+.57,ds, epjj, w, exact, gx, gy)
 
 

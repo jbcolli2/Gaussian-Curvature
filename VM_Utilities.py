@@ -1,4 +1,7 @@
 from dolfin import *
+import numpy as np
+import copy
+
 
 
 
@@ -61,6 +64,10 @@ def Create_dsMeasure():
 
 
 def EvalResidual(F,bc,u0):
+    # bcw = copy.copy(bc);
+    # for bii in bcw:
+    #     bii.homogenize();
+
     F0 = action(F,u0);
     J = derivative(F0,u0);
     s = SystemAssembler(J,F0,bc)
@@ -104,6 +111,79 @@ def SetParameters(prm):
     prm["newton_solver"]["krylov_solver"]["preconditioner"]["structure"]\
     = "same_nonzero_pattern"
     prm["newton_solver"]["krylov_solver"]["preconditioner"]["ilu"]["fill_level"] =0
+
+
+
+
+
+
+
+
+def NewtonIteration(V, w0, form, bc, bch):
+    max_iters = 5;
+    abstol = 1e-9;
+    reltol = 1e-6;
+    alpha = 1e-4;
+
+    it_count = 0;
+
+
+    wk = Function(V);
+    wk.assign(w0);
+    wkp1 = Function(V);
+    wkp1.vector()[:] += 100.0;
+    abserr = np.linalg.norm( (wk.vector().array() - wkp1.vector().array()), np.Inf );
+    relerr = abserr/np.linalg.norm(wkp1.vector().array());
+    while((abserr > abstol or relerr > reltol) and it_count < max_iters):
+        it_count += 1;
+        dw = TrialFunction(V);
+
+        
+        Fwk = action(form, wk);
+        DF = derivative(Fwk, wk, dw);   # derivative of F evaluated at wk.  dw is trial function to be solved for
+
+        # A,b = assemble_system(DF, Fwk, bch);
+        assembler = SystemAssembler(DF,Fwk,bc);
+        A = Matrix();
+        b = Vector();
+        assembler.assemble(b,wk.vector())
+        assembler.assemble(A)
+        Feval_k = b.norm('l2')
+
+        dw = Function(V);
+        solve(A, dw.vector(), b);
+
+        check = A*dw.vector() + b;
+        # print 'Checking... ', check.norm('l2'), ' = ', b.norm('l2')
+        lam = 1.0;
+        # print 'Old Function value = ', Feval_k, ',   ', np.linalg.norm(b,2);
+        Feval_kp1 = Feval_k;
+        count = 1;
+        while(Feval_kp1 >= (1-alpha*lam)*Feval_k and count < 2):
+            wkp1.assign(wk);
+            wkp1.vector().axpy(-lam, dw.vector());
+            Feval_kp1 = EvalResidual(form,bch,wkp1).norm('l2')
+            # print 'Function value = ', Feval_kp1, ' count = ', count
+
+            lam = lam/2;
+            count += 1;
+
+
+        abserr = np.linalg.norm( (wk.vector().array() - wkp1.vector().array()), np.Inf );
+        relerr = abserr/np.linalg.norm(wkp1.vector().array(), np.Inf);
+
+        
+
+        print 'Iteration Number: ', it_count, '; Abs Error = ', abserr, '; Rel Error = ', relerr, '; Res = ', Feval_kp1;
+        # print 'Absolute Error = ', abserr
+        # print 'Relative Error = ', relerr
+        # print ''
+
+        wk.assign(wkp1);
+
+
+    return wk;
+
 
 
 
@@ -151,6 +231,7 @@ def F_Form_GC(MixedV, K, ds, ep, gx, gy):
         F += (((Sxx*Syy - Sxy*Sxy)-(1 + (Dx(u,0)**2 + Dx(u,1)**2))**(2)) * K)*v*dx;
     else:
         F += (Sxx*Syy - Sxy*Sxy)*v*dx;
+    
 
 
     F -= (-gy*muxy*ds(1) + gx*muxy*ds(2) + gy*muxy*ds(3) - gx*muxy*ds(4));
