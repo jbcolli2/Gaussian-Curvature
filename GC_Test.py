@@ -18,6 +18,7 @@ ratio = np.zeros([L,1]);
 p = 2;
 
 ep = np.array([ 1, 1e-1, 1e-2, 1e-3, 1e-4]);
+# ep = np.array([1]);
 ep = -ep;
 # ep = np.array([1, 1e-1]);
 
@@ -88,11 +89,15 @@ for ii in range(L):
 
         # Solve the problem
 
-        myinitial = NewtonIteration(MixedV, feninitial, F, bc, bch);
+        myinitial.assign(NewtonIteration(MixedV, feninitial, F, bc, bch));
 
-        # print 'Initial Residual = ', EvalResidual(F, bc, initial).norm('l2');
+        print 'Initial Residual = ', EvalResidual(F, bc, feninitial).norm('l2');
         R = action(F,feninitial);
         DR = derivative(R, feninitial);
+        bcv = DirichletBC(MixedV.sub(3), exact, Dir_boundary)
+        bcxx = DirichletBC(MixedV.sub(0), epjj, EW_boundary)
+        bcyy = DirichletBC(MixedV.sub(2), epjj, NS_boundary)
+        bc = [bcxx,bcyy,bcv]
         problem = NonlinearVariationalProblem(R,feninitial,bc,DR);
         solver = NonlinearVariationalSolver(problem);
         solver.parameters['newton_solver']['maximum_iterations'] = 5;

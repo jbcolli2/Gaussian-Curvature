@@ -64,13 +64,13 @@ def Create_dsMeasure():
 
 
 def EvalResidual(F,bc,u0):
-    bcw = copy.copy(bc);
-    for bii in bcw:
-        bii.homogenize();
+    # bcw = copy.copy(bc);
+    # for bii in bcw:
+    #     bii.homogenize();
 
     F0 = action(F,u0);
     J = derivative(F0,u0);
-    s = SystemAssembler(J,F0,bcw)
+    s = SystemAssembler(J,F0,bc)
     b = Vector();
     s.assemble(b);
 
@@ -142,7 +142,12 @@ def NewtonIteration(V, w0, form, bc, bch):
         Fwk = action(form, wk);
         DF = derivative(Fwk, wk, dw);   # derivative of F evaluated at wk.  dw is trial function to be solved for
 
-        A,b = assemble_system(DF, (-1.0)*Fwk, bch);
+        # A,b = assemble_system(DF, Fwk, bch);
+        assembler = SystemAssembler(DF,Fwk,bc);
+        A = Matrix();
+        b = Vector();
+        assembler.assemble(b,wk.vector())
+        assembler.assemble(A)
         Feval_k = b.norm('l2')
 
         dw = Function(V);
@@ -156,7 +161,7 @@ def NewtonIteration(V, w0, form, bc, bch):
         count = 1;
         while(Feval_kp1 >= (1-alpha*lam)*Feval_k and count < 2):
             wkp1.assign(wk);
-            wkp1.vector().axpy(lam, dw.vector());
+            wkp1.vector().axpy(-lam, dw.vector());
             Feval_kp1 = EvalResidual(form,bch,wkp1).norm('l2')
             # print 'Function value = ', Feval_kp1, ' count = ', count
 

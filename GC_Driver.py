@@ -9,7 +9,7 @@ set_log_level(20)
 
 #Values of N for the mesh
 params = np.array([4, 8, 16,32]);
-params = np.array([16]);
+# params = np.array([16]);
 
 L = len(params);
 e = np.zeros([L,1]);
@@ -17,7 +17,7 @@ ratio = np.zeros([L,1]);
 
 p = 2;
 
-ep = np.array([ 1, 1e-1, 1e-2, 1e-3, 1e-4]);
+ep = np.array([ 1, 1e-1, 1e-2, 1e-3, 1e-4,0]);
 ep = -ep;
 # ep = np.array([1, 1e-1]);
 
