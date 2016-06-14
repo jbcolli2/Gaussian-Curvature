@@ -1,5 +1,6 @@
 from dolfin import *
 import numpy as np
+import copy
 
 
 
@@ -63,9 +64,9 @@ def Create_dsMeasure():
 
 
 def EvalResidual(F,bc,u0):
-    bcw = bc;
-    for b in bcw:
-        b.homogenize();
+    bcw = copy.copy(bc);
+    for bii in bcw:
+        bii.homogenize();
 
     F0 = action(F,u0);
     J = derivative(F0,u0);
@@ -118,17 +119,14 @@ def SetParameters(prm):
 
 
 
-def NewtonIteration(V, w0, form, bc):
-    max_iters = 4;
+def NewtonIteration(V, w0, form, bc, bch):
+    max_iters = 5;
     abstol = 1e-9;
     reltol = 1e-6;
     alpha = 1e-4;
 
     it_count = 0;
 
-    bch = bc;
-    for b in bch:
-        b.homogenize();
 
     wk = Function(V);
     wk.assign(w0);
@@ -140,26 +138,27 @@ def NewtonIteration(V, w0, form, bc):
         it_count += 1;
         dw = TrialFunction(V);
 
-        Feval_k = np.linalg.norm( EvalResidual(form,bc,wk).array(), ord=2 )
+        
         Fwk = action(form, wk);
         DF = derivative(Fwk, wk, dw);   # derivative of F evaluated at wk.  dw is trial function to be solved for
 
         A,b = assemble_system(DF, (-1.0)*Fwk, bch);
+        Feval_k = b.norm('l2')
 
         dw = Function(V);
         solve(A, dw.vector(), b);
 
         check = A*dw.vector() + b;
-        print 'Checking... ', check.norm('l2'), ' = ', b.norm('l2')
+        # print 'Checking... ', check.norm('l2'), ' = ', b.norm('l2')
         lam = 1.0;
-        print 'Old Function value = ', Feval_k, ',   ', np.linalg.norm(b,2);
+        # print 'Old Function value = ', Feval_k, ',   ', np.linalg.norm(b,2);
         Feval_kp1 = Feval_k;
         count = 1;
         while(Feval_kp1 >= (1-alpha*lam)*Feval_k and count < 2):
             wkp1.assign(wk);
             wkp1.vector().axpy(lam, dw.vector());
-            Feval_kp1 = EvalResidual(form,bc,wkp1).norm('l2')
-            print 'Function value = ', Feval_kp1, ' count = ', count
+            Feval_kp1 = EvalResidual(form,bch,wkp1).norm('l2')
+            # print 'Function value = ', Feval_kp1, ' count = ', count
 
             lam = lam/2;
             count += 1;

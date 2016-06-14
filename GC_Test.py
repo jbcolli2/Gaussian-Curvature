@@ -17,7 +17,7 @@ ratio = np.zeros([L,1]);
 
 p = 2;
 
-ep = np.array([ 1]);
+ep = np.array([ 1, 1e-1, 1e-2, 1e-3, 1e-4]);
 ep = -ep;
 # ep = np.array([1, 1e-1]);
 
@@ -29,7 +29,7 @@ for ii in range(L):
 
     prob = 1;
     (x0, y0, x1, y1, exact, gx, gy, K) = GC_Problems(prob, N);
-
+    K = 1.0;
 
 
     # Create mesh and define function space
@@ -66,45 +66,42 @@ for ii in range(L):
     # w = u;
     ep_err = [];
 
-    print('Epsilon = ',1)
-
     
-    #Define boundary conditions
-    bcv = DirichletBC(MixedV.sub(3), exact, Dir_boundary)
-    bcxx = DirichletBC(MixedV.sub(0), 1, EW_boundary)
-    bcyy = DirichletBC(MixedV.sub(2), 1, NS_boundary)
-    bc = [bcxx,bcyy,bcv]
+    myinitial = Function(MixedV)
+    feninitial = Function(MixedV)
+    for epjj in ep:
+        print 'Epsilon = ',epjj
+        #Define boundary conditions
+        bcv = DirichletBC(MixedV.sub(3), exact, Dir_boundary)
+        bcxx = DirichletBC(MixedV.sub(0), epjj, EW_boundary)
+        bcyy = DirichletBC(MixedV.sub(2), epjj, NS_boundary)
+        bc = [bcxx,bcyy,bcv]
+        bcvh = DirichletBC(MixedV.sub(3), exact, Dir_boundary)
+        bcxxh = DirichletBC(MixedV.sub(0), epjj, EW_boundary)
+        bcyyh = DirichletBC(MixedV.sub(2), epjj, NS_boundary)
+        bch = [bcxxh,bcyyh,bcvh]
+        for bcii in bch:
+            bcii.homogenize();
 
-    #Define the weak residual F
-    (Sxx, Sxy, Syy, u) = TrialFunction(MixedV)
-    (muxx, muxy, muyy, v) = TestFunction(MixedV)
 
-    F = inner(Sxx,muxx)*dx + 2*inner(Sxy,muxy)*dx + inner(Syy,muyy)*dx;
-    F += inner(Dx(u,0), Dx(muxx,0))*dx + inner(Dx(u,0), Dx(muxy,1))*dx;
-    F += inner(Dx(u,1), Dx(muxy,0))*dx + inner(Dx(u,1), Dx(muyy,1))*dx;
+        F = F_Form_GC(MixedV, K, ds, epjj, gx, gy);
 
-    F += ( inner(Dx(Sxx,0), Dx(v,0)) + inner(Dx(Sxy,0), Dx(v,1)))*dx;
-    F += ( inner(Dx(Sxy,1), Dx(v,0)) + inner(Dx(Syy,1), Dx(v,1)))*dx;
+        # Solve the problem
 
-    F += (((Sxx*Syy - Sxy*Sxy)-(1 + (Dx(u,0)**2 + Dx(u,1)**2))**(2)) * K)*v*dx;
+        myinitial = NewtonIteration(MixedV, feninitial, F, bc, bch);
 
-    F -= (-gy*muxy*ds(1) + gx*muxy*ds(2) + gy*muxy*ds(3) - gx*muxy*ds(4));
+        # print 'Initial Residual = ', EvalResidual(F, bc, initial).norm('l2');
+        R = action(F,feninitial);
+        DR = derivative(R, feninitial);
+        problem = NonlinearVariationalProblem(R,feninitial,bc,DR);
+        solver = NonlinearVariationalSolver(problem);
+        solver.parameters['newton_solver']['maximum_iterations'] = 5;
+        solver.parameters['newton_solver']['absolute_tolerance'] = 1e-10;
+        solver.solve();
 
-    # Solve the problem
-    w0 = Function(MixedV)
-    initial = Function(MixedV)
-    print 'Initial Residual = ', EvalResidual(F, bc, initial).norm('l2');
-    R = action(F,initial);
-    DR = derivative(R, initial);
-    problem = NonlinearVariationalProblem(R,initial,bc,DR);
-    solver = NonlinearVariationalSolver(problem);
-    solver.parameters['newton_solver']['maximum_iterations'] = 4;
-    solver.parameters['newton_solver']['absolute_tolerance'] = 1e-10;
-    solver.solve();
 
-    mysol = NewtonIteration(MixedV, w0, F, bc);
-
-    print 'Computed solutions: Fenics = ', initial.vector().norm('l2'), ',  Mine = ', mysol.vector().norm('l2');
+        print 'Computed solutions: Fenics = ', feninitial.vector().norm('l2'), ',  Mine = ', myinitial.vector().norm('l2');
+        print ''
 
 
   

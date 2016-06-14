@@ -17,7 +17,7 @@ ratio = np.zeros([L,1]);
 
 p = 2;
 
-ep = np.array([ 1]);
+ep = np.array([ 1, 1e-1, 1e-2, 1e-3, 1e-4]);
 ep = -ep;
 # ep = np.array([1, 1e-1]);
 
@@ -27,9 +27,9 @@ for ii in range(L):
 
 
 
-    prob = 5;
+    prob = 1;
     (x0, y0, x1, y1, exact, gx, gy, K) = GC_Problems(prob, N);
-    K = 0.01
+    K = 1.0
 
 
     # Create mesh and define function space

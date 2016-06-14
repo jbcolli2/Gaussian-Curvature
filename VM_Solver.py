@@ -35,12 +35,19 @@ def ForwardProblem_GC(MixedV,K,ds, ep, initial, exact, gx, gy):
     bcxx = DirichletBC(MixedV.sub(0), ep, EW_boundary)
     bcyy = DirichletBC(MixedV.sub(2), ep, NS_boundary)
     bc = [bcxx,bcyy,bcv]
+    bcvh = DirichletBC(MixedV.sub(3), exact, Dir_boundary)
+    bcxxh = DirichletBC(MixedV.sub(0), ep, EW_boundary)
+    bcyyh = DirichletBC(MixedV.sub(2), ep, NS_boundary)
+    bch = [bcxxh,bcyyh,bcvh]
+    for bcii in bch:
+        bcii.homogenize();
 
     # Define variational problem
     F = F_Form_GC(MixedV, K, ds, ep, gx, gy);
+    # print 'Initial Residual = ', EvalResidual(F, bch, initial).norm('l2');
 
 
-    initial = NewtonIteration(MixedV, initial, F, bc);
+    initial = NewtonIteration(MixedV, initial, F, bc, bch);
     #Solve problem
     # R = action(F,initial);
     # DR = derivative(R, initial);
