@@ -63,9 +63,13 @@ def Create_dsMeasure():
 
 
 def EvalResidual(F,bc,u0):
+    bcw = bc;
+    for b in bcw:
+        b.homogenize();
+
     F0 = action(F,u0);
     J = derivative(F0,u0);
-    s = SystemAssembler(J,F0,bc)
+    s = SystemAssembler(J,F0,bcw)
     b = Vector();
     s.assemble(b);
 
@@ -115,11 +119,16 @@ def SetParameters(prm):
 
 
 def NewtonIteration(V, w0, form, bc):
-    max_iters = 30;
+    max_iters = 4;
     abstol = 1e-9;
     reltol = 1e-6;
+    alpha = 1e-4;
 
     it_count = 0;
+
+    bch = bc;
+    for b in bch:
+        b.homogenize();
 
     wk = Function(V);
     wk.assign(w0);
@@ -135,21 +144,25 @@ def NewtonIteration(V, w0, form, bc):
         Fwk = action(form, wk);
         DF = derivative(Fwk, wk, dw);   # derivative of F evaluated at wk.  dw is trial function to be solved for
 
-        A,b = assemble_system(DF, (-1.0)*Fwk, bc);
+        A,b = assemble_system(DF, (-1.0)*Fwk, bch);
 
         dw = Function(V);
         solve(A, dw.vector(), b);
 
+        check = A*dw.vector() + b;
+        print 'Checking... ', check.norm('l2'), ' = ', b.norm('l2')
         lam = 1.0;
-        print 'Old Function value = ', Feval_k, ',   ', np.linalg.norm(b,2)
-
-        for ii in range(1):
+        print 'Old Function value = ', Feval_k, ',   ', np.linalg.norm(b,2);
+        Feval_kp1 = Feval_k;
+        count = 1;
+        while(Feval_kp1 >= (1-alpha*lam)*Feval_k and count < 2):
             wkp1.assign(wk);
             wkp1.vector().axpy(lam, dw.vector());
-            Feval_kp1 = np.linalg.norm( EvalResidual(form,bc,wkp1).array(), ord=2 )
-            print 'Function value = ', Feval_kp1
+            Feval_kp1 = EvalResidual(form,bc,wkp1).norm('l2')
+            print 'Function value = ', Feval_kp1, ' count = ', count
 
             lam = lam/2;
+            count += 1;
 
 
         abserr = np.linalg.norm( (wk.vector().array() - wkp1.vector().array()), np.Inf );
@@ -157,10 +170,10 @@ def NewtonIteration(V, w0, form, bc):
 
         
 
-        print 'Iteration Number: ', it_count
-        print 'Absolute Error = ', abserr
-        print 'Relative Error = ', relerr
-        print ''
+        print 'Iteration Number: ', it_count, '; Abs Error = ', abserr, '; Rel Error = ', relerr, '; Res = ', Feval_kp1;
+        # print 'Absolute Error = ', abserr
+        # print 'Relative Error = ', relerr
+        # print ''
 
         wk.assign(wkp1);
 
@@ -210,7 +223,11 @@ def F_Form_GC(MixedV, K, ds, ep, gx, gy):
         F += ep*( inner(Dx(Sxy,1), Dx(v,0)) + inner(Dx(Syy,1), Dx(v,1)))*dx;
 
     # Determinant term/Nonlinear term
-    F += (((Sxx*Syy - Sxy*Sxy)-(1 + (Dx(u,0)**2 + Dx(u,1)**2))**(2)) * K)*v*dx;
+    if(K != 0):
+        F += (((Sxx*Syy - Sxy*Sxy)-(1 + (Dx(u,0)**2 + Dx(u,1)**2))**(2)) * K)*v*dx;
+    else:
+        F += (Sxx*Syy - Sxy*Sxy)*v*dx;
+    
 
 
     F -= (-gy*muxy*ds(1) + gx*muxy*ds(2) + gy*muxy*ds(3) - gx*muxy*ds(4));

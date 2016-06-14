@@ -27,7 +27,7 @@ for ii in range(L):
 
 
 
-    prob = 5;
+    prob = 1;
     (x0, y0, x1, y1, exact, gx, gy, K) = GC_Problems(prob, N);
 
 
@@ -68,6 +68,7 @@ for ii in range(L):
 
     print('Epsilon = ',1)
 
+    
     #Define boundary conditions
     bcv = DirichletBC(MixedV.sub(3), exact, Dir_boundary)
     bcxx = DirichletBC(MixedV.sub(0), 1, EW_boundary)
@@ -90,17 +91,20 @@ for ii in range(L):
     F -= (-gy*muxy*ds(1) + gx*muxy*ds(2) + gy*muxy*ds(3) - gx*muxy*ds(4));
 
     # Solve the problem
+    w0 = Function(MixedV)
     initial = Function(MixedV)
+    print 'Initial Residual = ', EvalResidual(F, bc, initial).norm('l2');
     R = action(F,initial);
     DR = derivative(R, initial);
     problem = NonlinearVariationalProblem(R,initial,bc,DR);
     solver = NonlinearVariationalSolver(problem);
+    solver.parameters['newton_solver']['maximum_iterations'] = 4;
+    solver.parameters['newton_solver']['absolute_tolerance'] = 1e-10;
     solver.solve();
 
-    #Evaluate the residual
-    Fw = action(F,initial);
-    A,b = assemble_system(DR,Fw,bc);
-    print "My computed residual = ", b.norm('l2')
+    mysol = NewtonIteration(MixedV, w0, F, bc);
+
+    print 'Computed solutions: Fenics = ', initial.vector().norm('l2'), ',  Mine = ', mysol.vector().norm('l2');
 
 
   

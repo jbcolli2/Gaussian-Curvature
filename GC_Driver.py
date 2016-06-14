@@ -29,7 +29,7 @@ for ii in range(L):
 
     prob = 5;
     (x0, y0, x1, y1, exact, gx, gy, K) = GC_Problems(prob, N);
-
+    K = 0.01
 
 
     # Create mesh and define function space
@@ -69,7 +69,7 @@ for ii in range(L):
     for epjj in ep:
         print('Epsilon = ',epjj)
 
-        w, prob = ForwardProblem_GC(MixedV,K,ds, epjj, w, exact, gx, gy)
+        w = ForwardProblem_GC(MixedV,K,ds, epjj, w, exact, gx, gy)
 
         (Sxx,Sxy,Syy,u) = w.split(deepcopy=True);
 
@@ -82,7 +82,6 @@ for ii in range(L):
   
   
 
-    s = SystemAssembler(prob.jacobian_form(), prob.residual_form(), prob.bcs());
   
 
 
