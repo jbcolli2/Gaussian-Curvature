@@ -1,7 +1,7 @@
 from dolfin import *
 
 
-def GC_Problems(prob, N):
+def GC_Problems(prob):
     # cutoff = pow(N,2.0);
     cutoff = 0;
     xtol = 1e-18;
@@ -43,9 +43,9 @@ def GC_Problems(prob, N):
 
     elif(prob == 4):
         x0 = 0; y0 = 0; x1 = 1; y1 = 1;
-        exact = Expression('sin(pi*x[0])*sin(1.2*pi*x[1])');
-        gx = Expression('pi*cos(pi*x[0])*sin(1.2*pi*x[1])', exac = exact);
-        gy = Expression('1.2*pi*sin(pi*x[0])*cos(1.2*pi*x[1])', exac = exact);
+        exact = Expression('sin(pi*x[0])*sin(1.5*pi*x[1])');
+        gx = Expression('pi*cos(pi*x[0])*sin(1.5*pi*x[1])', exac = exact);
+        gy = Expression('1.5*pi*sin(pi*x[0])*cos(1.5*pi*x[1])', exac = exact);
         K = 0.5;
 
         return (x0, y0, x1, y1, exact, gx, gy, K);

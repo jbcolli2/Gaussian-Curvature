@@ -17,8 +17,8 @@ ratio = np.zeros([L,1]);
 
 p = 2;
 
-ep = np.array([ 1, 1e-1, 1e-2, 1e-3, 1e-4]);
-# ep = np.array([1]);
+ep = np.array([ 1, 1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 0]);
+ep = np.array([1]);
 ep = -ep;
 # ep = np.array([1, 1e-1]);
 
@@ -28,7 +28,7 @@ for ii in range(L):
 
 
 
-    prob = 1;
+    prob = 5;
     (x0, y0, x1, y1, exact, gx, gy, K) = GC_Problems(prob, N);
     K = 1.0;
 
@@ -69,6 +69,10 @@ for ii in range(L):
 
     
     myinitial = Function(MixedV)
+    (Sxx,Sxy,Syy,u) = myinitial.split();
+    Sxx.vector()[:] = 1.0;
+    Syy.vector()[:] = 1.0;
+    u.vector()[:] = 1.0;
     feninitial = Function(MixedV)
     for epjj in ep:
         print 'Epsilon = ',epjj
@@ -89,7 +93,7 @@ for ii in range(L):
 
         # Solve the problem
 
-        myinitial.assign(NewtonIteration(MixedV, feninitial, F, bc, bch));
+        # myinitial.assign(NewtonIteration(MixedV, feninitial, F, bc, bch));
 
         print 'Initial Residual = ', EvalResidual(F, bc, feninitial).norm('l2');
         R = action(F,feninitial);
@@ -103,6 +107,11 @@ for ii in range(L):
         solver.parameters['newton_solver']['maximum_iterations'] = 5;
         solver.parameters['newton_solver']['absolute_tolerance'] = 1e-10;
         solver.solve();
+
+        F = action(F,myinitial)
+        solve(F == 0, myinitial, bc, solver_parameters={"newton_solver":
+                                        {"relative_tolerance": 1e-6}})
+
 
 
         print 'Computed solutions: Fenics = ', feninitial.vector().norm('l2'), ',  Mine = ', myinitial.vector().norm('l2');

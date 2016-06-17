@@ -17,21 +17,20 @@ ratio = np.zeros([L,1]);
 
 p = 2;
 
-ep = np.array([1, 5e-1, 1e-1, 5e-2, 1e-2,5e-3, 1e-3,5e-4,3e-4,2e-4]);
+ep = np.array([1, 1e-1, 1e-2, 1e-3, 1e-4]);
+Karr = np.array([0, 0.05, 0.15, 0.25, .32, .45, .55, .65, .75, .85, .95, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6])
 # ep = np.array([1]);
-# ep = -ep;
+Karr = np.array([2, 2.05, 2.1, 2.515, 2.52, 2.54, 2.55, 2.56, 2.57, 2.58, 2.59])
+ep = -ep;
 # ep = np.array([1, 1e-1]);
+
+prob = 1;
+(x0, y0, x1, y1, exact, gx, gy, K) = GC_Problems(prob);
+K = Karr[0]
 
 for ii in range(L):
     N = params[ii];
     print(N);
-
-
-
-    prob = 4;
-    (x0, y0, x1, y1, exact, gx, gy, K) = GC_Problems(prob, N);
-    K = 0.0
-
 
     # Create mesh and define function space
     mesh = RectangleMesh(Point(x0,y0),Point(x1,y1),N,N)
@@ -45,69 +44,71 @@ for ii in range(L):
 
     ds = Create_dsMeasure()
     
+
+    saved = raw_input('Would you like to load saved function? (y or n)')
     
-    # class MixedExact(Expression):
-    #     def eval(self, values, x):
-    #         values[0] = ( x[1]**2 - 1.1)/( pow( 1 - x[0]**2, 3.0/2.0) )
-    #         values[1] = ( x[0]*x[1])/( pow( 1.2 - x[0]**2, 3.0/2.0) )
-    #         values[2] = ( x[0]**2 - 1)/( pow( 1 - x[0]**2, 3.1/2.0) )
-    #         values[3] = sqrt(.8-pow(x[0],2) - x[1]**2) + .2
-    #     def value_shape(self):
-    #         return (4,)
+    if(saved == 'n'):
+        ##### Loop through epsilon values and solve ####################
+        w = Function(MixedV);
+        ep_err = [];
+
+        for epjj in ep:
+            print('Epsilon = ',epjj)
+
+            w = ForwardProblem_GC(MixedV,K,ds, epjj, w, exact, gx, gy)
 
 
-    # u = Function(MixedV)
-    # ex = MixedExact();
-    # u.interpolate(ex)
+            #Compute error for this epsilon
+            (Sxx,Sxy,Syy,u) = w.split(deepcopy=True);
 
+            ep_err.append(np.sqrt(assemble(abs(exact-u)**2*dx)));
+            print('Run finished at epsilon = ', epjj)
+            print('L2 error = ', ep_err[-1])
+            print ''
 
+            # PlotToFile(u, 'Epsilon = ' + epjj.__str__(), 'file')
+      
+      
+        # Now start changing the curvature
+        for Kii in Karr[1:]:
+            print 'Running curvature K = ', Kii
+            w = ForwardProblem_GC(MixedV,Kii,ds, epjj, w, exact, gx, gy)
+            print ''
 
-    ##### Loop through epsilon values and solve ####################
-    w = Function(MixedV);
-    # w = u;
-    ep_err = [];
-
-    for epjj in ep:
-        print('Epsilon = ',epjj)
-
-        w = ForwardProblem_GC(MixedV,K,ds, epjj, w, exact, gx, gy)
 
         (Sxx,Sxy,Syy,u) = w.split(deepcopy=True);
 
-        ep_err.append(np.sqrt(assemble(abs(exact-u)**2*dx)));
-        print('Run finished at epsilon = ', epjj)
-        print('L2 error = ', ep_err[-1])
-        print ''
+        error = abs(exact-u)**2*dx
+        e[ii] = np.sqrt(assemble(error))
+        
+        if(ii > 0):
+            ratio[ii] = np.log(e[ii-1]/e[ii])/np.log(2)
 
-        # PlotToFile(u, 'Epsilon = ' + epjj.__str__(), 'file')
-  
-  
-        bcv = DirichletBC(MixedV.sub(3), exact, Dir_boundary)
-        bcxx = DirichletBC(MixedV.sub(0), epjj, EW_boundary)
-        bcyy = DirichletBC(MixedV.sub(2), epjj, NS_boundary)
-        bc = [bcxx,bcyy,bcv]
+        # Save solution to file
+        file_Sxx = File('Sxx.xml');
+        file_Sxy = File('Sxy.xml');
+        file_Syy = File('Syy.xml');
+        file_u = File('u.xml');  
 
-        F = F_Form_GC(MixedV,K,ds,epjj,gx,gy);
-        R = EvalResidual(F, bc, w)
-  
-    w = ForwardProblem_GC(MixedV,K+.01,ds, epjj, w, exact, gx, gy)
-    w = ForwardProblem_GC(MixedV,K+.02,ds, epjj, w, exact, gx, gy)
-    w = ForwardProblem_GC(MixedV,K+.05,ds, epjj, w, exact, gx, gy)
-    w = ForwardProblem_GC(MixedV,K+.2,ds, epjj, w, exact, gx, gy)
-    w = ForwardProblem_GC(MixedV,K+.3,ds, epjj, w, exact, gx, gy)
-    w = ForwardProblem_GC(MixedV,K+.4,ds, epjj, w, exact, gx, gy)
-    w = ForwardProblem_GC(MixedV,K+.5,ds, epjj, w, exact, gx, gy)
-    w = ForwardProblem_GC(MixedV,K+.55,ds, epjj, w, exact, gx, gy)
-    # w, prob, solv = ForwardProblem_GC(MixedV,K+.57,ds, epjj, w, exact, gx, gy)
+        file_Sxx << Sxx; file_Sxy << Sxy; file_Syy << Syy; file_u << u;
 
+    else:
+        Sxx = Function(V,'Sxx.xml')
+        Sxy = Function(V,'Sxy.xml')
+        Syy = Function(V,'Syy.xml')
+        u = Function(V,'u.xml')
+        w = Function(MixedV);
 
-    (Sxx,Sxy,Syy,u) = w.split(deepcopy=True);
+        func_assign = FunctionAssigner([V,V,V,V],MixedV);
+        func_assign.assign([Sxx,Sxy,Syy,u],w);
 
-    error = abs(exact-u)**2*dx
-    e[ii] = np.sqrt(assemble(error))
-    
-    if(ii > 0):
-        ratio[ii] = np.log(e[ii-1]/e[ii])/np.log(2)
+        Karr = np.array([.25,.35,.45,.55,.56])
+        epjj = ep[-1];
+
+        for Kii in Karr[0:]:
+            print 'Running curvature K = ', Kii
+            w = ForwardProblem_GC(MixedV,Kii,ds, epjj, w, exact, gx, gy)
+            print ''
 
     # plot(exact-u)
     # interactive()

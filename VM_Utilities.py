@@ -1,6 +1,6 @@
 from dolfin import *
 import numpy as np
-import copy
+import pyamg
 
 
 
@@ -120,7 +120,7 @@ def SetParameters(prm):
 
 
 def NewtonIteration(V, w0, form, bc, bch):
-    max_iters = 5;
+    max_iters = 20;
     abstol = 1e-9;
     reltol = 1e-6;
     alpha = 1e-4;
@@ -150,6 +150,10 @@ def NewtonIteration(V, w0, form, bc, bch):
         assembler.assemble(A)
         Feval_k = b.norm('l2')
 
+        # if(it_count == 1):
+        #     print 'Condition Number = ', pyamg.util.linalg.condest(A.array());
+
+
         dw = Function(V);
         solve(A, dw.vector(), b);
 
@@ -159,11 +163,13 @@ def NewtonIteration(V, w0, form, bc, bch):
         # print 'Old Function value = ', Feval_k, ',   ', np.linalg.norm(b,2);
         Feval_kp1 = Feval_k;
         count = 1;
-        while(Feval_kp1 >= (1-alpha*lam)*Feval_k and count < 2):
+        while(Feval_kp1 >= (1-alpha*lam)*Feval_k and count < 5):
             wkp1.assign(wk);
             wkp1.vector().axpy(-lam, dw.vector());
             Feval_kp1 = EvalResidual(form,bch,wkp1).norm('l2')
-            # print 'Function value = ', Feval_kp1, ' count = ', count
+            # Feval_kp1 = b.norm('l2')
+            if(count > 1):
+                print 'Function value = ', Feval_kp1, ' count = ', count
 
             lam = lam/2;
             count += 1;
@@ -174,13 +180,17 @@ def NewtonIteration(V, w0, form, bc, bch):
 
         
 
-        print 'Iteration Number: ', it_count, '; Abs Error = ', abserr, '; Rel Error = ', relerr, '; Res = ', Feval_kp1;
+        print 'Iteration Number: ', it_count, '; Abs Error = ', abserr, '; Rel Error = ', relerr,\
+         '; Res = ', Feval_kp1, '; Condition Number = ', pyamg.util.linalg.condest(A.array());
         # print 'Absolute Error = ', abserr
         # print 'Relative Error = ', relerr
         # print ''
 
         wk.assign(wkp1);
 
+
+    if(it_count == max_iters):
+        print 'NEWTON HIT MAXIMUM ITERATIONS!!!!!';
 
     return wk;
 

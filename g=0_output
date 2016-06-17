@@ -1,0 +1,174 @@
+32
+Would you like to load saved function? (y or n)n
+('Epsilon = ', 1.0)
+Iteration Number:  1 ; Abs Error =  3.54191287704 ; Rel Error =  1.0 ; Res =  0.00691776640599 ; Condition Number =  974.261724172
+Iteration Number:  2 ; Abs Error =  0.00705237646023 ; Rel Error =  0.00199340546209 ; Res =  4.52578096579e-07 ; Condition Number =  885.122857905
+Iteration Number:  3 ; Abs Error =  8.3840595988e-07 ; Rel Error =  2.36981568232e-07 ; Res =  2.03113505786e-14 ; Condition Number =  876.842110669
+Iteration Number:  4 ; Abs Error =  4.70623540139e-13 ; Rel Error =  1.33025181029e-13 ; Res =  1.98688253021e-14 ; Condition Number =  829.841771638
+('Run finished at epsilon = ', 1.0)
+('L2 error = ', 0.040902174769834182)
+
+('Epsilon = ', 0.10000000000000001)
+Iteration Number:  1 ; Abs Error =  3.15681401713 ; Rel Error =  8.28475270877 ; Res =  0.00503605874442 ; Condition Number =  581.882887319
+Iteration Number:  2 ; Abs Error =  0.046485983995 ; Rel Error =  0.131320747957 ; Res =  2.03801271121e-05 ; Condition Number =  572.673722659
+Iteration Number:  3 ; Abs Error =  0.000373419801852 ; Rel Error =  0.00105549831628 ; Res =  9.53021872571e-10 ; Condition Number =  585.939735127
+Iteration Number:  4 ; Abs Error =  1.89113876572e-08 ; Rel Error =  5.34544184907e-08 ; Res =  2.71580832299e-16 ; Condition Number =  601.507387732
+Iteration Number:  5 ; Abs Error =  4.77534678467e-14 ; Rel Error =  1.34978664756e-13 ; Res =  2.63319397644e-16 ; Condition Number =  540.77235183
+('Run finished at epsilon = ', 0.10000000000000001)
+('L2 error = ', 0.0040902174769821163)
+
+('Epsilon = ', 0.01)
+Iteration Number:  1 ; Abs Error =  0.315681401721 ; Rel Error =  8.28475271094 ; Res =  5.03605874346e-05 ; Condition Number =  247.481968612
+Iteration Number:  2 ; Abs Error =  0.00464859838847 ; Rel Error =  0.131320747647 ; Res =  2.03801268633e-07 ; Condition Number =  250.017204013
+Iteration Number:  3 ; Abs Error =  3.73419801452e-05 ; Rel Error =  0.00105549831515 ; Res =  9.53025390531e-12 ; Condition Number =  249.910759713
+Iteration Number:  4 ; Abs Error =  1.89114239112e-09 ; Rel Error =  5.34545209653e-08 ; Res =  1.58414387635e-17 ; Condition Number =  247.875111617
+Function value =  1.42247545229e-17  count =  2
+Iteration Number:  5 ; Abs Error =  2.07819872422e-15 ; Rel Error =  5.87418048452e-14 ; Res =  1.42247545229e-17 ; Condition Number =  247.852740213
+('Run finished at epsilon = ', 0.01)
+('L2 error = ', 0.00040902174769834066)
+
+('Epsilon = ', 0.001)
+Iteration Number:  1 ; Abs Error =  0.0315681401722 ; Rel Error =  8.28475271081 ; Res =  5.03605874332e-07 ; Condition Number =  2334.80725799
+Iteration Number:  2 ; Abs Error =  0.000464859838878 ; Rel Error =  0.131320747656 ; Res =  2.03801269239e-09 ; Condition Number =  1767.07728299
+Iteration Number:  3 ; Abs Error =  3.73419801634e-06 ; Rel Error =  0.00105549831567 ; Res =  9.53025157037e-14 ; Condition Number =  2103.29427327
+Iteration Number:  4 ; Abs Error =  1.89114379105e-10 ; Rel Error =  5.34545605351e-08 ; Res =  1.71483087896e-18 ; Condition Number =  2393.68625741
+('Run finished at epsilon = ', 0.001)
+('L2 error = ', 4.0902174769833868e-05)
+
+('Epsilon = ', 0.0001)
+Iteration Number:  1 ; Abs Error =  0.00315681401722 ; Rel Error =  8.28475271131 ; Res =  5.03605874337e-09 ; Condition Number =  1913.26705086
+Iteration Number:  2 ; Abs Error =  4.64859838726e-05 ; Rel Error =  0.131320747614 ; Res =  2.03801268659e-11 ; Condition Number =  1817.90596187
+Iteration Number:  3 ; Abs Error =  3.73419800201e-07 ; Rel Error =  0.00105549831161 ; Res =  9.53024947806e-16 ; Condition Number =  1888.1539884
+Iteration Number:  4 ; Abs Error =  1.8911415809e-11 ; Rel Error =  5.34544980637e-08 ; Res =  1.73097751808e-19 ; Condition Number =  1949.95323241
+('Run finished at epsilon = ', 0.0001)
+('L2 error = ', 4.0902174769837522e-06)
+
+Running curvature K =  0.01
+Function value =  0.000406162824776  count =  2
+Function value =  0.000177308201303  count =  3
+Iteration Number:  1 ; Abs Error =  1.17895120034 ; Rel Error =  0.999700005251 ; Res =  0.000177308201303 ; Condition Number =  1938.27867194
+Iteration Number:  2 ; Abs Error =  2.73853473158 ; Rel Error =  0.698991007606 ; Res =  0.000120398870215 ; Condition Number =  1779.452605
+Iteration Number:  3 ; Abs Error =  0.236311662254 ; Rel Error =  0.060026211238 ; Res =  2.08848472467e-06 ; Condition Number =  1705.80542814
+Iteration Number:  4 ; Abs Error =  0.0036964716347 ; Rel Error =  0.000939076228941 ; Res =  7.87104551736e-10 ; Condition Number =  1680.45435644
+Iteration Number:  5 ; Abs Error =  1.71572289442e-06 ; Rel Error =  4.35873705728e-07 ; Res =  2.4134105176e-15 ; Condition Number =  1783.89759814
+Iteration Number:  6 ; Abs Error =  4.69624339416e-13 ; Rel Error =  1.1930650444e-13 ; Res =  2.29784669861e-15 ; Condition Number =  1739.56936986
+
+Running curvature K =  0.05
+Function value =  0.00141023493146  count =  2
+Iteration Number:  1 ; Abs Error =  9.22657510904 ; Rel Error =  0.700955218779 ; Res =  0.00141023493146 ; Condition Number =  1945.77727311
+Iteration Number:  2 ; Abs Error =  7.37883207205 ; Rel Error =  0.359212483613 ; Res =  0.000219782561455 ; Condition Number =  3008.78612258
+Iteration Number:  3 ; Abs Error =  0.125166444005 ; Rel Error =  0.00607725741205 ; Res =  2.56445076426e-07 ; Condition Number =  2676.20741167
+Iteration Number:  4 ; Abs Error =  0.000152330909344 ; Rel Error =  7.39613007512e-06 ; Res =  5.32016556082e-13 ; Condition Number =  993.464380996
+Iteration Number:  5 ; Abs Error =  3.68281849461e-10 ; Rel Error =  1.7881206609e-11 ; Res =  3.28812248206e-15 ; Condition Number =  893.478756729
+
+Running curvature K =  0.1
+Calling FFC just-in-time (JIT) compiler, this may take some time.
+Calling FFC just-in-time (JIT) compiler, this may take some time.
+Iteration Number:  1 ; Abs Error =  21.2066336743 ; Rel Error =  0.507303418714 ; Res =  0.00182882217178 ; Condition Number =  421.746323887
+Iteration Number:  2 ; Abs Error =  1.30299020648 ; Rel Error =  0.0321728578979 ; Res =  3.55965497702e-05 ; Condition Number =  352.651614654
+Iteration Number:  3 ; Abs Error =  0.0415005038855 ; Rel Error =  0.00102576319924 ; Res =  2.22203974576e-08 ; Condition Number =  350.489961915
+Iteration Number:  4 ; Abs Error =  2.38905443481e-05 ; Rel Error =  5.90500195868e-07 ; Res =  8.89683569299e-15 ; Condition Number =  379.829259864
+Iteration Number:  5 ; Abs Error =  9.00257646208e-12 ; Rel Error =  2.22515782257e-13 ; Res =  3.35351639131e-15 ; Condition Number =  341.843115477
+
+Running curvature K =  0.15
+Calling FFC just-in-time (JIT) compiler, this may take some time.
+Calling FFC just-in-time (JIT) compiler, this may take some time.
+Iteration Number:  1 ; Abs Error =  18.3697084351 ; Rel Error =  0.31226207332 ; Res =  0.000777331061201 ; Condition Number =  222.471103548
+Iteration Number:  2 ; Abs Error =  0.792790661153 ; Rel Error =  0.0136605455666 ; Res =  5.49383989878e-06 ; Condition Number =  432.156369882
+Iteration Number:  3 ; Abs Error =  0.00576370059478 ; Rel Error =  9.932396882e-05 ; Res =  3.18017326883e-10 ; Condition Number =  201.960444765
+Iteration Number:  4 ; Abs Error =  3.15033226173e-07 ; Rel Error =  5.42886466585e-09 ; Res =  3.53929003557e-15 ; Condition Number =  228.812604354
+Iteration Number:  5 ; Abs Error =  5.01820807131e-13 ; Rel Error =  8.64771402533e-15 ; Res =  3.06455233194e-15 ; Condition Number =  190.178454637
+
+Running curvature K =  0.25
+Iteration Number:  1 ; Abs Error =  31.8957039542 ; Rel Error =  0.354692264778 ; Res =  0.00308072339169 ; Condition Number =  199.804382055
+Iteration Number:  2 ; Abs Error =  3.34214376787 ; Rel Error =  0.0386005231389 ; Res =  5.07567379883e-05 ; Condition Number =  1003.4947144
+Iteration Number:  3 ; Abs Error =  0.0585477948484 ; Rel Error =  0.00067666291712 ; Res =  1.88718444622e-08 ; Condition Number =  1108.35781199
+Iteration Number:  4 ; Abs Error =  1.74190100353e-05 ; Rel Error =  2.01319290457e-07 ; Res =  4.30131284307e-15 ; Condition Number =  1693.38641354
+Iteration Number:  5 ; Abs Error =  1.80477854883e-12 ; Rel Error =  2.08586329617e-14 ; Res =  3.43627947502e-15 ; Condition Number =  189.038354736
+
+Running curvature K =  0.35
+Iteration Number:  1 ; Abs Error =  21.5815679575 ; Rel Error =  0.199633646238 ; Res =  0.00281204549415 ; Condition Number =  154.913218946
+Iteration Number:  2 ; Abs Error =  1.96566977576 ; Rel Error =  0.0185195606287 ; Res =  2.54622815915e-05 ; Condition Number =  881.010680888
+Iteration Number:  3 ; Abs Error =  0.0235488218221 ; Rel Error =  0.000221914493894 ; Res =  3.49338492877e-09 ; Condition Number =  127.134749528
+Iteration Number:  4 ; Abs Error =  2.79454579299e-06 ; Rel Error =  2.63346606608e-08 ; Res =  3.70084801303e-15 ; Condition Number =  536.45493917
+Iteration Number:  5 ; Abs Error =  4.94451701805e-13 ; Rel Error =  4.6595113284e-15 ; Res =  3.17946255987e-15 ; Condition Number =  167.963677524
+
+Running curvature K =  0.45
+Iteration Number:  1 ; Abs Error =  13.3705491393 ; Rel Error =  0.111899433414 ; Res =  0.00213807539215 ; Condition Number =  409.842835101
+Iteration Number:  2 ; Abs Error =  1.08143716248 ; Rel Error =  0.00912306001317 ; Res =  2.39019050925e-05 ; Condition Number =  887.984530867
+Iteration Number:  3 ; Abs Error =  0.0171974685578 ; Rel Error =  0.000145091623677 ; Res =  1.00992186735e-08 ; Condition Number =  582.336055497
+Iteration Number:  4 ; Abs Error =  7.63129712666e-06 ; Rel Error =  6.43837380601e-08 ; Res =  3.97690456823e-15 ; Condition Number =  560.030174782
+Iteration Number:  5 ; Abs Error =  1.31450406116e-12 ; Rel Error =  1.10902096652e-14 ; Res =  3.49180808271e-15 ; Condition Number =  100.078036378
+
+Running curvature K =  0.55
+Iteration Number:  1 ; Abs Error =  10.7009784096 ; Rel Error =  0.0849300116365 ; Res =  0.00294919074973 ; Condition Number =  178.426103973
+Iteration Number:  2 ; Abs Error =  3.26391121265 ; Rel Error =  0.0261544081479 ; Res =  0.00037643255868 ; Condition Number =  996.652809727
+Iteration Number:  3 ; Abs Error =  0.651184427491 ; Rel Error =  0.00522717202898 ; Res =  1.52282859965e-05 ; Condition Number =  112.345874667
+Iteration Number:  4 ; Abs Error =  0.0286219310745 ; Rel Error =  0.000229770224924 ; Res =  2.9166552533e-08 ; Condition Number =  893.681422265
+Iteration Number:  5 ; Abs Error =  5.49848804781e-05 ; Rel Error =  4.41405931383e-07 ; Res =  1.07609236936e-13 ; Condition Number =  124.690237968
+Iteration Number:  6 ; Abs Error =  2.02767580504e-10 ; Rel Error =  1.62777134275e-12 ; Res =  3.46270773853e-15 ; Condition Number =  498.600583598
+
+Running curvature K =  0.56
+Iteration Number:  1 ; Abs Error =  2.68711898581 ; Rel Error =  0.0215756382915 ; Res =  0.000225029028452 ; Condition Number =  755.717468855
+Iteration Number:  2 ; Abs Error =  0.644857015588 ; Rel Error =  0.00518643602197 ; Res =  1.50508794677e-05 ; Condition Number =  115.037727678
+Iteration Number:  3 ; Abs Error =  0.0505675100257 ; Rel Error =  0.000406756938598 ; Res =  9.25399566282e-08 ; Condition Number =  65.4518032494
+Iteration Number:  4 ; Abs Error =  0.000314510271146 ; Rel Error =  2.52987225871e-06 ; Res =  3.57789216446e-12 ; Condition Number =  6601.53187901
+Iteration Number:  5 ; Abs Error =  1.21595391533e-08 ; Rel Error =  9.78094631747e-11 ; Res =  3.52020296788e-15 ; Condition Number =  1508.17331838
+Iteration Number:  6 ; Abs Error =  4.4497738827e-13 ; Rel Error =  3.57932968698e-15 ; Res =  3.07354042003e-15 ; Condition Number =  1268.52793139
+
+Running curvature K =  0.57
+Iteration Number:  1 ; Abs Error =  4.93876632636 ; Rel Error =  0.0399933673423 ; Res =  0.000827290255707 ; Condition Number =  51.2099242955
+Function value =  0.00192106098355  count =  2
+Function value =  0.000997140727221  count =  3
+Function value =  0.000818018046911  count =  4
+Iteration Number:  2 ; Abs Error =  1.60091641562 ; Rel Error =  0.0129082479523 ; Res =  0.000818018046911 ; Condition Number =  380.591278364
+Function value =  0.00254264879756  count =  2
+Function value =  0.00114673974864  count =  3
+Function value =  0.000849034431122  count =  4
+Iteration Number:  3 ; Abs Error =  1.90432623497 ; Rel Error =  0.015433417121 ; Res =  0.000849034431122 ; Condition Number =  151.566536957
+Function value =  0.00130140334478  count =  2
+Function value =  0.000855937270322  count =  3
+Function value =  0.000797688745107  count =  4
+Iteration Number:  4 ; Abs Error =  1.22098622509 ; Rel Error =  0.00986285625329 ; Res =  0.000797688745107 ; Condition Number =  603.611527309
+Function value =  0.579179027197  count =  2
+Function value =  0.145300758749  count =  3
+Function value =  0.036874093244  count =  4
+Iteration Number:  5 ; Abs Error =  31.3645159196 ; Rel Error =  0.276673289483 ; Res =  0.036874093244 ; Condition Number =  117.782755347
+Iteration Number:  6 ; Abs Error =  16.0112476487 ; Rel Error =  0.134898171567 ; Res =  0.00942333835511 ; Condition Number =  359.88326937
+Iteration Number:  7 ; Abs Error =  8.35856128479 ; Rel Error =  0.068810229006 ; Res =  0.00257136322472 ; Condition Number =  101.572463146
+Iteration Number:  8 ; Abs Error =  5.03175673104 ; Rel Error =  0.0408599206091 ; Res =  0.000930837761367 ; Condition Number =  183.175589688
+Function value =  0.000864256957438  count =  2
+Iteration Number:  9 ; Abs Error =  3.29306029104 ; Rel Error =  0.0265051835181 ; Res =  0.000864256957438 ; Condition Number =  3670.08876603
+Function value =  0.00110634777419  count =  2
+Function value =  0.000816747739175  count =  3
+Iteration Number:  10 ; Abs Error =  2.14081984288 ; Rel Error =  0.0173303832491 ; Res =  0.000816747739175 ; Condition Number =  229.213597145
+Function value =  0.00232616021585  count =  2
+Function value =  0.00109200644474  count =  3
+Function value =  0.000834515561266  count =  4
+Iteration Number:  11 ; Abs Error =  1.80528796563 ; Rel Error =  0.0145434695419 ; Res =  0.000834515561266 ; Condition Number =  120.816806564
+Function value =  0.00151875128448  count =  2
+Function value =  0.000901260466867  count =  3
+Function value =  0.000799044616952  count =  4
+Iteration Number:  12 ; Abs Error =  1.36817114945 ; Rel Error =  0.0110626070284 ; Res =  0.000799044616952 ; Condition Number =  190.734268491
+Function value =  0.0102622866307  count =  2
+Function value =  0.00306496407718  count =  3
+Function value =  0.00131558283263  count =  4
+Iteration Number:  13 ; Abs Error =  4.0939972688 ; Rel Error =  0.0327421869048 ; Res =  0.00131558283263 ; Condition Number =  432.662336371
+Iteration Number:  14 ; Abs Error =  4.75378912177 ; Rel Error =  0.0385060111761 ; Res =  0.000831115846947 ; Condition Number =  309.512206163
+Function value =  0.00160976541109  count =  2
+Function value =  0.000921888291233  count =  3
+Function value =  0.000801864158628  count =  4
+Iteration Number:  15 ; Abs Error =  1.42462208619 ; Rel Error =  0.0114954007889 ; Res =  0.000801864158628 ; Condition Number =  601.999435424
+Function value =  0.00622520979716  count =  2
+Function value =  0.00205747284661  count =  3
+Function value =  0.00106565045727  count =  4
+Iteration Number:  16 ; Abs Error =  3.14676612552 ; Rel Error =  0.0256077716029 ; Res =  0.00106565045727 ; Condition Number =  264527.44367
+Iteration Number:  17 ; Abs Error =  5.34090035552 ; Rel Error =  0.0428436725984 ; Res =  0.00104882320819 ; Condition Number =  141.0143504
+Function value =  0.000795236426348  count =  2
+Iteration Number:  18 ; Abs Error =  2.71445542362 ; Rel Error =  0.021933644994 ; Res =  0.000795236426348 ; Condition Number =  783.944106074
+Function value =  0.144664187843  count =  2
+Function value =  0.0366624590584  count =  3
+Function value =  0.00971211730784  count =  4
+Iteration Number:  19 ; Abs Error =  15.8491078482 ; Rel Error =  0.122834877409 ; Res =  0.00971211730784 ; Condition Number =  4623.02320013
+Iteration Number:  20 ; Abs Error =  8.56731398768 ; Rel Error =  0.0678983536765 ; Res =  0.00264444845783 ; Condition Number =  1112.76281208
+NEWTON HIT MAXIMUM ITERATIONS!!!!!
