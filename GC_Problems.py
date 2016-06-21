@@ -61,9 +61,9 @@ def GC_Problems(prob):
 
     elif(prob == 6):
         x0 = 0; y0 = 0; x1 = 1; y1 = 1;
-        exact = Expression('sin(pi*x[0])');
-        gx = Expression('pi*cos(pi*x[0])', ex = exact)
-        gy = Expression('0.0', ex = exact)
+        exact = Expression('x[0]*x[0] + x[1]*x[1]');
+        gx = Expression('2.0*x[0]', ex = exact)
+        gy = Expression('2.0*x[1]', ex = exact)
         K = 0.01;
 
         return (x0, y0, x1, y1, exact, gx, gy, K);

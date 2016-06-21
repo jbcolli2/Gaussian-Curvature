@@ -72,9 +72,18 @@ def EvalResidual(F,bc,u0):
     J = derivative(F0,u0);
     s = SystemAssembler(J,F0,bc)
     b = Vector();
-    s.assemble(b);
+    s.assemble(b, u0.vector());
 
     return b;
+
+def EvalJacobian(F,bc,u0):
+    F0 = action(F,u0);
+    J = derivative(F0,u0)
+    s = SystemAssembler(J,F0,bc);
+    A = Matrix();
+    s.assemble(A);
+
+    return A;
 
 
 
@@ -119,13 +128,16 @@ def SetParameters(prm):
 
 
 
-def NewtonIteration(V, w0, form, bc, bch):
+def NewtonIteration(V, w0, form, bc, svd_flag = True):
     max_iters = 20;
     abstol = 1e-9;
     reltol = 1e-6;
+    ftol = 1e-13;
     alpha = 1e-4;
 
     it_count = 0;
+
+    s_val = -5;
 
 
     wk = Function(V);
@@ -134,7 +146,8 @@ def NewtonIteration(V, w0, form, bc, bch):
     wkp1.vector()[:] += 100.0;
     abserr = np.linalg.norm( (wk.vector().array() - wkp1.vector().array()), np.Inf );
     relerr = abserr/np.linalg.norm(wkp1.vector().array());
-    while((abserr > abstol or relerr > reltol) and it_count < max_iters):
+    Feval_k = 100;
+    while((abserr > abstol and relerr > reltol and Feval_k > ftol) and it_count < max_iters):
         it_count += 1;
         dw = TrialFunction(V);
 
@@ -146,12 +159,12 @@ def NewtonIteration(V, w0, form, bc, bch):
         assembler = SystemAssembler(DF,Fwk,bc);
         A = Matrix();
         b = Vector();
-        assembler.assemble(b,wk.vector())
-        assembler.assemble(A)
+        assembler.assemble(A,b,wk.vector())
+        # assembler.assemble(A)
         Feval_k = b.norm('l2')
 
-        # if(it_count == 1):
-        #     print 'Condition Number = ', pyamg.util.linalg.condest(A.array());
+        if(it_count == 1):
+            print 'Original Residual = ', Feval_k;
 
 
         dw = Function(V);
@@ -166,12 +179,12 @@ def NewtonIteration(V, w0, form, bc, bch):
         while(Feval_kp1 >= (1-alpha*lam)*Feval_k and count < 5):
             wkp1.assign(wk);
             wkp1.vector().axpy(-lam, dw.vector());
-            Feval_kp1 = EvalResidual(form,bch,wkp1).norm('l2')
+            Feval_kp1 = EvalResidual(form,bc,wkp1).norm('l2')
             # Feval_kp1 = b.norm('l2')
             if(count > 1):
                 print 'Function value = ', Feval_kp1, ' count = ', count
 
-            lam = lam/2;
+            lam = lam*0.5;
             count += 1;
 
 
@@ -181,19 +194,38 @@ def NewtonIteration(V, w0, form, bc, bch):
         
 
         print 'Iteration Number: ', it_count, '; Abs Error = ', abserr, '; Rel Error = ', relerr,\
-         '; Res = ', Feval_kp1, '; Condition Number = ', pyamg.util.linalg.condest(A.array());
+         '; Res = ', Feval_kp1, '; Condition Number = '#, pyamg.util.linalg.condest(A.array());
         # print 'Absolute Error = ', abserr
         # print 'Relative Error = ', relerr
         # print ''
 
         wk.assign(wkp1);
+        Feval_k = Feval_kp1;
 
+
+    if(svd_flag):
+        s = np.linalg.svd(A.array(),compute_uv = False)
+        s_val = np.min(s);
+        print 'Minimum Singular Value = ', s_val;
 
     if(it_count == max_iters):
         print 'NEWTON HIT MAXIMUM ITERATIONS!!!!!';
 
-    return wk;
+    return wk, s_val;
 
+
+
+
+
+
+
+def GetBC(MixedV, g, ep):
+    bcv = DirichletBC(MixedV.sub(3), g, Dir_boundary)
+    bcxx = DirichletBC(MixedV.sub(0), ep, EW_boundary)
+    bcyy = DirichletBC(MixedV.sub(2), ep, NS_boundary)
+    bc = [bcxx,bcyy,bcv]
+
+    return bc;
 
 
 

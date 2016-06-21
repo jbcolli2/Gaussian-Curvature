@@ -3,13 +3,15 @@ from GC_Problems import *
 import numpy as np
 from VM_Utilities import *
 from VM_Solver import *
+from scipy.interpolate import InterpolatedUnivariateSpline
+import scipy.io
 
 set_log_level(20)
 
 
 #Values of N for the mesh
 params = np.array([4, 8,16,32]);
-params = np.array([32]);
+params = np.array([8]);
 
 L = len(params);
 e = np.zeros([L,1]);
@@ -17,16 +19,20 @@ ratio = np.zeros([L,1]);
 
 p = 2;
 
-ep = np.array([1, 1e-1, 1e-2, 1e-3, 1e-4]);
-Karr = np.array([0, 0.05, 0.15, 0.25, .32, .45, .55, .65, .75, .85, .95, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6])
+ep = np.array([1, 1e-1, 1e-2, 1e-3, 5e-4]);
+Karr = np.array([.01])
+# Karr = np.array([0]);
 # ep = np.array([1]);
-Karr = np.array([2, 2.05, 2.1, 2.515, 2.52, 2.54, 2.55, 2.56, 2.57, 2.58, 2.59])
-ep = -ep;
+# ep = -ep;
 # ep = np.array([1, 1e-1]);
 
-prob = 1;
+prob = 5;
 (x0, y0, x1, y1, exact, gx, gy, K) = GC_Problems(prob);
-K = Karr[0]
+
+
+
+saved = raw_input('Would you like to load saved function? (y or n)')
+
 
 for ii in range(L):
     N = params[ii];
@@ -45,9 +51,10 @@ for ii in range(L):
     ds = Create_dsMeasure()
     
 
-    saved = raw_input('Would you like to load saved function? (y or n)')
     
-    if(saved == 'n'):
+    
+    if(saved == 'n' or saved == ''):
+        K = Karr[0]
         ##### Loop through epsilon values and solve ####################
         w = Function(MixedV);
         ep_err = [];
@@ -55,7 +62,10 @@ for ii in range(L):
         for epjj in ep:
             print('Epsilon = ',epjj)
 
-            w = ForwardProblem_GC(MixedV,K,ds, epjj, w, exact, gx, gy)
+            bc = GetBC(MixedV, exact, epjj);
+
+            F = F_Form_GC(MixedV, K, ds, epjj, gx, gy);
+            w,temp = NewtonIteration(MixedV, w, F, bc, True);
 
 
             #Compute error for this epsilon
@@ -68,11 +78,31 @@ for ii in range(L):
 
             # PlotToFile(u, 'Epsilon = ' + epjj.__str__(), 'file')
       
+        A = EvalJacobian(F,bc,w);
+        s = np.linalg.svd(A.array(), compute_uv=False)
+        s_val = np.min(s);
       
         # Now start changing the curvature
-        for Kii in Karr[1:]:
+        sing = [];
+        Kmax = []; Kout = []
+        for jj,Kii in enumerate(Karr[1:]):
             print 'Running curvature K = ', Kii
-            w = ForwardProblem_GC(MixedV,Kii,ds, epjj, w, exact, gx, gy)
+            F = F_Form_GC(MixedV, Kii, ds, epjj, gx, gy);
+            w, s = NewtonIteration(MixedV, w, F, bc);
+            (Sxx,Sxy,Syy,u) = split(w);
+            if(Kii > 0.35):
+                Kout.append(Kii);
+                if(s < 0):
+                    sing.append(sing[-1]);
+                else:
+                    sing.append(s);
+
+                if(len(Kout) > 2):
+                    f = InterpolatedUnivariateSpline(sing,Kout[0:], k = 2)
+                    Kmax.append(f(0));
+                    print 'Kmax = ', f(0);
+
+            print 'Norm of solution = ', assemble(u*u*dx);
             print ''
 
 
@@ -92,27 +122,75 @@ for ii in range(L):
 
         file_Sxx << Sxx; file_Sxy << Sxy; file_Syy << Syy; file_u << u;
 
+        scipy.io.savemat('sval.mat', dict(x=sing, y = Karr))
     else:
-        Sxx = Function(V,'Sxx.xml')
-        Sxy = Function(V,'Sxy.xml')
-        Syy = Function(V,'Syy.xml')
-        u = Function(V,'u.xml')
+        folder = 'g=0_N=8';
+        Kfile = 'K=0_73';
+        print 'Loading functions...'
+        Sxx = Function(V); Sxx_file = File('Data Files/'+folder+'/Sxx'+'_'+folder+'_'+Kfile + '.xml'); Sxx_file >> Sxx;
+        Sxy = Function(V); Sxy_file = File('Data Files/'+folder+'/Sxy'+'_'+folder+'_'+Kfile+ '.xml'); Sxy_file >> Sxy;
+        Syy = Function(V); Syy_file = File('Data Files/'+folder+'/Syy'+'_'+folder+'_'+Kfile+ '.xml'); Syy_file >> Syy;
+        u = Function(V); u_file = File('Data Files/'+folder+'/u'+'_'+folder+'_'+Kfile+ '.xml'); u_file >> u;
         w = Function(MixedV);
 
-        func_assign = FunctionAssigner([V,V,V,V],MixedV);
-        func_assign.assign([Sxx,Sxy,Syy,u],w);
+        func_assign = FunctionAssigner(MixedV,[V,V,V,V]);
+        func_assign.assign(w,[Sxx,Sxy,Syy,u]);
 
-        Karr = np.array([.25,.35,.45,.55,.56])
+
+        Karr = np.linspace(0.73,0.78, 200);
         epjj = ep[-1];
+        bc = GetBC(MixedV, exact, epjj);
+        sing = [];
+        Kmax = []; Kout = []
 
-        for Kii in Karr[0:]:
+        for jj,Kii in enumerate(Karr):
             print 'Running curvature K = ', Kii
-            w = ForwardProblem_GC(MixedV,Kii,ds, epjj, w, exact, gx, gy)
+            F = F_Form_GC(MixedV, Kii, ds, epjj, gx, gy);
+            w, s = NewtonIteration(MixedV, w, F, bc);
+            (Sxx,Sxy,Syy,u) = split(w);
+            if(Kii > 0.35):
+                Kout.append(Kii);
+                if(s < 0):
+                    sing.append(sing[-1]);
+                else:
+                    sing.append(-s);
+
+                if(len(Kout) > 8):
+                    f = InterpolatedUnivariateSpline(sing[-1 -9:],Kout[-1-9:], k = 3)
+                    Kmax.append(f(0));
+                    print 'Kmax = ', f(0);
+                elif(len(Kout) > 3):
+                    f = InterpolatedUnivariateSpline(sing,Kout, k = 3)
+                    Kmax.append(f(0));
+                    print 'Kmax = ', f(0);
+                else:
+                    Kmax.append(0);
+
+            print 'Norm of solution = ', assemble(u*u*dx);
             print ''
+
+        if(saved == 's'):
+            # Save solution to file
+            Sxx, Sxy, Syy, u = w.split(deepcopy=True);
+            Kfileout = 'K=endgame'
+            file_Sxx = File('Sxx'+'_'+folder+'_'+Kfileout+'.xml');
+            file_Sxy = File('Sxy.xml');
+            file_Syy = File('Syy.xml');
+            file_u = File('u.xml');  
+
+            file_Sxx << Sxx; file_Sxy << Sxy; file_Syy << Syy; file_u << u;
+
+        scipy.io.savemat('sval.mat', dict(sing= sing, K = Kout, Kmax = Kmax))
+
+        error = abs(exact-u)**2*dx
+        e[ii] = np.sqrt(assemble(error))
+
 
     # plot(exact-u)
     # interactive()
  
+
+
 # plot(abs(exact-u))
 # interactive()
 print("Error: ", e)

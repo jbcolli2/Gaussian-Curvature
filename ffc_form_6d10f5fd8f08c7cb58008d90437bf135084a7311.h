@@ -20,8 +20,8 @@
 //   restrict_keyword:               ''
 //   split:                          False
 
-#ifndef __FFC_FORM_CE52F334EE6AA1C51AD1EF7393C6A16F31E4F4B3_H
-#define __FFC_FORM_CE52F334EE6AA1C51AD1EF7393C6A16F31E4F4B3_H
+#ifndef __FFC_FORM_6D10F5FD8F08C7CB58008D90437BF135084A7311_H
+#define __FFC_FORM_6D10F5FD8F08C7CB58008D90437BF135084A7311_H
 
 #include <cmath>
 #include <stdexcept>
@@ -30,18 +30,18 @@
 
 /// This class defines the interface for a finite element.
 
-class ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_finite_element_0: public ufc::finite_element
+class ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_finite_element_0: public ufc::finite_element
 {
 public:
 
   /// Constructor
-  ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_finite_element_0() : ufc::finite_element()
+  ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_finite_element_0() : ufc::finite_element()
   {
     // Do nothing
   }
 
   /// Destructor
-  virtual ~ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_finite_element_0()
+  virtual ~ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_finite_element_0()
   {
     // Do nothing
   }
@@ -608,25 +608,25 @@ throw std::runtime_error("// Function evaluate_basis_derivatives not generated (
   /// Create a new class instance
   virtual ufc::finite_element* create() const
   {
-    return new ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_finite_element_0();
+    return new ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_finite_element_0();
   }
 
 };
 
 /// This class defines the interface for a finite element.
 
-class ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_finite_element_1: public ufc::finite_element
+class ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_finite_element_1: public ufc::finite_element
 {
 public:
 
   /// Constructor
-  ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_finite_element_1() : ufc::finite_element()
+  ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_finite_element_1() : ufc::finite_element()
   {
     // Do nothing
   }
 
   /// Destructor
-  virtual ~ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_finite_element_1()
+  virtual ~ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_finite_element_1()
   {
     // Do nothing
   }
@@ -2082,22 +2082,22 @@ throw std::runtime_error("// Function evaluate_basis_derivatives not generated (
     {
     case 0:
       {
-        return new ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_finite_element_0();
+        return new ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_finite_element_0();
         break;
       }
     case 1:
       {
-        return new ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_finite_element_0();
+        return new ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_finite_element_0();
         break;
       }
     case 2:
       {
-        return new ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_finite_element_0();
+        return new ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_finite_element_0();
         break;
       }
     case 3:
       {
-        return new ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_finite_element_0();
+        return new ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_finite_element_0();
         break;
       }
     }
@@ -2108,7 +2108,7 @@ throw std::runtime_error("// Function evaluate_basis_derivatives not generated (
   /// Create a new class instance
   virtual ufc::finite_element* create() const
   {
-    return new ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_finite_element_1();
+    return new ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_finite_element_1();
   }
 
 };
@@ -2116,18 +2116,18 @@ throw std::runtime_error("// Function evaluate_basis_derivatives not generated (
 /// This class defines the interface for a local-to-global mapping of
 /// degrees of freedom (dofs).
 
-class ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_dofmap_0: public ufc::dofmap
+class ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_dofmap_0: public ufc::dofmap
 {
 public:
 
   /// Constructor
-  ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_dofmap_0() : ufc::dofmap()
+  ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_dofmap_0() : ufc::dofmap()
   {
     // Do nothing
   }
 
   /// Destructor
-  virtual ~ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_dofmap_0()
+  virtual ~ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_dofmap_0()
   {
     // Do nothing
   }
@@ -2375,7 +2375,7 @@ public:
   /// Create a new class instance
   virtual ufc::dofmap* create() const
   {
-    return new ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_dofmap_0();
+    return new ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_dofmap_0();
   }
 
 };
@@ -2383,18 +2383,18 @@ public:
 /// This class defines the interface for a local-to-global mapping of
 /// degrees of freedom (dofs).
 
-class ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_dofmap_1: public ufc::dofmap
+class ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_dofmap_1: public ufc::dofmap
 {
 public:
 
   /// Constructor
-  ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_dofmap_1() : ufc::dofmap()
+  ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_dofmap_1() : ufc::dofmap()
   {
     // Do nothing
   }
 
   /// Destructor
-  virtual ~ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_dofmap_1()
+  virtual ~ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_dofmap_1()
   {
     // Do nothing
   }
@@ -2745,22 +2745,22 @@ public:
     {
     case 0:
       {
-        return new ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_dofmap_0();
+        return new ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_dofmap_0();
         break;
       }
     case 1:
       {
-        return new ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_dofmap_0();
+        return new ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_dofmap_0();
         break;
       }
     case 2:
       {
-        return new ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_dofmap_0();
+        return new ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_dofmap_0();
         break;
       }
     case 3:
       {
-        return new ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_dofmap_0();
+        return new ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_dofmap_0();
         break;
       }
     }
@@ -2771,7 +2771,7 @@ public:
   /// Create a new class instance
   virtual ufc::dofmap* create() const
   {
-    return new ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_dofmap_1();
+    return new ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_dofmap_1();
   }
 
 };
@@ -2780,18 +2780,18 @@ public:
 /// tensor corresponding to the local contribution to a form from
 /// the integral over a cell.
 
-class ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_cell_integral_0_otherwise: public ufc::cell_integral
+class ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_cell_integral_0_otherwise: public ufc::cell_integral
 {
 public:
 
   /// Constructor
-  ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_cell_integral_0_otherwise() : ufc::cell_integral()
+  ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_cell_integral_0_otherwise() : ufc::cell_integral()
   {
     // Do nothing
   }
 
   /// Destructor
-  virtual ~ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_cell_integral_0_otherwise()
+  virtual ~ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_cell_integral_0_otherwise()
   {
     // Do nothing
   }
@@ -3037,7 +3037,7 @@ public:
         for (unsigned int k = 0; k < 24; k++)
         {
           // Number of operations to compute entry: 122
-          A[j*24 + k] += ((((((((((K[0]*FE1_C0_D10[ip][j] + K[2]*FE1_C0_D01[ip][j]))*((K[0]*FE1_C3_D10[ip][k] + K[2]*FE1_C3_D01[ip][k])) + (FE1_C0[ip][j]*FE1_C0[ip][k] + FE1_C2[ip][j]*FE1_C2[ip][k])) + ((K[1]*FE1_C1_D10[ip][j] + K[3]*FE1_C1_D01[ip][j]))*((K[0]*FE1_C3_D10[ip][k] + K[2]*FE1_C3_D01[ip][k]))) + ((K[0]*FE1_C1_D10[ip][j] + K[2]*FE1_C1_D01[ip][j]))*((K[1]*FE1_C3_D10[ip][k] + K[3]*FE1_C3_D01[ip][k]))) + ((K[1]*FE1_C2_D10[ip][j] + K[3]*FE1_C2_D01[ip][j]))*((K[1]*FE1_C3_D10[ip][k] + K[3]*FE1_C3_D01[ip][k]))) + ((((K[0]*FE1_C0_D10[ip][k] + K[2]*FE1_C0_D01[ip][k]))*((K[0]*FE1_C3_D10[ip][j] + K[2]*FE1_C3_D01[ip][j])) + ((K[0]*FE1_C1_D10[ip][k] + K[2]*FE1_C1_D01[ip][k]))*((K[1]*FE1_C3_D10[ip][j] + K[3]*FE1_C3_D01[ip][j]))))*0.0002) + ((((K[1]*FE1_C1_D10[ip][k] + K[3]*FE1_C1_D01[ip][k]))*((K[0]*FE1_C3_D10[ip][j] + K[2]*FE1_C3_D01[ip][j])) + ((K[1]*FE1_C2_D10[ip][k] + K[3]*FE1_C2_D01[ip][k]))*((K[1]*FE1_C3_D10[ip][j] + K[3]*FE1_C3_D01[ip][j]))))*0.0002) + FE1_C1[ip][j]*FE1_C1[ip][k]*2.0) + FE1_C3[ip][j]*((((((((((K[0]*FE1_C3_D10[ip][k] + K[2]*FE1_C3_D01[ip][k]))*2.0)*((K[0]*F3 + K[2]*F4)) + (((K[1]*FE1_C3_D10[ip][k] + K[3]*FE1_C3_D01[ip][k]))*2.0)*((K[1]*F3 + K[3]*F4))))*2.0)*(((((K[0]*F3 + K[2]*F4))*((K[0]*F3 + K[2]*F4)) + ((K[1]*F3 + K[3]*F4))*((K[1]*F3 + K[3]*F4))) + 1.0)))*(-1.0) + ((FE1_C0[ip][k]*F1 + FE1_C2[ip][k]*F0) + 2.0*FE1_C1[ip][k]*F2*(-1.0))))*0.3))*W12[ip]*det;
+          A[j*24 + k] += ((((((((((K[0]*FE1_C0_D10[ip][j] + K[2]*FE1_C0_D01[ip][j]))*((K[0]*FE1_C3_D10[ip][k] + K[2]*FE1_C3_D01[ip][k])) + (FE1_C0[ip][j]*FE1_C0[ip][k] + FE1_C2[ip][j]*FE1_C2[ip][k])) + ((K[1]*FE1_C1_D10[ip][j] + K[3]*FE1_C1_D01[ip][j]))*((K[0]*FE1_C3_D10[ip][k] + K[2]*FE1_C3_D01[ip][k]))) + ((K[0]*FE1_C1_D10[ip][j] + K[2]*FE1_C1_D01[ip][j]))*((K[1]*FE1_C3_D10[ip][k] + K[3]*FE1_C3_D01[ip][k]))) + ((K[1]*FE1_C2_D10[ip][j] + K[3]*FE1_C2_D01[ip][j]))*((K[1]*FE1_C3_D10[ip][k] + K[3]*FE1_C3_D01[ip][k]))) + ((((K[0]*FE1_C0_D10[ip][k] + K[2]*FE1_C0_D01[ip][k]))*((K[0]*FE1_C3_D10[ip][j] + K[2]*FE1_C3_D01[ip][j])) + ((K[0]*FE1_C1_D10[ip][k] + K[2]*FE1_C1_D01[ip][k]))*((K[1]*FE1_C3_D10[ip][j] + K[3]*FE1_C3_D01[ip][j]))))*0.0001) + ((((K[1]*FE1_C1_D10[ip][k] + K[3]*FE1_C1_D01[ip][k]))*((K[0]*FE1_C3_D10[ip][j] + K[2]*FE1_C3_D01[ip][j])) + ((K[1]*FE1_C2_D10[ip][k] + K[3]*FE1_C2_D01[ip][k]))*((K[1]*FE1_C3_D10[ip][j] + K[3]*FE1_C3_D01[ip][j]))))*0.0001) + FE1_C1[ip][j]*FE1_C1[ip][k]*2.0) + FE1_C3[ip][j]*((((((((((K[0]*FE1_C3_D10[ip][k] + K[2]*FE1_C3_D01[ip][k]))*2.0)*((K[0]*F3 + K[2]*F4)) + (((K[1]*FE1_C3_D10[ip][k] + K[3]*FE1_C3_D01[ip][k]))*2.0)*((K[1]*F3 + K[3]*F4))))*2.0)*(((((K[0]*F3 + K[2]*F4))*((K[0]*F3 + K[2]*F4)) + ((K[1]*F3 + K[3]*F4))*((K[1]*F3 + K[3]*F4))) + 1.0)))*(-1.0) + ((FE1_C0[ip][k]*F1 + FE1_C2[ip][k]*F0) + 2.0*FE1_C1[ip][k]*F2*(-1.0))))*0.408163265306122))*W12[ip]*det;
         } // end loop over 'k'
       } // end loop over 'j'
     } // end loop over 'ip'
@@ -3060,18 +3060,18 @@ public:
 /// sequence of basis functions of Vj and w1, w2, ..., wn are given
 /// fixed functions (coefficients).
 
-class ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_form_0: public ufc::form
+class ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_form_0: public ufc::form
 {
 public:
 
   /// Constructor
-  ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_form_0() : ufc::form()
+  ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_form_0() : ufc::form()
   {
     // Do nothing
   }
 
   /// Destructor
-  virtual ~ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_form_0()
+  virtual ~ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_form_0()
   {
     // Do nothing
   }
@@ -3079,7 +3079,7 @@ public:
   /// Return a string identifying the form
   virtual const char* signature() const
   {
-    return "2a2de9beb30c892c3e260dfc259aa7ab811800cdd1964aa7bf1e132ea8ff33bd0e1213669100af64bf9514bec2ff5c3f9252e7cee812981b6bc1b4dbc06a8657";
+    return "b0101b711b6de7375d6fdc9f2d5beeda1f410625ba82fdd5033c33f995eb76d00b677864e3440859b110fde601218589d4bc068b762b99b9781d3c7d0fb06d00";
   }
 
 
@@ -3098,7 +3098,7 @@ public:
   /// Return original coefficient position for each coefficient (0 <= i < n)
   virtual std::size_t original_coefficient_position(std::size_t i) const
   {
-    static const std::vector<std::size_t> position({2});
+    static const std::vector<std::size_t> position({1});
     return position[i];
   }
 
@@ -3110,17 +3110,17 @@ public:
     {
     case 0:
       {
-        return new ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_finite_element_1();
+        return new ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_finite_element_1();
         break;
       }
     case 1:
       {
-        return new ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_finite_element_1();
+        return new ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_finite_element_1();
         break;
       }
     case 2:
       {
-        return new ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_finite_element_1();
+        return new ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_finite_element_1();
         break;
       }
     }
@@ -3135,17 +3135,17 @@ public:
     {
     case 0:
       {
-        return new ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_dofmap_1();
+        return new ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_dofmap_1();
         break;
       }
     case 1:
       {
-        return new ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_dofmap_1();
+        return new ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_dofmap_1();
         break;
       }
     case 2:
       {
-        return new ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_dofmap_1();
+        return new ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_dofmap_1();
         break;
       }
     }
@@ -3250,7 +3250,7 @@ public:
   /// Create a new cell integral on everywhere else
   virtual ufc::cell_integral* create_default_cell_integral() const
   {
-    return new ffc_form_ce52f334ee6aa1c51ad1ef7393c6a16f31e4f4b3_cell_integral_0_otherwise();
+    return new ffc_form_6d10f5fd8f08c7cb58008d90437bf135084a7311_cell_integral_0_otherwise();
   }
 
   /// Create a new exterior facet integral on everywhere else
