@@ -4,6 +4,7 @@ import numpy as np
 from VM_Utilities import *
 from VM_Solver import *
 from scipy.interpolate import InterpolatedUnivariateSpline
+from scipy.interpolate import lagrange
 import scipy.io
 
 set_log_level(20)
@@ -65,7 +66,7 @@ for ii in range(L):
             bc = GetBC(MixedV, exact, epjj);
 
             F = F_Form_GC(MixedV, K, ds, epjj, gx, gy);
-            w,temp = NewtonIteration(MixedV, w, F, bc, True);
+            w,temp = NewtonIteration(MixedV, w, F, bc, False);
 
 
             #Compute error for this epsilon
@@ -78,9 +79,6 @@ for ii in range(L):
 
             # PlotToFile(u, 'Epsilon = ' + epjj.__str__(), 'file')
       
-        A = EvalJacobian(F,bc,w);
-        s = np.linalg.svd(A.array(), compute_uv=False)
-        s_val = np.min(s);
       
         # Now start changing the curvature
         sing = [];
@@ -115,17 +113,18 @@ for ii in range(L):
             ratio[ii] = np.log(e[ii-1]/e[ii])/np.log(2)
 
         # Save solution to file
-        file_Sxx = File('Sxx.xml');
-        file_Sxy = File('Sxy.xml');
-        file_Syy = File('Syy.xml');
-        file_u = File('u.xml');  
+        if(saved == 'n'):
+            file_Sxx = File('Sxx.xml');
+            file_Sxy = File('Sxy.xml');
+            file_Syy = File('Syy.xml');
+            file_u = File('u.xml');  
 
-        file_Sxx << Sxx; file_Sxy << Sxy; file_Syy << Syy; file_u << u;
+            file_Sxx << Sxx; file_Sxy << Sxy; file_Syy << Syy; file_u << u;
 
-        scipy.io.savemat('sval.mat', dict(x=sing, y = Karr))
+        # scipy.io.savemat('sval.mat', dict(x=sing, y = Karr))
     else:
-        folder = 'g=0_N=8';
-        Kfile = 'K=0_73';
+        folder = 'g=0_N=8_2';
+        Kfile = 'K=0_74';
         print 'Loading functions...'
         Sxx = Function(V); Sxx_file = File('Data Files/'+folder+'/Sxx'+'_'+folder+'_'+Kfile + '.xml'); Sxx_file >> Sxx;
         Sxy = Function(V); Sxy_file = File('Data Files/'+folder+'/Sxy'+'_'+folder+'_'+Kfile+ '.xml'); Sxy_file >> Sxy;
@@ -137,7 +136,7 @@ for ii in range(L):
         func_assign.assign(w,[Sxx,Sxy,Syy,u]);
 
 
-        Karr = np.linspace(0.73,0.78, 200);
+        Karr = np.linspace(0.74,0.78, 150);
         epjj = ep[-1];
         bc = GetBC(MixedV, exact, epjj);
         sing = [];
@@ -155,14 +154,14 @@ for ii in range(L):
                 else:
                     sing.append(-s);
 
-                if(len(Kout) > 8):
-                    f = InterpolatedUnivariateSpline(sing[-1 -9:],Kout[-1-9:], k = 3)
+                if(len(Kout) > 3):
+                    f = lagrange(sing[-1 -2:],Kout[-1-2:])
                     Kmax.append(f(0));
                     print 'Kmax = ', f(0);
-                elif(len(Kout) > 3):
-                    f = InterpolatedUnivariateSpline(sing,Kout, k = 3)
-                    Kmax.append(f(0));
-                    print 'Kmax = ', f(0);
+                # elif(len(Kout) > 3):
+                #     f = InterpolatedUnivariateSpline(sing,Kout, k = 3)
+                #     Kmax.append(f(0));
+                #     print 'Kmax = ', f(0);
                 else:
                     Kmax.append(0);
 
@@ -172,11 +171,11 @@ for ii in range(L):
         if(saved == 's'):
             # Save solution to file
             Sxx, Sxy, Syy, u = w.split(deepcopy=True);
-            Kfileout = 'K=endgame'
+            Kfileout = 'K=0_74'
             file_Sxx = File('Sxx'+'_'+folder+'_'+Kfileout+'.xml');
-            file_Sxy = File('Sxy.xml');
-            file_Syy = File('Syy.xml');
-            file_u = File('u.xml');  
+            file_Sxy = File('Sxy'+'_'+folder+'_'+Kfileout+'.xml');
+            file_Syy = File('Syy'+'_'+folder+'_'+Kfileout+'.xml');
+            file_u = File('u'+'_'+folder+'_'+Kfileout+'.xml');  
 
             file_Sxx << Sxx; file_Sxy << Sxy; file_Syy << Syy; file_u << u;
 

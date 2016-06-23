@@ -20,8 +20,8 @@
 //   restrict_keyword:               ''
 //   split:                          False
 
-#ifndef __FFC_FORM_E8A0C8AE531F6644760FE38B44018BCFE4154527_H
-#define __FFC_FORM_E8A0C8AE531F6644760FE38B44018BCFE4154527_H
+#ifndef __FFC_FORM_3A3B028C07C9D888A64B5928DC948FE9A974525A_H
+#define __FFC_FORM_3A3B028C07C9D888A64B5928DC948FE9A974525A_H
 
 #include <cmath>
 #include <stdexcept>
@@ -30,18 +30,18 @@
 
 /// This class defines the interface for a finite element.
 
-class ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_finite_element_0: public ufc::finite_element
+class ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_finite_element_0: public ufc::finite_element
 {
 public:
 
   /// Constructor
-  ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_finite_element_0() : ufc::finite_element()
+  ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_finite_element_0() : ufc::finite_element()
   {
     // Do nothing
   }
 
   /// Destructor
-  virtual ~ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_finite_element_0()
+  virtual ~ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_finite_element_0()
   {
     // Do nothing
   }
@@ -608,25 +608,25 @@ throw std::runtime_error("// Function evaluate_basis_derivatives not generated (
   /// Create a new class instance
   virtual ufc::finite_element* create() const
   {
-    return new ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_finite_element_0();
+    return new ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_finite_element_0();
   }
 
 };
 
 /// This class defines the interface for a finite element.
 
-class ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_finite_element_1: public ufc::finite_element
+class ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_finite_element_1: public ufc::finite_element
 {
 public:
 
   /// Constructor
-  ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_finite_element_1() : ufc::finite_element()
+  ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_finite_element_1() : ufc::finite_element()
   {
     // Do nothing
   }
 
   /// Destructor
-  virtual ~ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_finite_element_1()
+  virtual ~ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_finite_element_1()
   {
     // Do nothing
   }
@@ -2082,22 +2082,22 @@ throw std::runtime_error("// Function evaluate_basis_derivatives not generated (
     {
     case 0:
       {
-        return new ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_finite_element_0();
+        return new ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_finite_element_0();
         break;
       }
     case 1:
       {
-        return new ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_finite_element_0();
+        return new ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_finite_element_0();
         break;
       }
     case 2:
       {
-        return new ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_finite_element_0();
+        return new ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_finite_element_0();
         break;
       }
     case 3:
       {
-        return new ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_finite_element_0();
+        return new ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_finite_element_0();
         break;
       }
     }
@@ -2108,7 +2108,7 @@ throw std::runtime_error("// Function evaluate_basis_derivatives not generated (
   /// Create a new class instance
   virtual ufc::finite_element* create() const
   {
-    return new ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_finite_element_1();
+    return new ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_finite_element_1();
   }
 
 };
@@ -2116,18 +2116,18 @@ throw std::runtime_error("// Function evaluate_basis_derivatives not generated (
 /// This class defines the interface for a local-to-global mapping of
 /// degrees of freedom (dofs).
 
-class ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_dofmap_0: public ufc::dofmap
+class ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_dofmap_0: public ufc::dofmap
 {
 public:
 
   /// Constructor
-  ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_dofmap_0() : ufc::dofmap()
+  ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_dofmap_0() : ufc::dofmap()
   {
     // Do nothing
   }
 
   /// Destructor
-  virtual ~ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_dofmap_0()
+  virtual ~ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_dofmap_0()
   {
     // Do nothing
   }
@@ -2375,7 +2375,7 @@ public:
   /// Create a new class instance
   virtual ufc::dofmap* create() const
   {
-    return new ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_dofmap_0();
+    return new ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_dofmap_0();
   }
 
 };
@@ -2383,18 +2383,18 @@ public:
 /// This class defines the interface for a local-to-global mapping of
 /// degrees of freedom (dofs).
 
-class ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_dofmap_1: public ufc::dofmap
+class ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_dofmap_1: public ufc::dofmap
 {
 public:
 
   /// Constructor
-  ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_dofmap_1() : ufc::dofmap()
+  ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_dofmap_1() : ufc::dofmap()
   {
     // Do nothing
   }
 
   /// Destructor
-  virtual ~ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_dofmap_1()
+  virtual ~ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_dofmap_1()
   {
     // Do nothing
   }
@@ -2745,22 +2745,22 @@ public:
     {
     case 0:
       {
-        return new ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_dofmap_0();
+        return new ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_dofmap_0();
         break;
       }
     case 1:
       {
-        return new ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_dofmap_0();
+        return new ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_dofmap_0();
         break;
       }
     case 2:
       {
-        return new ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_dofmap_0();
+        return new ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_dofmap_0();
         break;
       }
     case 3:
       {
-        return new ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_dofmap_0();
+        return new ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_dofmap_0();
         break;
       }
     }
@@ -2771,7 +2771,7 @@ public:
   /// Create a new class instance
   virtual ufc::dofmap* create() const
   {
-    return new ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_dofmap_1();
+    return new ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_dofmap_1();
   }
 
 };
@@ -2780,18 +2780,18 @@ public:
 /// tensor corresponding to the local contribution to a form from
 /// the integral over a cell.
 
-class ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_cell_integral_0_otherwise: public ufc::cell_integral
+class ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_cell_integral_0_otherwise: public ufc::cell_integral
 {
 public:
 
   /// Constructor
-  ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_cell_integral_0_otherwise() : ufc::cell_integral()
+  ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_cell_integral_0_otherwise() : ufc::cell_integral()
   {
     // Do nothing
   }
 
   /// Destructor
-  virtual ~ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_cell_integral_0_otherwise()
+  virtual ~ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_cell_integral_0_otherwise()
   {
     // Do nothing
   }
@@ -2799,7 +2799,7 @@ public:
   /// Tabulate which form coefficients are used by this integral
   virtual const std::vector<bool> & enabled_coefficients() const
   {
-    static const std::vector<bool> enabled({false, false, true});
+    static const std::vector<bool> enabled({true});
     return enabled;
   }
 
@@ -3001,7 +3001,7 @@ public:
     {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.5460099964856, -0.787419800620738, 0.0, 1.24140980413514, -1.24140980413514, 2.33342979710633}};
     
     // Reset values in the element tensor.
-    for (unsigned int r = 0; r < 24; r++)
+    for (unsigned int r = 0; r < 576; r++)
     {
       A[r] = 0.0;
     } // end loop over 'r'
@@ -3010,7 +3010,7 @@ public:
     // Optimisations: ('eliminate zeros', False), ('ignore ones', False), ('ignore zero tables', False), ('optimisation', False), ('remove zero terms', False)
     
     // Loop quadrature points for integral.
-    // Number of operations to compute element tensor for following IP loop = 40032
+    // Number of operations to compute element tensor for following IP loop = 846144
     for (unsigned int ip = 0; ip < 12; ip++)
     {
       
@@ -3020,676 +3020,27 @@ public:
       double F2 = 0.0;
       double F3 = 0.0;
       double F4 = 0.0;
-      double F5 = 0.0;
-      double F6 = 0.0;
-      double F7 = 0.0;
-      double F8 = 0.0;
-      double F9 = 0.0;
-      double F10 = 0.0;
       
-      // Total number of operations to compute function values = 528
+      // Total number of operations to compute function values = 240
       for (unsigned int r = 0; r < 24; r++)
       {
-        F0 += FE1_C0[ip][r]*w[2][r];
-        F1 += FE1_C2[ip][r]*w[2][r];
-        F2 += FE1_C3_D10[ip][r]*w[2][r];
-        F3 += FE1_C3_D01[ip][r]*w[2][r];
-        F4 += FE1_C0_D10[ip][r]*w[2][r];
-        F5 += FE1_C0_D01[ip][r]*w[2][r];
-        F6 += FE1_C1_D10[ip][r]*w[2][r];
-        F7 += FE1_C1_D01[ip][r]*w[2][r];
-        F8 += FE1_C2_D10[ip][r]*w[2][r];
-        F9 += FE1_C2_D01[ip][r]*w[2][r];
-        F10 += FE1_C1[ip][r]*w[2][r];
+        F0 += FE1_C0[ip][r]*w[0][r];
+        F1 += FE1_C2[ip][r]*w[0][r];
+        F2 += FE1_C1[ip][r]*w[0][r];
+        F3 += FE1_C3_D10[ip][r]*w[0][r];
+        F4 += FE1_C3_D01[ip][r]*w[0][r];
       } // end loop over 'r'
       
-      // Number of operations for primary indices: 2808
+      // Number of operations for primary indices: 70272
       for (unsigned int j = 0; j < 24; j++)
       {
-        // Number of operations to compute entry: 117
-        A[j] += ((((((((((K[0]*FE1_C0_D10[ip][j] + K[2]*FE1_C0_D01[ip][j]))*((K[0]*F2 + K[2]*F3)) + (FE1_C0[ip][j]*F0 + FE1_C2[ip][j]*F1)) + ((K[1]*FE1_C1_D10[ip][j] + K[3]*FE1_C1_D01[ip][j]))*((K[0]*F2 + K[2]*F3))) + ((K[0]*FE1_C1_D10[ip][j] + K[2]*FE1_C1_D01[ip][j]))*((K[1]*F2 + K[3]*F3))) + ((K[1]*FE1_C2_D10[ip][j] + K[3]*FE1_C2_D01[ip][j]))*((K[1]*F2 + K[3]*F3))) + ((((K[0]*FE1_C3_D10[ip][j] + K[2]*FE1_C3_D01[ip][j]))*((K[0]*F4 + K[2]*F5)) + ((K[1]*FE1_C3_D10[ip][j] + K[3]*FE1_C3_D01[ip][j]))*((K[0]*F6 + K[2]*F7))))*0.0005) + ((((K[0]*FE1_C3_D10[ip][j] + K[2]*FE1_C3_D01[ip][j]))*((K[1]*F6 + K[3]*F7)) + ((K[1]*FE1_C3_D10[ip][j] + K[3]*FE1_C3_D01[ip][j]))*((K[1]*F8 + K[3]*F9))))*0.0005) + FE1_C1[ip][j]*F10*2.0) + FE1_C3[ip][j]*(0.2*((((-1.0)*F10*F10 + F0*F1) + (-1.0)*((((((K[0]*F2 + K[2]*F3))*((K[0]*F2 + K[2]*F3)) + ((K[1]*F2 + K[3]*F3))*((K[1]*F2 + K[3]*F3))) + 1.0))*(((((K[0]*F2 + K[2]*F3))*((K[0]*F2 + K[2]*F3)) + ((K[1]*F2 + K[3]*F3))*((K[1]*F2 + K[3]*F3))) + 1.0)))))))*W12[ip]*det;
+        for (unsigned int k = 0; k < 24; k++)
+        {
+          // Number of operations to compute entry: 122
+          A[j*24 + k] += ((((((((((K[0]*FE1_C0_D10[ip][j] + K[2]*FE1_C0_D01[ip][j]))*((K[0]*FE1_C3_D10[ip][k] + K[2]*FE1_C3_D01[ip][k])) + (FE1_C0[ip][j]*FE1_C0[ip][k] + FE1_C2[ip][j]*FE1_C2[ip][k])) + ((K[1]*FE1_C1_D10[ip][j] + K[3]*FE1_C1_D01[ip][j]))*((K[0]*FE1_C3_D10[ip][k] + K[2]*FE1_C3_D01[ip][k]))) + ((K[0]*FE1_C1_D10[ip][j] + K[2]*FE1_C1_D01[ip][j]))*((K[1]*FE1_C3_D10[ip][k] + K[3]*FE1_C3_D01[ip][k]))) + ((K[1]*FE1_C2_D10[ip][j] + K[3]*FE1_C2_D01[ip][j]))*((K[1]*FE1_C3_D10[ip][k] + K[3]*FE1_C3_D01[ip][k]))) + ((((K[0]*FE1_C0_D10[ip][k] + K[2]*FE1_C0_D01[ip][k]))*((K[0]*FE1_C3_D10[ip][j] + K[2]*FE1_C3_D01[ip][j])) + ((K[0]*FE1_C1_D10[ip][k] + K[2]*FE1_C1_D01[ip][k]))*((K[1]*FE1_C3_D10[ip][j] + K[3]*FE1_C3_D01[ip][j]))))*0.0005) + ((((K[1]*FE1_C1_D10[ip][k] + K[3]*FE1_C1_D01[ip][k]))*((K[0]*FE1_C3_D10[ip][j] + K[2]*FE1_C3_D01[ip][j])) + ((K[1]*FE1_C2_D10[ip][k] + K[3]*FE1_C2_D01[ip][k]))*((K[1]*FE1_C3_D10[ip][j] + K[3]*FE1_C3_D01[ip][j]))))*0.0005) + FE1_C1[ip][j]*FE1_C1[ip][k]*2.0) + FE1_C3[ip][j]*((((((((((K[0]*FE1_C3_D10[ip][k] + K[2]*FE1_C3_D01[ip][k]))*2.0)*((K[0]*F3 + K[2]*F4)) + (((K[1]*FE1_C3_D10[ip][k] + K[3]*FE1_C3_D01[ip][k]))*2.0)*((K[1]*F3 + K[3]*F4))))*2.0)*(((((K[0]*F3 + K[2]*F4))*((K[0]*F3 + K[2]*F4)) + ((K[1]*F3 + K[3]*F4))*((K[1]*F3 + K[3]*F4))) + 1.0)))*(-1.0) + ((FE1_C0[ip][k]*F1 + FE1_C2[ip][k]*F0) + 2.0*FE1_C1[ip][k]*F2*(-1.0))))*0.25))*W12[ip]*det;
+        } // end loop over 'k'
       } // end loop over 'j'
     } // end loop over 'ip'
-  }
-
-};
-
-/// This class defines the interface for the tabulation of the
-/// exterior facet tensor corresponding to the local contribution to
-/// a form from the integral over an exterior facet.
-
-class ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_exterior_facet_integral_0_1: public ufc::exterior_facet_integral
-{
-public:
-
-  /// Constructor
-  ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_exterior_facet_integral_0_1() : ufc::exterior_facet_integral()
-  {
-    // Do nothing
-  }
-
-  /// Destructor
-  virtual ~ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_exterior_facet_integral_0_1()
-  {
-    // Do nothing
-  }
-
-  /// Tabulate which form coefficients are used by this integral
-  virtual const std::vector<bool> & enabled_coefficients() const
-  {
-    static const std::vector<bool> enabled({false, true, false});
-    return enabled;
-  }
-
-  /// Tabulate the tensor for the contribution from a local exterior facet
-  virtual void tabulate_tensor(double*  A,
-                               const double * const *  w,
-                               const double*  vertex_coordinates,
-                               std::size_t facet,
-                               int cell_orientation) const
-  {
-    // Number of operations (multiply-add pairs) for Jacobian data:      10
-    // Number of operations (multiply-add pairs) for geometry tensor:    6
-    // Number of operations (multiply-add pairs) for tensor contraction: 22
-    // Total number of operations (multiply-add pairs):                  38
-    
-    // Compute Jacobian
-    double J[4];
-    compute_jacobian_triangle_2d(J, vertex_coordinates);
-    
-    // Compute Jacobian inverse and determinant
-    double K[4];
-    double detJ;
-    compute_jacobian_inverse_triangle_2d(K, detJ, J);
-    
-    // Get vertices on edge
-    static unsigned int edge_vertices[3][2] = {{1, 2}, {0, 2}, {0, 1}};
-    const unsigned int v0 = edge_vertices[facet][0];
-    const unsigned int v1 = edge_vertices[facet][1];
-    
-    // Compute scale factor (length of edge scaled by length of reference interval)
-    const double dx0 = vertex_coordinates[2*v1 + 0] - vertex_coordinates[2*v0 + 0];
-    const double dx1 = vertex_coordinates[2*v1 + 1] - vertex_coordinates[2*v0 + 1];
-    const double det = std::sqrt(dx0*dx0 + dx1*dx1);
-    
-    
-    // Compute geometry tensor
-    const double G0_0 = det*w[1][0]*(1.0);
-    const double G0_1 = det*w[1][1]*(1.0);
-    const double G0_2 = det*w[1][2]*(1.0);
-    const double G0_3 = det*w[1][3]*(1.0);
-    const double G0_4 = det*w[1][4]*(1.0);
-    const double G0_5 = det*w[1][5]*(1.0);
-    
-    // Compute element tensor
-    switch (facet)
-    {
-    case 0:
-      {
-        A[0] = 0.0;
-      A[1] = 0.0;
-      A[2] = 0.0;
-      A[3] = 0.0;
-      A[4] = 0.0;
-      A[5] = 0.0;
-      A[6] = 0.0;
-      A[7] = 0.133333333333333*G0_1 - 0.0333333333333333*G0_2 + 0.0666666666666666*G0_3;
-      A[8] = -0.0333333333333333*G0_1 + 0.133333333333333*G0_2 + 0.0666666666666666*G0_3;
-      A[9] = 0.0666666666666666*G0_1 + 0.0666666666666666*G0_2 + 0.533333333333333*G0_3;
-      A[10] = 0.0;
-      A[11] = 0.0;
-      A[12] = 0.0;
-      A[13] = 0.0;
-      A[14] = 0.0;
-      A[15] = 0.0;
-      A[16] = 0.0;
-      A[17] = 0.0;
-      A[18] = 0.0;
-      A[19] = 0.0;
-      A[20] = 0.0;
-      A[21] = 0.0;
-      A[22] = 0.0;
-      A[23] = 0.0;
-        break;
-      }
-    case 1:
-      {
-        A[0] = 0.0;
-      A[1] = 0.0;
-      A[2] = 0.0;
-      A[3] = 0.0;
-      A[4] = 0.0;
-      A[5] = 0.0;
-      A[6] = 0.133333333333333*G0_0 - 0.0333333333333333*G0_2 + 0.0666666666666666*G0_4;
-      A[7] = 0.0;
-      A[8] = -0.0333333333333333*G0_0 + 0.133333333333333*G0_2 + 0.0666666666666666*G0_4;
-      A[9] = 0.0;
-      A[10] = 0.0666666666666666*G0_0 + 0.0666666666666666*G0_2 + 0.533333333333333*G0_4;
-      A[11] = 0.0;
-      A[12] = 0.0;
-      A[13] = 0.0;
-      A[14] = 0.0;
-      A[15] = 0.0;
-      A[16] = 0.0;
-      A[17] = 0.0;
-      A[18] = 0.0;
-      A[19] = 0.0;
-      A[20] = 0.0;
-      A[21] = 0.0;
-      A[22] = 0.0;
-      A[23] = 0.0;
-        break;
-      }
-    case 2:
-      {
-        A[0] = 0.0;
-      A[1] = 0.0;
-      A[2] = 0.0;
-      A[3] = 0.0;
-      A[4] = 0.0;
-      A[5] = 0.0;
-      A[6] = 0.133333333333333*G0_0 - 0.0333333333333333*G0_1 + 0.0666666666666666*G0_5;
-      A[7] = -0.0333333333333333*G0_0 + 0.133333333333333*G0_1 + 0.0666666666666666*G0_5;
-      A[8] = 0.0;
-      A[9] = 0.0;
-      A[10] = 0.0;
-      A[11] = 0.0666666666666666*G0_0 + 0.0666666666666666*G0_1 + 0.533333333333333*G0_5;
-      A[12] = 0.0;
-      A[13] = 0.0;
-      A[14] = 0.0;
-      A[15] = 0.0;
-      A[16] = 0.0;
-      A[17] = 0.0;
-      A[18] = 0.0;
-      A[19] = 0.0;
-      A[20] = 0.0;
-      A[21] = 0.0;
-      A[22] = 0.0;
-      A[23] = 0.0;
-        break;
-      }
-    }
-    
-  }
-
-};
-
-/// This class defines the interface for the tabulation of the
-/// exterior facet tensor corresponding to the local contribution to
-/// a form from the integral over an exterior facet.
-
-class ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_exterior_facet_integral_0_2: public ufc::exterior_facet_integral
-{
-public:
-
-  /// Constructor
-  ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_exterior_facet_integral_0_2() : ufc::exterior_facet_integral()
-  {
-    // Do nothing
-  }
-
-  /// Destructor
-  virtual ~ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_exterior_facet_integral_0_2()
-  {
-    // Do nothing
-  }
-
-  /// Tabulate which form coefficients are used by this integral
-  virtual const std::vector<bool> & enabled_coefficients() const
-  {
-    static const std::vector<bool> enabled({true, false, false});
-    return enabled;
-  }
-
-  /// Tabulate the tensor for the contribution from a local exterior facet
-  virtual void tabulate_tensor(double*  A,
-                               const double * const *  w,
-                               const double*  vertex_coordinates,
-                               std::size_t facet,
-                               int cell_orientation) const
-  {
-    // Number of operations (multiply-add pairs) for Jacobian data:      10
-    // Number of operations (multiply-add pairs) for geometry tensor:    6
-    // Number of operations (multiply-add pairs) for tensor contraction: 22
-    // Total number of operations (multiply-add pairs):                  38
-    
-    // Compute Jacobian
-    double J[4];
-    compute_jacobian_triangle_2d(J, vertex_coordinates);
-    
-    // Compute Jacobian inverse and determinant
-    double K[4];
-    double detJ;
-    compute_jacobian_inverse_triangle_2d(K, detJ, J);
-    
-    // Get vertices on edge
-    static unsigned int edge_vertices[3][2] = {{1, 2}, {0, 2}, {0, 1}};
-    const unsigned int v0 = edge_vertices[facet][0];
-    const unsigned int v1 = edge_vertices[facet][1];
-    
-    // Compute scale factor (length of edge scaled by length of reference interval)
-    const double dx0 = vertex_coordinates[2*v1 + 0] - vertex_coordinates[2*v0 + 0];
-    const double dx1 = vertex_coordinates[2*v1 + 1] - vertex_coordinates[2*v0 + 1];
-    const double det = std::sqrt(dx0*dx0 + dx1*dx1);
-    
-    
-    // Compute geometry tensor
-    const double G0_0 = det*w[0][0]*(1.0);
-    const double G0_1 = det*w[0][1]*(1.0);
-    const double G0_2 = det*w[0][2]*(1.0);
-    const double G0_3 = det*w[0][3]*(1.0);
-    const double G0_4 = det*w[0][4]*(1.0);
-    const double G0_5 = det*w[0][5]*(1.0);
-    
-    // Compute element tensor
-    switch (facet)
-    {
-    case 0:
-      {
-        A[0] = 0.0;
-      A[1] = 0.0;
-      A[2] = 0.0;
-      A[3] = 0.0;
-      A[4] = 0.0;
-      A[5] = 0.0;
-      A[6] = 0.0;
-      A[7] = -0.133333333333333*G0_1 + 0.0333333333333333*G0_2 - 0.0666666666666666*G0_3;
-      A[8] = 0.0333333333333333*G0_1 - 0.133333333333333*G0_2 - 0.0666666666666666*G0_3;
-      A[9] = -0.0666666666666666*G0_1 - 0.0666666666666666*G0_2 - 0.533333333333333*G0_3;
-      A[10] = 0.0;
-      A[11] = 0.0;
-      A[12] = 0.0;
-      A[13] = 0.0;
-      A[14] = 0.0;
-      A[15] = 0.0;
-      A[16] = 0.0;
-      A[17] = 0.0;
-      A[18] = 0.0;
-      A[19] = 0.0;
-      A[20] = 0.0;
-      A[21] = 0.0;
-      A[22] = 0.0;
-      A[23] = 0.0;
-        break;
-      }
-    case 1:
-      {
-        A[0] = 0.0;
-      A[1] = 0.0;
-      A[2] = 0.0;
-      A[3] = 0.0;
-      A[4] = 0.0;
-      A[5] = 0.0;
-      A[6] = -0.133333333333333*G0_0 + 0.0333333333333333*G0_2 - 0.0666666666666666*G0_4;
-      A[7] = 0.0;
-      A[8] = 0.0333333333333333*G0_0 - 0.133333333333333*G0_2 - 0.0666666666666666*G0_4;
-      A[9] = 0.0;
-      A[10] = -0.0666666666666666*G0_0 - 0.0666666666666666*G0_2 - 0.533333333333333*G0_4;
-      A[11] = 0.0;
-      A[12] = 0.0;
-      A[13] = 0.0;
-      A[14] = 0.0;
-      A[15] = 0.0;
-      A[16] = 0.0;
-      A[17] = 0.0;
-      A[18] = 0.0;
-      A[19] = 0.0;
-      A[20] = 0.0;
-      A[21] = 0.0;
-      A[22] = 0.0;
-      A[23] = 0.0;
-        break;
-      }
-    case 2:
-      {
-        A[0] = 0.0;
-      A[1] = 0.0;
-      A[2] = 0.0;
-      A[3] = 0.0;
-      A[4] = 0.0;
-      A[5] = 0.0;
-      A[6] = -0.133333333333333*G0_0 + 0.0333333333333333*G0_1 - 0.0666666666666666*G0_5;
-      A[7] = 0.0333333333333333*G0_0 - 0.133333333333333*G0_1 - 0.0666666666666666*G0_5;
-      A[8] = 0.0;
-      A[9] = 0.0;
-      A[10] = 0.0;
-      A[11] = -0.0666666666666666*G0_0 - 0.0666666666666666*G0_1 - 0.533333333333333*G0_5;
-      A[12] = 0.0;
-      A[13] = 0.0;
-      A[14] = 0.0;
-      A[15] = 0.0;
-      A[16] = 0.0;
-      A[17] = 0.0;
-      A[18] = 0.0;
-      A[19] = 0.0;
-      A[20] = 0.0;
-      A[21] = 0.0;
-      A[22] = 0.0;
-      A[23] = 0.0;
-        break;
-      }
-    }
-    
-  }
-
-};
-
-/// This class defines the interface for the tabulation of the
-/// exterior facet tensor corresponding to the local contribution to
-/// a form from the integral over an exterior facet.
-
-class ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_exterior_facet_integral_0_3: public ufc::exterior_facet_integral
-{
-public:
-
-  /// Constructor
-  ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_exterior_facet_integral_0_3() : ufc::exterior_facet_integral()
-  {
-    // Do nothing
-  }
-
-  /// Destructor
-  virtual ~ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_exterior_facet_integral_0_3()
-  {
-    // Do nothing
-  }
-
-  /// Tabulate which form coefficients are used by this integral
-  virtual const std::vector<bool> & enabled_coefficients() const
-  {
-    static const std::vector<bool> enabled({false, true, false});
-    return enabled;
-  }
-
-  /// Tabulate the tensor for the contribution from a local exterior facet
-  virtual void tabulate_tensor(double*  A,
-                               const double * const *  w,
-                               const double*  vertex_coordinates,
-                               std::size_t facet,
-                               int cell_orientation) const
-  {
-    // Number of operations (multiply-add pairs) for Jacobian data:      10
-    // Number of operations (multiply-add pairs) for geometry tensor:    6
-    // Number of operations (multiply-add pairs) for tensor contraction: 22
-    // Total number of operations (multiply-add pairs):                  38
-    
-    // Compute Jacobian
-    double J[4];
-    compute_jacobian_triangle_2d(J, vertex_coordinates);
-    
-    // Compute Jacobian inverse and determinant
-    double K[4];
-    double detJ;
-    compute_jacobian_inverse_triangle_2d(K, detJ, J);
-    
-    // Get vertices on edge
-    static unsigned int edge_vertices[3][2] = {{1, 2}, {0, 2}, {0, 1}};
-    const unsigned int v0 = edge_vertices[facet][0];
-    const unsigned int v1 = edge_vertices[facet][1];
-    
-    // Compute scale factor (length of edge scaled by length of reference interval)
-    const double dx0 = vertex_coordinates[2*v1 + 0] - vertex_coordinates[2*v0 + 0];
-    const double dx1 = vertex_coordinates[2*v1 + 1] - vertex_coordinates[2*v0 + 1];
-    const double det = std::sqrt(dx0*dx0 + dx1*dx1);
-    
-    
-    // Compute geometry tensor
-    const double G0_0 = det*w[1][0]*(1.0);
-    const double G0_1 = det*w[1][1]*(1.0);
-    const double G0_2 = det*w[1][2]*(1.0);
-    const double G0_3 = det*w[1][3]*(1.0);
-    const double G0_4 = det*w[1][4]*(1.0);
-    const double G0_5 = det*w[1][5]*(1.0);
-    
-    // Compute element tensor
-    switch (facet)
-    {
-    case 0:
-      {
-        A[0] = 0.0;
-      A[1] = 0.0;
-      A[2] = 0.0;
-      A[3] = 0.0;
-      A[4] = 0.0;
-      A[5] = 0.0;
-      A[6] = 0.0;
-      A[7] = -0.133333333333333*G0_1 + 0.0333333333333333*G0_2 - 0.0666666666666666*G0_3;
-      A[8] = 0.0333333333333333*G0_1 - 0.133333333333333*G0_2 - 0.0666666666666666*G0_3;
-      A[9] = -0.0666666666666666*G0_1 - 0.0666666666666666*G0_2 - 0.533333333333333*G0_3;
-      A[10] = 0.0;
-      A[11] = 0.0;
-      A[12] = 0.0;
-      A[13] = 0.0;
-      A[14] = 0.0;
-      A[15] = 0.0;
-      A[16] = 0.0;
-      A[17] = 0.0;
-      A[18] = 0.0;
-      A[19] = 0.0;
-      A[20] = 0.0;
-      A[21] = 0.0;
-      A[22] = 0.0;
-      A[23] = 0.0;
-        break;
-      }
-    case 1:
-      {
-        A[0] = 0.0;
-      A[1] = 0.0;
-      A[2] = 0.0;
-      A[3] = 0.0;
-      A[4] = 0.0;
-      A[5] = 0.0;
-      A[6] = -0.133333333333333*G0_0 + 0.0333333333333333*G0_2 - 0.0666666666666666*G0_4;
-      A[7] = 0.0;
-      A[8] = 0.0333333333333333*G0_0 - 0.133333333333333*G0_2 - 0.0666666666666666*G0_4;
-      A[9] = 0.0;
-      A[10] = -0.0666666666666666*G0_0 - 0.0666666666666666*G0_2 - 0.533333333333333*G0_4;
-      A[11] = 0.0;
-      A[12] = 0.0;
-      A[13] = 0.0;
-      A[14] = 0.0;
-      A[15] = 0.0;
-      A[16] = 0.0;
-      A[17] = 0.0;
-      A[18] = 0.0;
-      A[19] = 0.0;
-      A[20] = 0.0;
-      A[21] = 0.0;
-      A[22] = 0.0;
-      A[23] = 0.0;
-        break;
-      }
-    case 2:
-      {
-        A[0] = 0.0;
-      A[1] = 0.0;
-      A[2] = 0.0;
-      A[3] = 0.0;
-      A[4] = 0.0;
-      A[5] = 0.0;
-      A[6] = -0.133333333333333*G0_0 + 0.0333333333333333*G0_1 - 0.0666666666666666*G0_5;
-      A[7] = 0.0333333333333333*G0_0 - 0.133333333333333*G0_1 - 0.0666666666666666*G0_5;
-      A[8] = 0.0;
-      A[9] = 0.0;
-      A[10] = 0.0;
-      A[11] = -0.0666666666666666*G0_0 - 0.0666666666666666*G0_1 - 0.533333333333333*G0_5;
-      A[12] = 0.0;
-      A[13] = 0.0;
-      A[14] = 0.0;
-      A[15] = 0.0;
-      A[16] = 0.0;
-      A[17] = 0.0;
-      A[18] = 0.0;
-      A[19] = 0.0;
-      A[20] = 0.0;
-      A[21] = 0.0;
-      A[22] = 0.0;
-      A[23] = 0.0;
-        break;
-      }
-    }
-    
-  }
-
-};
-
-/// This class defines the interface for the tabulation of the
-/// exterior facet tensor corresponding to the local contribution to
-/// a form from the integral over an exterior facet.
-
-class ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_exterior_facet_integral_0_4: public ufc::exterior_facet_integral
-{
-public:
-
-  /// Constructor
-  ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_exterior_facet_integral_0_4() : ufc::exterior_facet_integral()
-  {
-    // Do nothing
-  }
-
-  /// Destructor
-  virtual ~ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_exterior_facet_integral_0_4()
-  {
-    // Do nothing
-  }
-
-  /// Tabulate which form coefficients are used by this integral
-  virtual const std::vector<bool> & enabled_coefficients() const
-  {
-    static const std::vector<bool> enabled({true, false, false});
-    return enabled;
-  }
-
-  /// Tabulate the tensor for the contribution from a local exterior facet
-  virtual void tabulate_tensor(double*  A,
-                               const double * const *  w,
-                               const double*  vertex_coordinates,
-                               std::size_t facet,
-                               int cell_orientation) const
-  {
-    // Number of operations (multiply-add pairs) for Jacobian data:      10
-    // Number of operations (multiply-add pairs) for geometry tensor:    6
-    // Number of operations (multiply-add pairs) for tensor contraction: 22
-    // Total number of operations (multiply-add pairs):                  38
-    
-    // Compute Jacobian
-    double J[4];
-    compute_jacobian_triangle_2d(J, vertex_coordinates);
-    
-    // Compute Jacobian inverse and determinant
-    double K[4];
-    double detJ;
-    compute_jacobian_inverse_triangle_2d(K, detJ, J);
-    
-    // Get vertices on edge
-    static unsigned int edge_vertices[3][2] = {{1, 2}, {0, 2}, {0, 1}};
-    const unsigned int v0 = edge_vertices[facet][0];
-    const unsigned int v1 = edge_vertices[facet][1];
-    
-    // Compute scale factor (length of edge scaled by length of reference interval)
-    const double dx0 = vertex_coordinates[2*v1 + 0] - vertex_coordinates[2*v0 + 0];
-    const double dx1 = vertex_coordinates[2*v1 + 1] - vertex_coordinates[2*v0 + 1];
-    const double det = std::sqrt(dx0*dx0 + dx1*dx1);
-    
-    
-    // Compute geometry tensor
-    const double G0_0 = det*w[0][0]*(1.0);
-    const double G0_1 = det*w[0][1]*(1.0);
-    const double G0_2 = det*w[0][2]*(1.0);
-    const double G0_3 = det*w[0][3]*(1.0);
-    const double G0_4 = det*w[0][4]*(1.0);
-    const double G0_5 = det*w[0][5]*(1.0);
-    
-    // Compute element tensor
-    switch (facet)
-    {
-    case 0:
-      {
-        A[0] = 0.0;
-      A[1] = 0.0;
-      A[2] = 0.0;
-      A[3] = 0.0;
-      A[4] = 0.0;
-      A[5] = 0.0;
-      A[6] = 0.0;
-      A[7] = 0.133333333333333*G0_1 - 0.0333333333333333*G0_2 + 0.0666666666666666*G0_3;
-      A[8] = -0.0333333333333333*G0_1 + 0.133333333333333*G0_2 + 0.0666666666666666*G0_3;
-      A[9] = 0.0666666666666666*G0_1 + 0.0666666666666666*G0_2 + 0.533333333333333*G0_3;
-      A[10] = 0.0;
-      A[11] = 0.0;
-      A[12] = 0.0;
-      A[13] = 0.0;
-      A[14] = 0.0;
-      A[15] = 0.0;
-      A[16] = 0.0;
-      A[17] = 0.0;
-      A[18] = 0.0;
-      A[19] = 0.0;
-      A[20] = 0.0;
-      A[21] = 0.0;
-      A[22] = 0.0;
-      A[23] = 0.0;
-        break;
-      }
-    case 1:
-      {
-        A[0] = 0.0;
-      A[1] = 0.0;
-      A[2] = 0.0;
-      A[3] = 0.0;
-      A[4] = 0.0;
-      A[5] = 0.0;
-      A[6] = 0.133333333333333*G0_0 - 0.0333333333333333*G0_2 + 0.0666666666666666*G0_4;
-      A[7] = 0.0;
-      A[8] = -0.0333333333333333*G0_0 + 0.133333333333333*G0_2 + 0.0666666666666666*G0_4;
-      A[9] = 0.0;
-      A[10] = 0.0666666666666666*G0_0 + 0.0666666666666666*G0_2 + 0.533333333333333*G0_4;
-      A[11] = 0.0;
-      A[12] = 0.0;
-      A[13] = 0.0;
-      A[14] = 0.0;
-      A[15] = 0.0;
-      A[16] = 0.0;
-      A[17] = 0.0;
-      A[18] = 0.0;
-      A[19] = 0.0;
-      A[20] = 0.0;
-      A[21] = 0.0;
-      A[22] = 0.0;
-      A[23] = 0.0;
-        break;
-      }
-    case 2:
-      {
-        A[0] = 0.0;
-      A[1] = 0.0;
-      A[2] = 0.0;
-      A[3] = 0.0;
-      A[4] = 0.0;
-      A[5] = 0.0;
-      A[6] = 0.133333333333333*G0_0 - 0.0333333333333333*G0_1 + 0.0666666666666666*G0_5;
-      A[7] = -0.0333333333333333*G0_0 + 0.133333333333333*G0_1 + 0.0666666666666666*G0_5;
-      A[8] = 0.0;
-      A[9] = 0.0;
-      A[10] = 0.0;
-      A[11] = 0.0666666666666666*G0_0 + 0.0666666666666666*G0_1 + 0.533333333333333*G0_5;
-      A[12] = 0.0;
-      A[13] = 0.0;
-      A[14] = 0.0;
-      A[15] = 0.0;
-      A[16] = 0.0;
-      A[17] = 0.0;
-      A[18] = 0.0;
-      A[19] = 0.0;
-      A[20] = 0.0;
-      A[21] = 0.0;
-      A[22] = 0.0;
-      A[23] = 0.0;
-        break;
-      }
-    }
-    
   }
 
 };
@@ -3709,18 +3060,18 @@ public:
 /// sequence of basis functions of Vj and w1, w2, ..., wn are given
 /// fixed functions (coefficients).
 
-class ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_form_0: public ufc::form
+class ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_form_0: public ufc::form
 {
 public:
 
   /// Constructor
-  ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_form_0() : ufc::form()
+  ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_form_0() : ufc::form()
   {
     // Do nothing
   }
 
   /// Destructor
-  virtual ~ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_form_0()
+  virtual ~ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_form_0()
   {
     // Do nothing
   }
@@ -3728,26 +3079,26 @@ public:
   /// Return a string identifying the form
   virtual const char* signature() const
   {
-    return "e6ce927b4bac0a393451ba917eae7b8873292da87b2d3cfa853738f2f18c241f142aaf041325628260b5abea03d19b3c8dccefc4ae6b3a716c1eafe5b517d8b8";
+    return "4af5d40b77771384898c565326fe947dc80c143878b95d182cd028611e0d2adfe2493e3424f637f9e92b8add40a020a60c996d425f8979640dedc33aaaeb110b";
   }
 
 
   /// Return the rank of the global tensor (r)
   virtual std::size_t rank() const
   {
-    return 1;
+    return 2;
   }
 
   /// Return the number of coefficients (n)
   virtual std::size_t num_coefficients() const
   {
-    return 3;
+    return 1;
   }
 
   /// Return original coefficient position for each coefficient (0 <= i < n)
   virtual std::size_t original_coefficient_position(std::size_t i) const
   {
-    static const std::vector<std::size_t> position({0, 1, 2});
+    static const std::vector<std::size_t> position({2});
     return position[i];
   }
 
@@ -3759,22 +3110,17 @@ public:
     {
     case 0:
       {
-        return new ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_finite_element_1();
+        return new ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_finite_element_1();
         break;
       }
     case 1:
       {
-        return new ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_finite_element_0();
+        return new ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_finite_element_1();
         break;
       }
     case 2:
       {
-        return new ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_finite_element_0();
-        break;
-      }
-    case 3:
-      {
-        return new ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_finite_element_1();
+        return new ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_finite_element_1();
         break;
       }
     }
@@ -3789,22 +3135,17 @@ public:
     {
     case 0:
       {
-        return new ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_dofmap_1();
+        return new ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_dofmap_1();
         break;
       }
     case 1:
       {
-        return new ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_dofmap_0();
+        return new ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_dofmap_1();
         break;
       }
     case 2:
       {
-        return new ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_dofmap_0();
-        break;
-      }
-    case 3:
-      {
-        return new ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_dofmap_1();
+        return new ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_dofmap_1();
         break;
       }
     }
@@ -3822,7 +3163,7 @@ public:
   /// Return the number of exterior facet domains
   virtual std::size_t max_exterior_facet_subdomain_id() const
   {
-    return 5;
+    return 0;
   }
 
   /// Return the number of interior facet domains
@@ -3853,7 +3194,7 @@ public:
   /// Return whether the form has any exterior facet integrals
   virtual bool has_exterior_facet_integrals() const
   {
-    return true;
+    return false;
   }
 
   /// Return whether the form has any interior facet integrals
@@ -3884,30 +3225,6 @@ public:
   /// Create a new exterior facet integral on sub domain subdomain_id
   virtual ufc::exterior_facet_integral* create_exterior_facet_integral(std::size_t subdomain_id) const
   {
-    switch (subdomain_id)
-    {
-    case 1:
-      {
-        return new ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_exterior_facet_integral_0_1();
-        break;
-      }
-    case 2:
-      {
-        return new ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_exterior_facet_integral_0_2();
-        break;
-      }
-    case 3:
-      {
-        return new ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_exterior_facet_integral_0_3();
-        break;
-      }
-    case 4:
-      {
-        return new ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_exterior_facet_integral_0_4();
-        break;
-      }
-    }
-    
     return 0;
   }
 
@@ -3933,7 +3250,7 @@ public:
   /// Create a new cell integral on everywhere else
   virtual ufc::cell_integral* create_default_cell_integral() const
   {
-    return new ffc_form_e8a0c8ae531f6644760fe38b44018bcfe4154527_cell_integral_0_otherwise();
+    return new ffc_form_3a3b028c07c9d888a64b5928dc948fe9a974525a_cell_integral_0_otherwise();
   }
 
   /// Create a new exterior facet integral on everywhere else
