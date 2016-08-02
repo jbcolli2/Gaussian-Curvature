@@ -204,6 +204,15 @@ def NewtonIteration(V, w0, form, bc, svd_flag = True):
 
 
     if(svd_flag):
+        dw = TrialFunction(V);
+        Fwk = action(form, wk);
+        DF = derivative(Fwk, wk, dw);   # derivative of F evaluated at wk.  dw is trial function to be solved for
+
+        # A,b = assemble_system(DF, Fwk, bch);
+        assembler = SystemAssembler(DF,Fwk,bc);
+        A = Matrix();
+        b = Vector();
+        assembler.assemble(A,b,wk.vector())
         s = np.linalg.svd(A.array(),compute_uv = False)
         s_val = np.min(s);
         print 'Minimum Singular Value = ', s_val;
